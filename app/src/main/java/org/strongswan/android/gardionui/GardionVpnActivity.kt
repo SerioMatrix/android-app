@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import kotlinx.android.synthetic.main.activity_gardion_vpn.*
 import org.strongswan.android.R
+import org.strongswan.android.R.id.info_screen_progress_bar
 import org.strongswan.android.data.VpnProfile
 import org.strongswan.android.data.VpnProfileDataSource
 import org.strongswan.android.data.VpnType
@@ -27,9 +28,11 @@ import java.util.*
 
 class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener {
 
-    private val PROFILE_REQUIRES_PASSWORD = "org.strongswan.android.MainActivity.REQUIRES_PASSWORD"
+    companion object {
+        val PROFILE_REQUIRES_PASSWORD = "org.strongswan.android.MainActivity.REQUIRES_PASSWORD"
+        val PROFILE_NAME = "org.strongswan.android.MainActivity.PROFILE_NAME"
+    }
 
-    private val PROFILE_NAME = "org.strongswan.android.MainActivity.PROFILE_NAME"
     private val PREPARE_VPN_SERVICE = 0
     private lateinit var mProfileInfo: Bundle
     private var mProfile: VpnProfile? = VpnProfile()
@@ -117,12 +120,13 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
         mProfile?.vpnType = VpnType.IKEV2_EAP
         mProfile?.username = "joe"
         mProfile?.password = "nlkbl_kZGI8iuzfi7"
+        mProfile?.certificateAlias = null
         /**
         * Here you can set the spilit tunneling block (IPV4 and IPV6)
          * VpnProfile.SPLIT_TUNNELING_BLOCK_IPV4
          * VpnProfile.SPLIT_TUNNELING_BLOCK_IPV6
          **/
-        mProfile?.splitTunneling = 0
+        mProfile?.splitTunneling = null
 
     }
 
