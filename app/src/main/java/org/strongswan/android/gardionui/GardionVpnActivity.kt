@@ -120,14 +120,11 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
         mProfile?.vpnType = VpnType.IKEV2_EAP
         mProfile?.username = "joe"
         mProfile?.password = "nlkbl_kZGI8iuzfi7"
-        mProfile?.certificateAlias = null
         /**
         * Here you can set the spilit tunneling block (IPV4 and IPV6)
          * VpnProfile.SPLIT_TUNNELING_BLOCK_IPV4
          * VpnProfile.SPLIT_TUNNELING_BLOCK_IPV6
          **/
-        mProfile?.splitTunneling = null
-
     }
 
     override fun stateChanged() {

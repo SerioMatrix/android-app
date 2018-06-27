@@ -17,11 +17,11 @@ class BootCompletedReceiver : BroadcastReceiver() {
         Log.d(TAG, "Receiver starts")
         val profileInfo: Bundle = getProfileInfoBundle(getVpnDataFromDatabase(context))
         Log.d(TAG, "Profile info fetched from DB$profileInfo")
-        if ("android.intent.action.BOOT_COMPLETED" == intent!!.action) {
+        if ("android.intent.action.BOOT_COMPLETED" == intent?.action) {
             val launchVpn = Intent(context, CharonVpnService::class.java)
-            intent.putExtras(profileInfo)
+            launchVpn.putExtras(profileInfo)
             Log.d(TAG, "Service starts")
-            context!!.startService(launchVpn)
+            context?.applicationContext?.startService(launchVpn)
         }
     }
 
