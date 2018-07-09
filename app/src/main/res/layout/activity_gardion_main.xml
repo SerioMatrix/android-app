@@ -26,24 +26,56 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/main_create_mdm_button" />
 
-    <Button
-        android:id="@+id/main_apply_policies_button"
+    <Switch
+        android:id="@+id/switch_always_on"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Apply policies"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:text="Vpn always on"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/main_go_to_vpn" />
 
-    <Button
-        android:id="@+id/main_clear_policies_button"
+    <Switch
+        android:id="@+id/switch_unable_uninstall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="clear policies"
+        android:layout_marginTop="8dp"
+        android:text="Unable uninstall"
+        app:layout_constraintStart_toStartOf="@+id/switch_always_on"
+        app:layout_constraintTop_toBottomOf="@+id/switch_always_on" />
+
+    <Switch
+        android:id="@+id/switch_disallow_config_vpn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Disallow vpn config"
+        app:layout_constraintStart_toStartOf="@+id/switch_unable_uninstall"
+        app:layout_constraintTop_toBottomOf="@+id/switch_unable_uninstall" />
+
+    <TextView
+        android:id="@+id/show_packagename_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="package nam"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/main_apply_policies_button" />
+        app:layout_constraintTop_toBottomOf="@+id/switch_disallow_config_vpn" />
+
+    <Button
+        android:id="@+id/test_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="test"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/show_packagename_textview" />
 
 </android.support.constraint.ConstraintLayout>
