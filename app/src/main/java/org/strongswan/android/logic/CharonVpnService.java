@@ -145,7 +145,11 @@ public class CharonVpnService extends VpnService implements Runnable, VpnStateSe
 				}
 				setNextProfile(profile);
 			}
-		}
+		} else {
+			VpnProfile profile = mDataSource.getVpnProfile(1);
+			profile.setPassword(mDataSource.getVpnProfile(1).getPassword());
+            setNextProfile(profile);
+        }
 		return START_STICKY;
 	}
 
