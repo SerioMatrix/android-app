@@ -133,7 +133,7 @@ public class CharonVpnService extends VpnService implements Runnable, VpnStateSe
 			else
 			{
 				Bundle bundle = intent.getExtras();
-				VpnProfile profile = null;
+				VpnProfile profile;
 				if (bundle != null)
 				{
 					profile = mDataSource.getVpnProfile(bundle.getLong(VpnProfileDataSource.KEY_ID));
@@ -142,14 +142,15 @@ public class CharonVpnService extends VpnService implements Runnable, VpnStateSe
 						String password = bundle.getString(VpnProfileDataSource.KEY_PASSWORD);
 						profile.setPassword(password);
 					}
+				} else {
+					profile = mDataSource.getVpnProfile(1);
+					if (profile == null){
+						return START_NOT_STICKY;
+					}
 				}
 				setNextProfile(profile);
 			}
-		} else {
-			VpnProfile profile = mDataSource.getVpnProfile(1);
-			profile.setPassword(mDataSource.getVpnProfile(1).getPassword());
-            setNextProfile(profile);
-        }
+		}
 		return START_STICKY;
 	}
 
@@ -248,7 +249,7 @@ public class CharonVpnService extends VpnService implements Runnable, VpnStateSe
 						startConnection(mCurrentProfile);
 						mIsDisconnecting = false;
 
-//						addNotification();
+						addNotification();
 						BuilderAdapter builder = new BuilderAdapter(mCurrentProfile);
 						if (initializeCharon(builder, mLogFile, mAppDir, mCurrentProfile.getVpnType().has(VpnTypeFeature.BYOD)))
 						{

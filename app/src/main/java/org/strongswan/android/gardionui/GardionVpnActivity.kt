@@ -8,12 +8,12 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.net.VpnService
 import android.os.Bundle
+import android.os.Handler
 import android.os.IBinder
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import kotlinx.android.synthetic.main.activity_gardion_vpn.*
 import org.strongswan.android.R
-import org.strongswan.android.R.id.info_screen_progress_bar
 import org.strongswan.android.data.VpnProfile
 import org.strongswan.android.data.VpnProfileDataSource
 import org.strongswan.android.data.VpnType
@@ -21,7 +21,7 @@ import org.strongswan.android.logic.CharonVpnService
 import org.strongswan.android.logic.VpnStateService
 import org.strongswan.android.logic.VpnStateService.State
 import org.strongswan.android.toast
-import org.strongswan.android.utils.Constants
+import org.strongswan.android.utils.GardionUtils
 import org.strongswan.android.utils.KeyStoreManager
 import java.util.*
 
@@ -31,8 +31,12 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
     companion object {
         val PROFILE_REQUIRES_PASSWORD = "org.strongswan.android.MainActivity.REQUIRES_PASSWORD"
         val PROFILE_NAME = "org.strongswan.android.MainActivity.PROFILE_NAME"
+        val KEY_IS_FROM_BOOT_RECEIVER = "key_is_from_boot_receiver"
+        val KEY_IS_FROM_USER_PRESENT_RECEIVER = "key_is_from_user_present"
     }
 
+    private var handlerCounter = 1
+    private val handler: Handler = Handler()
     private val PREPARE_VPN_SERVICE = 0
     private lateinit var mProfileInfo: Bundle
     private var mProfile: VpnProfile? = VpnProfile()
@@ -48,20 +52,48 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
             mService?.registerListener(this@GardionVpnActivity)
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gardion_vpn)
-        KeyStoreManager.generateKey()
+        mDataSource = VpnProfileDataSource(this)
         info_screen_prepare_data.setOnClickListener { saveProfile() }
         info_screen_log_button.setOnClickListener {
-            when (mService?.state){
-                State.CONNECTED -> disconnectVPN()
-                State.DISABLED -> startVPNprofile()
+            when (mService?.state) {
+                State.CONNECTED, State.DISCONNECTING -> disconnectVPN()
+                State.DISABLED, State.CONNECTING -> startVPNprofile()
                 else -> this.toast("Unknown state")
             }
         }
         applicationContext.bindService(Intent(applicationContext, VpnStateService::class.java),
                 mServiceConnection, Service.BIND_AUTO_CREATE)
+        if (intent.extras != null) {
+            if (intent.extras.getBoolean(KEY_IS_FROM_BOOT_RECEIVER, false)) {
+                startVpnAfterBoot()
+            }
+            if (intent.extras.getBoolean(KEY_IS_FROM_USER_PRESENT_RECEIVER, false)) {
+                startVPNprofile()
+            }
+        }
+    }
+
+    private fun startVpnAfterBoot() {
+        if (GardionUtils.isInternetConnectionActive(this)) {
+            startVPNprofile()
+        } else {
+            if (handlerCounter <= 3) {
+                handler.postDelayed({ checkInternetConnectionAndIncreaseCounter() }, 10000)
+            }
+        }
+    }
+
+    private fun checkInternetConnectionAndIncreaseCounter() {
+        if (GardionUtils.isInternetConnectionActive(this)) {
+            handler.removeCallbacksAndMessages(null)
+            startVPNprofile()
+        } else {
+            handlerCounter++
+        }
     }
 
     private fun disconnectVPN() {
@@ -71,11 +103,11 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
 
     private fun updateView() {
         val state: VpnStateService.State? = mService?.state
-        when(state) {
-           State.CONNECTING -> {
-               info_screen_vpn_status.text = "CONNECTING"
-               info_screen_progress_bar.visibility = View.VISIBLE
-           }
+        when (state) {
+            State.CONNECTING -> {
+                info_screen_vpn_status.text = "CONNECTING"
+                info_screen_progress_bar.visibility = View.VISIBLE
+            }
             State.CONNECTED -> {
                 info_screen_vpn_status.text = "CONNECTED"
                 info_screen_log_button.text = "DISCONNECT"
@@ -100,15 +132,12 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
         info_screen_text.text = "We are saving your credentials"
         info_screen_progress_bar.visibility = View.VISIBLE
         updateProfileData()
-        mDataSource = VpnProfileDataSource(this)
         mDataSource.open()
         mDataSource.insertProfile(mProfile)
         if (mProfile?.uuid == null) {
             mProfile?.uuid = UUID.randomUUID()
         }
         mDataSource.updateVpnProfile(mProfile)
-        val intent = Intent(Constants.VPN_PROFILES_CHANGED)
-        intent.putExtra(Constants.VPN_PROFILES_SINGLE, mProfile?.id)
         mDataSource.close()
         info_screen_text.text = "Credentials Saved. You can start VPN"
         info_screen_progress_bar.visibility = View.INVISIBLE
@@ -121,7 +150,7 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
         mProfile?.username = "joe"
         mProfile?.password = "nlkbl_kZGI8iuzfi7"
         /**
-        * Here you can set the spilit tunneling block (IPV4 and IPV6)
+         * Here you can set the spilit tunneling block (IPV4 and IPV6)
          * VpnProfile.SPLIT_TUNNELING_BLOCK_IPV4
          * VpnProfile.SPLIT_TUNNELING_BLOCK_IPV6
          **/
@@ -134,13 +163,34 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
     private fun startVPNprofile() {
         info_screen_text.text = "Preparing connection..."
         info_screen_progress_bar.visibility = View.VISIBLE
+        val bundle = prepareInitialData()
+        prepareVpnService(bundle)
+    }
+
+    private fun getVpnProfile(): VpnProfile? {
+        mDataSource.open()
+        val vpnProfile: VpnProfile? = mDataSource.getVpnProfile(1)
+        mDataSource.close()
+        return vpnProfile
+    }
+
+    private fun prepareInitialData(): Bundle {
         val bundle = Bundle()
-        bundle.putLong(VpnProfileDataSource.KEY_ID, mProfile!!.id)
-        bundle.putString(VpnProfileDataSource.KEY_USERNAME, mProfile?.username)
-        bundle.putString(VpnProfileDataSource.KEY_PASSWORD, mProfile?.password)
+        val vpnProfile: VpnProfile? = getVpnProfile()
+        if (vpnProfile != null) {
+            mDataSource.open()
+            bundle.putLong(VpnProfileDataSource.KEY_ID, vpnProfile.id)
+            bundle.putString(VpnProfileDataSource.KEY_USERNAME, vpnProfile.username)
+            bundle.putString(VpnProfileDataSource.KEY_PASSWORD, vpnProfile.password)
+            mDataSource.close()
+        } else {
+            bundle.putLong(VpnProfileDataSource.KEY_ID, mProfile!!.id)
+            bundle.putString(VpnProfileDataSource.KEY_USERNAME, mProfile?.username)
+            bundle.putString(VpnProfileDataSource.KEY_PASSWORD, mProfile?.password)
+        }
         bundle.putBoolean(PROFILE_REQUIRES_PASSWORD, true)
         bundle.putString(PROFILE_NAME, "gardion_test")
-        prepareVpnService(bundle)
+        return bundle
     }
 
     private fun prepareVpnService(profileInfo: Bundle) {
@@ -174,7 +224,7 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        when (requestCode){
+        when (requestCode) {
             PREPARE_VPN_SERVICE -> {
                 if (resultCode == Activity.RESULT_OK) {
                     val intent = Intent(this, CharonVpnService::class.java)
