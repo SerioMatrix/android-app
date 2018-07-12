@@ -21,6 +21,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:name=".logic.StrongSwanApplication"
         android:allowBackup="false"
@@ -141,6 +143,7 @@
         <activity android:name=".gardionui.GardionVpnActivity" />
         <activity android:name=".gardionui.EnableProfileActivity" />
 
+        <!--     Gardion receivers     -->
         <receiver
             android:name=".security.GardionDeviceAdminReceiver"
             android:description="@string/app_name"
@@ -152,6 +155,22 @@
 
             <intent-filter>
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".security.BootCompletedReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <!--<receiver android:name=".logic.NetworkStateReceiver">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />-->
+                <!--<action android:name="android.net.wifi.STATE_CHANGE" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
+        <receiver android:name=".logic.UserPresentReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT"/>
             </intent-filter>
         </receiver>
 

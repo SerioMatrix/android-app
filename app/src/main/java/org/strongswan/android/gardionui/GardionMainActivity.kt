@@ -43,8 +43,15 @@ class GardionMainActivity : AppCompatActivity() {
             manager.addUserRestriction(componentName, UserManager.DISALLOW_UNINSTALL_APPS)
             toast("Disallow uninstall apps")
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                manager.setAlwaysOnVpnPackage(componentName, applicationContext.packageName, true)
-                toast("Vpn always on prepared!")
+                val config: Bundle = Bundle()
+                config.putString("address", "")
+                config.putString("identity", "")
+                try {
+                    manager.setAlwaysOnVpnPackage(componentName, applicationContext.packageName, true)
+                    toast("Vpn always on prepared!")
+                } catch (e: Exception) {
+                    toast("Vpn always on setting failed!")
+                }
             }
         } else {
             toast("error allying policies")
@@ -56,6 +63,9 @@ class GardionMainActivity : AppCompatActivity() {
             val componentName: ComponentName = GardionDeviceAdminReceiver.getComponentName(this)
             manager.clearUserRestriction(componentName, UserManager.DISALLOW_CONFIG_VPN)
             manager.clearUserRestriction(componentName, UserManager.DISALLOW_UNINSTALL_APPS)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                manager.setAlwaysOnVpnPackage(componentName, applicationContext.packageName, false)
+            }
             toast("Policies cleared")
         } else {
             toast("Error clearing policies")

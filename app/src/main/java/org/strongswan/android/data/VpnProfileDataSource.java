@@ -60,7 +60,7 @@ public class VpnProfileDataSource
 	private SQLiteDatabase mDatabase;
 	private final Context mContext;
 
-	private static final String DATABASE_NAME = "strongswan.db";
+	public static final String DATABASE_NAME = "strongswan.db";
 	private static final String TABLE_VPNPROFILE = "vpnprofile";
 
 	private static final int DATABASE_VERSION = 15;
