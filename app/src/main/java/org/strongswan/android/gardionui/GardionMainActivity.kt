@@ -25,6 +25,13 @@ class GardionMainActivity : AppCompatActivity() {
         main_clear_policies_button.setOnClickListener { clearPolicies(manager) }
     }
 
+    private fun applyAdminPolicies(manager: DevicePolicyManager) {
+        val componentName = ComponentName(this, GardionDeviceAdminReceiver::class.java)
+        if(manager.isAdminActive(componentName)){
+//            manager.setUninstallBlocked(componentName, applicationContext.packageName, true)
+        }
+    }
+
     private fun startVpnActivity() {
         val startVpn = Intent(this, GardionVpnActivity::class.java)
         startActivity(startVpn)
@@ -38,21 +45,21 @@ class GardionMainActivity : AppCompatActivity() {
     private fun applyPolicies(manager: DevicePolicyManager) {
         if (manager.isProfileOwnerApp(applicationContext.packageName)) {
             val componentName: ComponentName = GardionDeviceAdminReceiver.getComponentName(this)
-            manager.addUserRestriction(componentName, UserManager.DISALLOW_CONFIG_VPN)
-            toast("Disallow config vpn")
-            manager.addUserRestriction(componentName, UserManager.DISALLOW_UNINSTALL_APPS)
-            toast("Disallow uninstall apps")
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                val config: Bundle = Bundle()
-                config.putString("address", "")
-                config.putString("identity", "")
-                try {
-                    manager.setAlwaysOnVpnPackage(componentName, applicationContext.packageName, true)
-                    toast("Vpn always on prepared!")
-                } catch (e: Exception) {
-                    toast("Vpn always on setting failed!")
-                }
-            }
+            manager.addUserRestriction(componentName, UserManager.DISALLOW_FACTORY_RESET)
+            toast("Disallow factory reset")
+            manager.setUninstallBlocked(componentName, applicationContext.packageName, true)
+            toast("Disallow uninstall this app: " + applicationContext.packageName)
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//                val config = Bundle()
+//                config.putString("address", "")
+//                config.putString("identity", "")
+//                try {
+//                    manager.setAlwaysOnVpnPackage(componentName, applicationContext.packageName, true)
+//                    toast("Vpn always on prepared!")
+//                } catch (e: Exception) {
+//                    toast("Vpn always on setting failed!")
+//                }
+//            }
         } else {
             toast("error allying policies")
         }
