@@ -208,7 +208,7 @@ public class IPRangeSet implements Iterable<IPRange>
 
 	@Override
 	public String toString()
-	{	/* we could use TextUtils, but that causes the unit tests to fail */
+	{	/* we could use StringUtils, but that causes the unit tests to fail */
 		StringBuilder sb = new StringBuilder();
 		for (IPRange range : mRanges)
 		{

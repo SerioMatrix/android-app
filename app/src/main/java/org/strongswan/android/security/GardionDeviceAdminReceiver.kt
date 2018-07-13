@@ -5,6 +5,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import org.strongswan.android.gardionui.EnableProfileActivity
+import org.strongswan.android.logic.FlowController
 import org.strongswan.android.toast
 
 class GardionDeviceAdminReceiver: DeviceAdminReceiver() {
@@ -23,6 +24,8 @@ class GardionDeviceAdminReceiver: DeviceAdminReceiver() {
 
     override fun onEnabled(context: Context?, intent: Intent?) {
         context?.toast("Device Admin Active")
+        val launchFlowController = Intent(context, FlowController::class.java)
+        context?.startActivity(launchFlowController)
     }
 
     override fun onDisableRequested(context: Context?, intent: Intent?): CharSequence {

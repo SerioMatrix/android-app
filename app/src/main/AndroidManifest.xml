@@ -20,7 +20,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
@@ -143,7 +142,7 @@
         <activity android:name=".gardionui.GardionVpnActivity" />
         <activity android:name=".gardionui.EnableProfileActivity" />
 
-        <!--     Gardion receivers     -->
+        <!-- Gardion receivers -->
         <receiver
             android:name=".security.GardionDeviceAdminReceiver"
             android:description="@string/app_name"
@@ -162,19 +161,22 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <!--<receiver android:name=".logic.NetworkStateReceiver">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />-->
-                <!--<action android:name="android.net.wifi.STATE_CHANGE" />-->
-            <!--</intent-filter>-->
-        <!--</receiver>-->
+        <!-- <receiver android:name=".logic.NetworkStateReceiver"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.net.conn.CONNECTIVITY_CHANGE" /> -->
+        <!-- <action android:name="android.net.wifi.STATE_CHANGE" /> -->
+        <!-- </intent-filter> -->
+        <!-- </receiver> -->
         <receiver android:name=".logic.UserPresentReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.USER_PRESENT"/>
+                <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
 
         <activity android:name=".gardionui.GardionMDMSetupActivity" />
+        <activity android:name=".logic.FlowController" />
+        <activity android:name=".gardionui.PasswordCreatorActivity" />
+        <activity android:name=".gardionui.GardionLoginActivity"></activity>
     </application>
 
 </manifest>
