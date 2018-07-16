@@ -29,15 +29,11 @@ class GardionDeviceAdminReceiver: DeviceAdminReceiver() {
         context?.startActivity(launchFlowController)
     }
 
-    override fun onDisableRequested(context: Context?, intent: Intent?): CharSequence {
+    override fun onDisabled(context: Context?, intent: Intent?) {
+        context?.toast("Device Admin disabled")
         val launchActivity = Intent(context, EnableAdminActivity::class.java)
         launchActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         context?.startActivity(launchActivity)
-        return super.onDisableRequested(context, intent)
-    }
-
-    override fun onDisabled(context: Context?, intent: Intent?) {
-        context?.toast("Device Admin disabled")
     }
 
     override fun onPasswordChanged(context: Context?, intent: Intent?) {

@@ -137,7 +137,6 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
         }
         /* store profile info until the user grants us permission */
         if (intent != null) {
-            //TODO: intent jest null, więc nie uruchamia serwisu
             try {
                 startActivityForResult(intent, PREPARE_VPN_SERVICE)
             } catch (ex: ActivityNotFoundException) {
