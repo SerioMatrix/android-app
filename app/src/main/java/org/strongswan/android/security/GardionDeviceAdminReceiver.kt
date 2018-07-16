@@ -4,6 +4,7 @@ import android.app.admin.DeviceAdminReceiver
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import org.strongswan.android.gardionui.EnableAdminActivity
 import org.strongswan.android.gardionui.EnableProfileActivity
 import org.strongswan.android.logic.FlowController
 import org.strongswan.android.toast
@@ -29,6 +30,9 @@ class GardionDeviceAdminReceiver: DeviceAdminReceiver() {
     }
 
     override fun onDisableRequested(context: Context?, intent: Intent?): CharSequence {
+        val launchActivity = Intent(context, EnableAdminActivity::class.java)
+        launchActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        context?.startActivity(launchActivity)
         return super.onDisableRequested(context, intent)
     }
 

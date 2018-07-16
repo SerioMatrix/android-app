@@ -5,13 +5,13 @@ import android.app.admin.DevicePolicyManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
 import org.strongswan.android.data.datasource.DataStore
 import org.strongswan.android.data.datasource.SharedPreferencesDataStore
+import org.strongswan.android.gardionui.GardionLoginActivity
+import org.strongswan.android.gardionui.GardionVpnActivity
 import org.strongswan.android.gardionui.PasswordCreatorActivity
 import org.strongswan.android.security.GardionDeviceAdminReceiver
-import org.strongswan.android.utils.KeyStoreManager
 
 class FlowController : AppCompatActivity() {
 
@@ -19,16 +19,17 @@ class FlowController : AppCompatActivity() {
         private const val REQUEST_CODE_ENABLE_ADMIN: Int = 200
 
         private const val REQUEST_PASSWORD_CREATION: Int = 100
-        private const val REQUEST_DEVICE_ADMIN: Int = 101
+        private const val REQUEST_DEVICE_ADMIN_INFO_SCREEN: Int = 101
         private const val REQUEST_PROFILE_OWNER: Int = 102
         private const val REQUEST_GARDION_LOGIN: Int = 103
+        private const val REQUEST_VPN_START: Int = 104
     }
 
     private lateinit var dataStore: DataStore
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
-        val sharedPrefs = this.getPreferences(Context.MODE_PRIVATE)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val sharedPrefs = this.getSharedPreferences(SharedPreferencesDataStore.PREFERENCES_NAME, Context.MODE_PRIVATE)
         dataStore = SharedPreferencesDataStore(sharedPrefs)
         startPasswordCreationScreen()
     }
@@ -42,12 +43,25 @@ class FlowController : AppCompatActivity() {
             REQUEST_PASSWORD_CREATION -> handlePasswordCreation(data, resultCode)
             REQUEST_CODE_ENABLE_ADMIN -> handleDeviceAdminCreation()
             REQUEST_PROFILE_OWNER -> handleProfileOwnerCreation(data, resultCode)
-            REQUEST_GARDION_LOGIN -> handleGardionLogin(data, resultCode)
+            REQUEST_GARDION_LOGIN -> handleGardionLogin(resultCode)
+            REQUEST_VPN_START -> handleVpnStart(resultCode)
         }
     }
 
-    private fun handleGardionLogin(data: Intent?, resultCode: Int) {
+    private fun handleVpnStart(resultCode: Int) {
+        if (resultCode == Activity.RESULT_OK){
+            finish()
+        }
+    }
 
+    private fun handleGardionLogin(resultCode: Int) {
+        if (resultCode == Activity.RESULT_OK) {
+            startVpnService()
+        }
+    }
+
+    private fun startVpnService() {
+        startActivityForResult(GardionVpnActivity.getIntent(this), REQUEST_VPN_START)
     }
 
     private fun handleProfileOwnerCreation(data: Intent?, resultCode: Int) {
@@ -62,19 +76,20 @@ class FlowController : AppCompatActivity() {
     }
 
     private fun showGardionLoginScreen() {
-
+        startActivityForResult(GardionLoginActivity.getIntent(this), REQUEST_GARDION_LOGIN)
     }
 
     private fun handlePasswordCreation(data: Intent?, resultCode: Int) {
         if (resultCode == Activity.RESULT_OK) {
             if (data != null) {
                 // Initialize KeyStore and generate key
-                KeyStoreManager.generateKey()
-                val password = data.getStringExtra(PasswordCreatorActivity.INTENT_EXTRA_PASSWORD)
-                //password encryption
-                val encryptedPassword: String = KeyStoreManager.encryptData(password)
+//                KeyStoreManager.generateKey()
+//                val masterKey = KeyStoreManager.getAndroidKeyStoreKeyPair()
+//                val password = data.getStringExtra(PasswordCreatorActivity.INTENT_EXTRA_PASSWORD)
+//                //password encryption
+//                val encryptedPassword: String = KeyStoreManager.encryptData(password, masterKey?.public!!)
                 //save encrypted password to sharedPreferences
-                dataStore.saveEncryptedPass(encryptedPassword)
+                dataStore.saveEncryptedPass(data.getStringExtra(PasswordCreatorActivity.INTENT_EXTRA_PASSWORD))
                 dataStore.setGlobalPasswordSet(true)
                 askForDeviceAdmin()
             } else {

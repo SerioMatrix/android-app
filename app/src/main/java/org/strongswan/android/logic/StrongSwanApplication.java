@@ -54,21 +54,6 @@ public class StrongSwanApplication extends Application
 	 */
 	static
 	{
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2)
-		{
-			System.loadLibrary("strongswan");
-
-			if (MainActivity.USE_BYOD)
-			{
-				System.loadLibrary("tpmtss");
-				System.loadLibrary("tncif");
-				System.loadLibrary("tnccs");
-				System.loadLibrary("imcv");
-			}
-
-			System.loadLibrary("charon");
-			System.loadLibrary("ipsec");
-		}
 		System.loadLibrary("androidbridge");
 	}
 }

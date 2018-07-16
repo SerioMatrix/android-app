@@ -5,4 +5,6 @@ interface DataStore {
     fun getEncryptedPass(): String
     fun setGlobalPasswordSet(passwordCreated: Boolean)
     fun isGlobalPasswordSet(): Boolean?
+    fun setVpnProfileSaved(vpnProfileSaved: Boolean)
+    fun isVpnProfileSaved(): Boolean?
 }

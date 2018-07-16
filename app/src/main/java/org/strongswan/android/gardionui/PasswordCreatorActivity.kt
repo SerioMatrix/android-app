@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Debug
 import kotlinx.android.synthetic.main.activity_password_creator.*
 import org.strongswan.android.R
 import org.strongswan.android.toast
@@ -14,8 +15,7 @@ class PasswordCreatorActivity : AppCompatActivity() {
         const val INTENT_EXTRA_PASSWORD: String = "intent_extra_password"
 
         fun getIntent(activity: Activity): Intent {
-            val intent = Intent(activity, PasswordCreatorActivity::class.java)
-            return intent
+            return Intent(activity, PasswordCreatorActivity::class.java)
         }
     }
 
@@ -26,8 +26,8 @@ class PasswordCreatorActivity : AppCompatActivity() {
     }
 
     private fun createPassword() {
-        val passwordMain: String = password_editText.toString()
-        val passwordRepeat: String = password_repeat_editText.toString()
+        val passwordMain: String = password_editText.text.toString()
+        val passwordRepeat: String = password_repeat_editText.text.toString()
         var passwordCreated = false
         when {
             passwordMain.length !in 4..6 -> toast("Your password is too short")
