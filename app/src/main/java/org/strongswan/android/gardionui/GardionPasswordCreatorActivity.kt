@@ -4,18 +4,17 @@ import android.app.Activity
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Debug
 import kotlinx.android.synthetic.main.activity_password_creator.*
 import org.strongswan.android.R
 import org.strongswan.android.toast
 
-class PasswordCreatorActivity : AppCompatActivity() {
+class GardionPasswordCreatorActivity : AppCompatActivity() {
 
     companion object {
         const val INTENT_EXTRA_PASSWORD: String = "intent_extra_password"
 
         fun getIntent(activity: Activity): Intent {
-            return Intent(activity, PasswordCreatorActivity::class.java)
+            return Intent(activity, GardionPasswordCreatorActivity::class.java)
         }
     }
 

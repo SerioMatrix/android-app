@@ -25,7 +25,7 @@ import java.util.*
 class GardionLoginActivity : AppCompatActivity() {
 
     companion object {
-        private const val BASE_URL = "https://api.gardion.net/api/v1/configuration/"
+        private const val BASE_URL = "https://api.gardion.net/v1/configuration/"
         private var TAG = GardionLoginActivity::class.java.name
 
         fun getIntent(activity: Activity): Intent {

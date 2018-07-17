@@ -5,12 +5,14 @@ import android.app.admin.DevicePolicyManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import org.strongswan.android.data.datasource.DataStore
 import org.strongswan.android.data.datasource.SharedPreferencesDataStore
+import org.strongswan.android.gardionui.GardionEnableAdminActivity
 import org.strongswan.android.gardionui.GardionLoginActivity
 import org.strongswan.android.gardionui.GardionVpnActivity
-import org.strongswan.android.gardionui.PasswordCreatorActivity
+import org.strongswan.android.gardionui.GardionPasswordCreatorActivity
 import org.strongswan.android.security.GardionDeviceAdminReceiver
 
 class FlowController : AppCompatActivity() {
@@ -26,16 +28,45 @@ class FlowController : AppCompatActivity() {
     }
 
     private lateinit var dataStore: DataStore
+    private lateinit var manager: DevicePolicyManager
+    private val handler: Handler = Handler()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        manager = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
         val sharedPrefs = this.getSharedPreferences(SharedPreferencesDataStore.PREFERENCES_NAME, Context.MODE_PRIVATE)
         dataStore = SharedPreferencesDataStore(sharedPrefs)
-        startPasswordCreationScreen()
+        when {
+            !isDeviceAdminActive() -> showSecurityPopup()
+            !dataStore.isGlobalPasswordCreated()!! -> startPasswordCreationScreen()
+            !dataStore.isVpnProfileSaved()!! -> showGardionLoginScreen()
+            else -> startVpnService()
+        }
+
+    }
+
+    private fun isDeviceAdminActive(): Boolean {
+        return manager.isAdminActive(GardionDeviceAdminReceiver.getComponentName(this))
+    }
+
+    private fun showSecurityPopup() {
+        handler.postDelayed({
+            if (!isDeviceAdminActive()) {
+                showPopup()
+            } else {
+                handler.removeCallbacksAndMessages(null)
+            }
+        }, 2000)
+    }
+
+    private fun showPopup() {
+        val launchActivity = Intent(this, GardionEnableAdminActivity::class.java)
+        startActivity(launchActivity)
     }
 
     private fun startPasswordCreationScreen() {
-        startActivityForResult(PasswordCreatorActivity.getIntent(this), REQUEST_PASSWORD_CREATION)
+        startActivityForResult(GardionPasswordCreatorActivity.getIntent(this), REQUEST_PASSWORD_CREATION)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -69,8 +100,7 @@ class FlowController : AppCompatActivity() {
     }
 
     private fun handleDeviceAdminCreation() {
-        val manager: DevicePolicyManager = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
-        if (manager.isAdminActive(GardionDeviceAdminReceiver.getComponentName(this))){
+        if (isDeviceAdminActive()){
             showGardionLoginScreen()
         }
     }
@@ -85,25 +115,25 @@ class FlowController : AppCompatActivity() {
                 // Initialize KeyStore and generate key
 //                KeyStoreManager.generateKey()
 //                val masterKey = KeyStoreManager.getAndroidKeyStoreKeyPair()
-//                val password = data.getStringExtra(PasswordCreatorActivity.INTENT_EXTRA_PASSWORD)
+//                val password = data.getStringExtra(GardionPasswordCreatorActivity.INTENT_EXTRA_PASSWORD)
 //                //password encryption
 //                val encryptedPassword: String = KeyStoreManager.encryptData(password, masterKey?.public!!)
                 //save encrypted password to sharedPreferences
-                dataStore.saveEncryptedPass(data.getStringExtra(PasswordCreatorActivity.INTENT_EXTRA_PASSWORD))
-                dataStore.setGlobalPasswordSet(true)
+                dataStore.saveEncryptedPass(data.getStringExtra(GardionPasswordCreatorActivity.INTENT_EXTRA_PASSWORD))
+                dataStore.setGlobalPasswordCreated(true)
                 askForDeviceAdmin()
             } else {
-                dataStore.setGlobalPasswordSet(false)
+                dataStore.setGlobalPasswordCreated(false)
             }
         } else {
-            dataStore.setGlobalPasswordSet(false)
+            dataStore.setGlobalPasswordCreated(false)
         }
     }
 
     private fun askForDeviceAdmin() {
         val intent = Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN)
         intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, GardionDeviceAdminReceiver.getComponentName(this))
-        intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "We just want to test Gardion as Device Admin")
+        intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "Please enable Gardion as Device Admin")
         startActivityForResult(intent, REQUEST_CODE_ENABLE_ADMIN)
     }
 }

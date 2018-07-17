@@ -4,12 +4,14 @@ import android.app.admin.DeviceAdminReceiver
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import org.strongswan.android.gardionui.EnableAdminActivity
+import org.strongswan.android.data.datasource.DataStore
+import org.strongswan.android.data.datasource.SharedPreferencesDataStore
 import org.strongswan.android.gardionui.EnableProfileActivity
-import org.strongswan.android.logic.FlowController
 import org.strongswan.android.toast
 
 class GardionDeviceAdminReceiver: DeviceAdminReceiver() {
+
+    private lateinit var dataStore: DataStore
 
     companion object {
         fun getComponentName(context: Context): ComponentName{
@@ -25,15 +27,13 @@ class GardionDeviceAdminReceiver: DeviceAdminReceiver() {
 
     override fun onEnabled(context: Context?, intent: Intent?) {
         context?.toast("Device Admin Active")
-        val launchFlowController = Intent(context, FlowController::class.java)
-        context?.startActivity(launchFlowController)
     }
 
     override fun onDisabled(context: Context?, intent: Intent?) {
         context?.toast("Device Admin disabled")
-        val launchActivity = Intent(context, EnableAdminActivity::class.java)
-        launchActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        context?.startActivity(launchActivity)
+        val sharedPrefs = context?.getSharedPreferences(SharedPreferencesDataStore.PREFERENCES_NAME, Context.MODE_PRIVATE)
+        dataStore = SharedPreferencesDataStore(sharedPrefs!!)
+        dataStore.deviceAdminFirstSet(false)
     }
 
     override fun onPasswordChanged(context: Context?, intent: Intent?) {

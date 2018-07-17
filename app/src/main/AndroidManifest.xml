@@ -31,6 +31,7 @@
         <activity
             android:name=".logic.FlowController"
             android:label="@string/main_activity_name"
+            android:theme="@android:style/Theme.NoDisplay"
             android:screenOrientation="nosensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -127,6 +128,7 @@
                 <action android:name="android.net.VpnService" />
             </intent-filter>
         </service>
+        <service android:name=".security.CheckAdminService" />
 
         <provider
             android:name=".data.LogContentProvider"
@@ -172,11 +174,14 @@
         </receiver>
 
         <activity android:name=".gardionui.GardionMDMSetupActivity" />
-        <activity android:name=".gardionui.PasswordCreatorActivity" />
+        <activity android:name=".gardionui.GardionPasswordCreatorActivity" />
         <activity android:name=".gardionui.GardionLoginActivity" />
         <activity android:name=".gardionui.GardionVpnActivity" />
         <activity android:name=".gardionui.EnableProfileActivity" />
-        <activity android:name=".gardionui.EnableAdminActivity"></activity>
+        <activity
+            android:name=".gardionui.GardionEnableAdminActivity"
+            android:launchMode="singleInstance" />
+        <activity android:name=".gardionui.GardionAskForPasswordActivity" />
     </application>
 
 </manifest>

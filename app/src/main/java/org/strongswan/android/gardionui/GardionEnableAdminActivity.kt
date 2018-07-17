@@ -7,7 +7,7 @@ import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_enable_admin.*
 import org.strongswan.android.R
 
-class EnableAdminActivity : AppCompatActivity() {
+class GardionEnableAdminActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
