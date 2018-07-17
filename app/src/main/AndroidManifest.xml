@@ -31,7 +31,6 @@
         <activity
             android:name=".logic.FlowController"
             android:label="@string/main_activity_name"
-            android:theme="@android:style/Theme.NoDisplay"
             android:screenOrientation="nosensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

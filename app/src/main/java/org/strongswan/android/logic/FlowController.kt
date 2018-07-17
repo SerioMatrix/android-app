@@ -13,6 +13,7 @@ import org.strongswan.android.gardionui.GardionEnableAdminActivity
 import org.strongswan.android.gardionui.GardionLoginActivity
 import org.strongswan.android.gardionui.GardionVpnActivity
 import org.strongswan.android.gardionui.GardionPasswordCreatorActivity
+import org.strongswan.android.security.CheckAdminService
 import org.strongswan.android.security.GardionDeviceAdminReceiver
 
 class FlowController : AppCompatActivity() {
@@ -29,8 +30,6 @@ class FlowController : AppCompatActivity() {
 
     private lateinit var dataStore: DataStore
     private lateinit var manager: DevicePolicyManager
-    private val handler: Handler = Handler()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +37,7 @@ class FlowController : AppCompatActivity() {
         val sharedPrefs = this.getSharedPreferences(SharedPreferencesDataStore.PREFERENCES_NAME, Context.MODE_PRIVATE)
         dataStore = SharedPreferencesDataStore(sharedPrefs)
         when {
-            !isDeviceAdminActive() -> showSecurityPopup()
+//            !isDeviceAdminActive() -> startEnableAdminService()
             !dataStore.isGlobalPasswordCreated()!! -> startPasswordCreationScreen()
             !dataStore.isVpnProfileSaved()!! -> showGardionLoginScreen()
             else -> startVpnService()
@@ -46,23 +45,12 @@ class FlowController : AppCompatActivity() {
 
     }
 
+    private fun startEnableAdminService() {
+        startService(Intent(this, CheckAdminService::class.java))
+    }
+
     private fun isDeviceAdminActive(): Boolean {
         return manager.isAdminActive(GardionDeviceAdminReceiver.getComponentName(this))
-    }
-
-    private fun showSecurityPopup() {
-        handler.postDelayed({
-            if (!isDeviceAdminActive()) {
-                showPopup()
-            } else {
-                handler.removeCallbacksAndMessages(null)
-            }
-        }, 2000)
-    }
-
-    private fun showPopup() {
-        val launchActivity = Intent(this, GardionEnableAdminActivity::class.java)
-        startActivity(launchActivity)
     }
 
     private fun startPasswordCreationScreen() {

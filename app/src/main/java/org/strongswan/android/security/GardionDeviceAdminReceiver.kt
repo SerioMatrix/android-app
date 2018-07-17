@@ -27,6 +27,7 @@ class GardionDeviceAdminReceiver: DeviceAdminReceiver() {
 
     override fun onEnabled(context: Context?, intent: Intent?) {
         context?.toast("Device Admin Active")
+        context?.stopService(Intent(context.applicationContext, CheckAdminService::class.java))
     }
 
     override fun onDisabled(context: Context?, intent: Intent?) {
@@ -34,6 +35,7 @@ class GardionDeviceAdminReceiver: DeviceAdminReceiver() {
         val sharedPrefs = context?.getSharedPreferences(SharedPreferencesDataStore.PREFERENCES_NAME, Context.MODE_PRIVATE)
         dataStore = SharedPreferencesDataStore(sharedPrefs!!)
         dataStore.deviceAdminFirstSet(false)
+        context.startService(Intent(context.applicationContext, CheckAdminService::class.java))
     }
 
     override fun onPasswordChanged(context: Context?, intent: Intent?) {
