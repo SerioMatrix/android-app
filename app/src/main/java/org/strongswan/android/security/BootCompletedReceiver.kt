@@ -3,7 +3,6 @@ package org.strongswan.android.security
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import org.strongswan.android.data.datasource.DataStore
 import org.strongswan.android.data.datasource.SharedPreferencesDataStore
 import org.strongswan.android.gardionui.GardionVpnActivity
 

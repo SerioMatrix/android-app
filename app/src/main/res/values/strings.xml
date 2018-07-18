@@ -184,4 +184,12 @@
     <string name="disconnect_active_connection">This will disconnect the active VPN connection!</string>
     <string name="connect">Connect</string>
 
+    <!--GARDION-->
+    <string name="event_error_disable_admin_desc">Device Admin has been deactivated</string>
+    <string name="event_error_disable_admin_id">1</string>
+    <string name="event_error_vpn_removed_desc">Gardion VPN has been removed</string>
+    <string name="event_error_vpn_removed_id">2</string>
+    <string name="event_error_vpn_disconnected_desc">Gardion VPN has been disconnected</string>
+    <string name="event_error_vpn_disconnected_id">3</string>
+
 </resources>

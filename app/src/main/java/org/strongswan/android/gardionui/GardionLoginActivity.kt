@@ -18,14 +18,11 @@ import org.strongswan.android.data.datasource.SharedPreferencesDataStore
 import org.strongswan.android.network.GardionApi
 import org.strongswan.android.network.model.GardionData
 import org.strongswan.android.toast
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 
 class GardionLoginActivity : AppCompatActivity() {
 
     companion object {
-        private const val BASE_URL = "https://api.gardion.net/v1/configuration/"
         private var TAG = GardionLoginActivity::class.java.name
 
         fun getIntent(activity: Activity): Intent {
@@ -34,16 +31,8 @@ class GardionLoginActivity : AppCompatActivity() {
     }
 
     private lateinit var dataStore: DataStore
-    private val api: GardionApi
+    private val api: GardionApi = GardionApi.instance
     private var job: Job = Job()
-
-    init {
-        val retrofit = Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-        api = retrofit.create(GardionApi::class.java)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +55,7 @@ class GardionLoginActivity : AppCompatActivity() {
                     finishWithData(Activity.RESULT_OK)
                 })
             } catch (e: Exception) {
-                Log.w(TAG, "Failed to fetch data: "+ e.message)
+                Log.w(TAG, "Failed to fetch data: " + e.message)
                 withContext(UI, CoroutineStart.DEFAULT, {
                     toast("Failed to fetch vpn data")
                 })
@@ -96,6 +85,13 @@ class GardionLoginActivity : AppCompatActivity() {
         database.insertProfile(vpnProfile)
         database.close()
         dataStore.setVpnProfileSaved(true)
+        saveConfigurationDataToSharedPrefs(gardionData)
+    }
+
+    private fun saveConfigurationDataToSharedPrefs(data: GardionData) {
+        dataStore.saveConfigurationDesc(data.desc)
+        dataStore.saveConfigurationDeviceId(data.device.id)
+        dataStore.saveConfigurationDeviceName(data.device.name)
     }
 
     override fun onDestroy() {

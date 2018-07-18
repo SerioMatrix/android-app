@@ -671,7 +671,7 @@ public class CharonVpnService extends VpnService implements Runnable, VpnStateSe
 	public native void initiate(String config);
 
 	/**
-	 * Adapter for VpnService.Builder which is used to access it safely via JNI.
+	 * Adapter for VpnService.build which is used to access it safely via JNI.
 	 * There is a corresponding C object to access it from native code.
 	 */
 	public class BuilderAdapter

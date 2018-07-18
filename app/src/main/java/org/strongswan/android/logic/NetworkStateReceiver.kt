@@ -26,7 +26,7 @@ class NetworkStateReceiver: BroadcastReceiver() {
         if (networkInfo.isConnected && !isVpnConnected(connectivityManager)){
             val launchVpn = Intent(context, CharonVpnService::class.java)
             launchVpn.putExtras(profileInfo)
-            Log.d(TAG, "Service starts")
+            Log.d(TAG, "RetrofitService starts")
             context.applicationContext?.startService(launchVpn)
         }
     }

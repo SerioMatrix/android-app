@@ -5,13 +5,13 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_gardion_ask_for_password.*
 import org.strongswan.android.R
-import org.strongswan.android.data.datasource.DataStore
+import org.strongswan.android.data.datasource.FlowData
 import org.strongswan.android.data.datasource.SharedPreferencesDataStore
 import org.strongswan.android.toast
 
 class GardionAskForPasswordActivity : AppCompatActivity() {
 
-    private lateinit var dataStore: DataStore
+    private lateinit var flowData: FlowData
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,8 +21,8 @@ class GardionAskForPasswordActivity : AppCompatActivity() {
 
     private fun unlockGardion() {
         val sharedPrefs = this.getSharedPreferences(SharedPreferencesDataStore.PREFERENCES_NAME, Context.MODE_PRIVATE)
-        dataStore = SharedPreferencesDataStore(sharedPrefs)
-        val savedPassword = dataStore.getEncryptedPass()
+        flowData = SharedPreferencesDataStore(sharedPrefs)
+        val savedPassword = flowData.getEncryptedPass()
         when (savedPassword) {
             ask_password_type_pass_editText.text.toString() -> unlockTillLockScreen()
             else -> toast("Typed password is incorrect")
@@ -30,7 +30,7 @@ class GardionAskForPasswordActivity : AppCompatActivity() {
     }
 
     private fun unlockTillLockScreen() {
-        dataStore.setGardionUnlocked(true)
+        flowData.setGardionUnlocked(true)
         finish()
     }
 }

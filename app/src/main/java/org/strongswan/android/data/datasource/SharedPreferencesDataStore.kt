@@ -5,7 +5,8 @@ import org.strongswan.android.get
 import org.strongswan.android.set
 import org.strongswan.android.utils.StringUtils
 
-class SharedPreferencesDataStore constructor(private val preferences: SharedPreferences): DataStore {
+class SharedPreferencesDataStore constructor(private val preferences: SharedPreferences) : DataStore {
+
     companion object {
 
         const val PREFERENCES_NAME = "gardion_shared_prefs"
@@ -15,10 +16,17 @@ class SharedPreferencesDataStore constructor(private val preferences: SharedPref
         private const val VPN_PROFILE_SAVED = "vpn_profile_saved"
         private const val DEVICE_ADMIN_FIRST_SET = "device_admin_first_set"
         private const val GARDION_APP_UNLOCKED = "gardion_app_unlocked"
+        //Gardion configuration data
+        private const val CONFIGURATION_DESC = "configuration_desc"
+        private const val CONFIGURATION_DEVICE_ID = "configuration_device_id"
+        private const val CONFIGURATION_DEVICE_NAME = "configuration_device_name"
+
     }
+
     override fun saveEncryptedPass(password: String) {
         preferences.set(ENCRYPTED_PASSWORD, password)
     }
+
     override fun getEncryptedPass(): String {
         return preferences[ENCRYPTED_PASSWORD] ?: StringUtils.EMPTY
     }
@@ -26,6 +34,7 @@ class SharedPreferencesDataStore constructor(private val preferences: SharedPref
     override fun setGlobalPasswordCreated(passwordCreated: Boolean) {
         preferences.set(GLOBAL_PASS_SET, passwordCreated)
     }
+
     override fun isGlobalPasswordCreated(): Boolean? {
         return preferences[GLOBAL_PASS_SET, false]
     }
@@ -52,5 +61,29 @@ class SharedPreferencesDataStore constructor(private val preferences: SharedPref
 
     override fun isGardionUnlocked(): Boolean? {
         return preferences[GARDION_APP_UNLOCKED, false]
+    }
+
+    override fun saveConfigurationDesc(desc: String) {
+        preferences.set(CONFIGURATION_DESC, desc)
+    }
+
+    override fun getConfigurationDesc(): String? {
+        return preferences[CONFIGURATION_DESC]
+    }
+
+    override fun saveConfigurationDeviceId(deviceId: String) {
+        preferences.set(CONFIGURATION_DEVICE_ID, deviceId)
+    }
+
+    override fun getConfigurationDeviceId(): String? {
+        return preferences[CONFIGURATION_DEVICE_ID]
+    }
+
+    override fun saveConfigurationDeviceName(deviceName: String) {
+        preferences.set(CONFIGURATION_DEVICE_NAME, deviceName)
+    }
+
+    override fun getConfigurationDeviceName(): String? {
+        return preferences[CONFIGURATION_DEVICE_NAME]
     }
 }

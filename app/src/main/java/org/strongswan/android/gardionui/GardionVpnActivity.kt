@@ -8,21 +8,13 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
 import android.support.v7.app.AppCompatActivity
-import android.view.View
 import kotlinx.android.synthetic.main.activity_gardion_vpn.*
 import org.strongswan.android.R
-import org.strongswan.android.data.VpnProfile
-import org.strongswan.android.data.VpnProfileDataSource
-import org.strongswan.android.data.VpnType
-import org.strongswan.android.data.datasource.DataStore
-import org.strongswan.android.data.datasource.SharedPreferencesDataStore
 import org.strongswan.android.logic.CharonVpnService
 import org.strongswan.android.logic.VpnStateService
 import org.strongswan.android.logic.VpnStateService.State
 import org.strongswan.android.toast
 import org.strongswan.android.utils.GardionUtils
-import org.strongswan.android.utils.KeyStoreManager
-import java.util.*
 
 
 class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener {

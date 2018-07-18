@@ -64,7 +64,7 @@ public class VpnStateService extends Service
 
 	/**
 	 * Listener interface for bound clients that are interested in changes to
-	 * this Service.
+	 * this RetrofitService.
 	 */
 	public interface VpnStateListener
 	{
@@ -72,7 +72,7 @@ public class VpnStateService extends Service
 	}
 
 	/**
-	 * Simple Binder that allows to directly access this Service class itself
+	 * Simple Binder that allows to directly access this RetrofitService class itself
 	 * after binding to it.
 	 */
 	public class LocalBinder extends Binder
@@ -103,7 +103,7 @@ public class VpnStateService extends Service
 	}
 
 	/**
-	 * Register a listener with this Service. We assume this is called from
+	 * Register a listener with this RetrofitService. We assume this is called from
 	 * the main thread so no synchronization is happening.
 	 *
 	 * @param listener listener to register
@@ -114,7 +114,7 @@ public class VpnStateService extends Service
 	}
 
 	/**
-	 * Unregister a listener from this Service.
+	 * Unregister a listener from this RetrofitService.
 	 *
 	 * @param listener listener to unregister
 	 */
@@ -194,7 +194,7 @@ public class VpnStateService extends Service
 	public void disconnect()
 	{
 		/* as soon as the TUN device is created by calling establish() on the
-		 * VpnService.Builder object the system binds to the service and keeps
+		 * VpnService.build object the system binds to the service and keeps
 		 * bound until the file descriptor of the TUN device is closed.  thus
 		 * calling stopService() here would not stop (destroy) the service yet,
 		 * instead we call startService() with a specific action which shuts down
