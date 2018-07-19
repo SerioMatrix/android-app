@@ -38,7 +38,7 @@ class GardionMainActivity : AppCompatActivity() {
     }
 
     private fun createMDM() {
-        val startMDM = Intent(this, GardionMDMSetupActivity::class.java)
+        val startMDM = Intent(this, GardionEnableProfileActivity::class.java)
         startActivity(startMDM)
     }
 

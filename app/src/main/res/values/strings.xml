@@ -185,6 +185,8 @@
     <string name="connect">Connect</string>
 
     <!--GARDION-->
+    <string name="event_interval_check_desc">Gardion vpn connectivity interval check</string>
+    <string name="event_interval_check_id">0</string>
     <string name="event_error_disable_admin_desc">Device Admin has been deactivated</string>
     <string name="event_error_disable_admin_id">1</string>
     <string name="event_error_vpn_removed_desc">Gardion VPN has been removed</string>

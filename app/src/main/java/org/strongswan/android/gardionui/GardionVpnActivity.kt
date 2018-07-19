@@ -2,7 +2,10 @@ package org.strongswan.android.gardionui
 
 import android.app.Activity
 import android.app.Service
-import android.content.*
+import android.content.ActivityNotFoundException
+import android.content.ComponentName
+import android.content.Intent
+import android.content.ServiceConnection
 import android.net.VpnService
 import android.os.Bundle
 import android.os.Handler
@@ -40,6 +43,7 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
             mService = (service as VpnStateService.LocalBinder).service
             mService?.registerListener(this@GardionVpnActivity)
+            updateView()
         }
     }
 
@@ -114,8 +118,7 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
     }
 
     private fun startVPNprofile() {
-        val state: VpnStateService.State? = mService?.state
-        if (state != State.CONNECTED) {
+        if (!isVpnOn()) {
             val intent: Intent?
             try {
                 intent = VpnService.prepare(this)
@@ -143,6 +146,10 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
                 onActivityResult(PREPARE_VPN_SERVICE, Activity.RESULT_OK, null)
             }
         }
+    }
+
+    private fun isVpnOn(): Boolean {
+        return GardionUtils.isVpnConnected(this)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

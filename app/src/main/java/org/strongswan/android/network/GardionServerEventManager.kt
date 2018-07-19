@@ -23,7 +23,7 @@ class GardionServerEventManager(private val context: Context) {
     }
 
     enum class GardionEventType {
-        ADMIN_DEACTIVATION, VPN_DISCONNECTED, VPN_REMOVED, APPLICATION_PASS
+        ADMIN_DEACTIVATION, VPN_DISCONNECTED, VPN_REMOVED, APPLICATION_PASS, VPN_INTERVAL_CHECK
     }
 
     fun sendGardionEvent(type: GardionEventType) {
@@ -64,7 +64,8 @@ class GardionServerEventManager(private val context: Context) {
             GardionEventType.ADMIN_DEACTIVATION -> context.getString(R.string.event_error_disable_admin_id)
             GardionEventType.VPN_DISCONNECTED -> context.getString(R.string.event_error_vpn_disconnected_id)
             GardionEventType.VPN_REMOVED -> context.getString(R.string.event_error_vpn_removed_id)
-            else -> "Unknown type"
+            GardionEventType.APPLICATION_PASS -> context.getString(R.string.event_application_pass_id)
+            GardionEventType.VPN_INTERVAL_CHECK -> context.getString(R.string.event_interval_check_id)
         }
     }
 
@@ -73,7 +74,8 @@ class GardionServerEventManager(private val context: Context) {
             GardionEventType.ADMIN_DEACTIVATION -> context.getString(R.string.event_error_disable_admin_desc)
             GardionEventType.VPN_DISCONNECTED -> context.getString(R.string.event_error_vpn_disconnected_desc)
             GardionEventType.VPN_REMOVED -> context.getString(R.string.event_error_vpn_removed_desc)
-            else -> "Unknown type"
+            GardionEventType.APPLICATION_PASS -> context.getString(R.string.event_application_pass_desc)
+            GardionEventType.VPN_INTERVAL_CHECK -> context.getString(R.string.event_interval_check_desc)
         }
     }
 

@@ -1,18 +1,21 @@
 package org.strongswan.android.logic
 
 import android.app.Activity
+import android.app.ActivityManager
 import android.app.admin.DevicePolicyManager
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import org.strongswan.android.data.datasource.FlowData
 import org.strongswan.android.data.datasource.SharedPreferencesDataStore
+import org.strongswan.android.gardionui.GardionEnableProfileActivity
 import org.strongswan.android.gardionui.GardionLoginActivity
 import org.strongswan.android.gardionui.GardionVpnActivity
 import org.strongswan.android.gardionui.GardionPasswordCreatorActivity
 import org.strongswan.android.security.CheckAdminService
+import org.strongswan.android.security.GardionConnectionService
 import org.strongswan.android.security.GardionDeviceAdminReceiver
 
 class FlowController : AppCompatActivity() {
@@ -27,6 +30,8 @@ class FlowController : AppCompatActivity() {
         private const val REQUEST_VPN_START: Int = 104
     }
 
+    private val TAG = FlowController::class.java.simpleName
+
     private lateinit var flowData: FlowData
     private lateinit var manager: DevicePolicyManager
 
@@ -35,8 +40,15 @@ class FlowController : AppCompatActivity() {
         manager = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
         val sharedPrefs = this.getSharedPreferences(SharedPreferencesDataStore.PREFERENCES_NAME, Context.MODE_PRIVATE)
         flowData = SharedPreferencesDataStore(sharedPrefs)
+        if (!isMyServiceRunning(GardionConnectionService::class.java)) {
+            try {
+                startGardionConnectionService()
+            } catch (e: Exception) {
+                Log.w(TAG, "Unable to start service")
+            }
+        }
         when {
-//            !isDeviceAdminActive() -> startEnableAdminService()
+            !flowData.isDeviceAdminFirstSet()!! && !isDeviceAdminActive() -> startEnableAdminService()
             !flowData.isGlobalPasswordCreated()!! -> startPasswordCreationScreen()
             !flowData.isVpnProfileSaved()!! -> showGardionLoginScreen()
             else -> startVpnService()
@@ -47,6 +59,10 @@ class FlowController : AppCompatActivity() {
         startService(Intent(this, CheckAdminService::class.java))
     }
 
+    private fun startGardionConnectionService() {
+        startService(Intent(this, GardionConnectionService::class.java))
+    }
+
     private fun isDeviceAdminActive(): Boolean {
         return manager.isAdminActive(GardionDeviceAdminReceiver.getComponentName(this))
     }
@@ -55,28 +71,40 @@ class FlowController : AppCompatActivity() {
         startActivityForResult(GardionPasswordCreatorActivity.getIntent(this), REQUEST_PASSWORD_CREATION)
     }
 
+    private fun isMyServiceRunning(serviceClass: Class<*>): Boolean {
+        val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        for (service in manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.name == service.service.className) {
+                return true
+            }
+        }
+        return false
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
             REQUEST_PASSWORD_CREATION -> handlePasswordCreation(data, resultCode)
             REQUEST_CODE_ENABLE_ADMIN -> handleDeviceAdminCreation()
             REQUEST_PROFILE_OWNER -> handleProfileOwnerCreation(data, resultCode)
             REQUEST_GARDION_LOGIN -> handleGardionLogin(resultCode)
-            REQUEST_VPN_START -> handleVpnStart(resultCode)
+            REQUEST_VPN_START -> handleVpnStart()
         }
     }
 
-    private fun handleVpnStart(resultCode: Int) {
+    private fun handleVpnStart() {
         finish()
     }
 
     private fun handleGardionLogin(resultCode: Int) {
         if (resultCode == Activity.RESULT_OK) {
             startVpnService()
+            startGardionConnectionService()
+        } else {
+            finish()
         }
     }
 
     private fun startVpnService() {
-
         startActivityForResult(GardionVpnActivity.getIntent(this), REQUEST_VPN_START)
     }
 
@@ -87,7 +115,13 @@ class FlowController : AppCompatActivity() {
     private fun handleDeviceAdminCreation() {
         if (isDeviceAdminActive()) {
             showGardionLoginScreen()
+        } else {
+            finish()
         }
+    }
+
+    private fun askForProfileOwner() {
+        startActivityForResult(GardionEnableProfileActivity.getIntent(this), REQUEST_PROFILE_OWNER)
     }
 
     private fun showGardionLoginScreen() {
@@ -112,6 +146,7 @@ class FlowController : AppCompatActivity() {
             }
         } else {
             flowData.setGlobalPasswordCreated(false)
+            finish()
         }
     }
 
