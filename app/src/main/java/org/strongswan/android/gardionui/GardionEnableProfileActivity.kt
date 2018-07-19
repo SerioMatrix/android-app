@@ -14,10 +14,14 @@ import org.strongswan.android.R
 import org.strongswan.android.security.GardionDeviceAdminReceiver
 import org.strongswan.android.toast
 
-class GardionMDMSetupActivity : AppCompatActivity() {
+class GardionEnableProfileActivity : AppCompatActivity() {
 
-    private val REQUEST_PROVISION_MANGED_PROFILE: Int = 1
-    private val REQUEST_CODE_ENABLE_ADMIN: Int = 101
+    companion object {
+        private const val REQUEST_PROVISION_MANGED_PROFILE: Int = 1
+        fun getIntent(activity: Activity): Intent {
+            return Intent(activity, GardionEnableProfileActivity::class.java)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,14 +33,6 @@ class GardionMDMSetupActivity : AppCompatActivity() {
             setup_device_admin_button.visibility = View.VISIBLE
         }
         setup_device_admin_button.setOnClickListener { setupProfile() }
-    }
-
-    private fun setupAdmin() {
-        val intent = Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN)
-        val componentName = ComponentName(this, GardionDeviceAdminReceiver::class.java)
-        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, componentName)
-        intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "We just want to test Gardion as Device Admin")
-        startActivityForResult(intent, REQUEST_CODE_ENABLE_ADMIN)
     }
 
     private fun setupProfile() {

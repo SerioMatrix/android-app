@@ -48,6 +48,7 @@ import org.strongswan.android.logic.VpnStateService.ErrorState;
 import org.strongswan.android.logic.VpnStateService.State;
 import org.strongswan.android.logic.imc.ImcState;
 import org.strongswan.android.logic.imc.RemediationInstruction;
+import org.strongswan.android.network.GardionServerEventManager;
 import org.strongswan.android.ui.MainActivity;
 import org.strongswan.android.utils.IPRange;
 import org.strongswan.android.utils.IPRangeSet;
@@ -398,10 +399,19 @@ public class CharonVpnService extends VpnService implements Runnable, VpnStateSe
 
 	@Override
 	public void stateChanged() {
-		if (mShowNotification)
-		{
+		if (mService.getState() != State.CONNECTED){
+			informGardionAboutServiceState(mService.getState());
+		}
+		if (mShowNotification) {
 			NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 			manager.notify(VPN_STATE_NOTIFICATION_ID, buildNotification(false));
+		}
+	}
+
+	private void informGardionAboutServiceState(State state) {
+		if (state == State.DISABLED || state == State.DISCONNECTING) {
+			GardionServerEventManager eventManager = new GardionServerEventManager(this);
+			eventManager.sendGardionEvent(GardionServerEventManager.GardionEventType.VPN_DISCONNECTED);
 		}
 	}
 
@@ -671,7 +681,7 @@ public class CharonVpnService extends VpnService implements Runnable, VpnStateSe
 	public native void initiate(String config);
 
 	/**
-	 * Adapter for VpnService.Builder which is used to access it safely via JNI.
+	 * Adapter for VpnService.build which is used to access it safely via JNI.
 	 * There is a corresponding C object to access it from native code.
 	 */
 	public class BuilderAdapter

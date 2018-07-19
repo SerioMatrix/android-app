@@ -1,15 +1,18 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         applicationId "org.strongswan.android"
         minSdkVersion 21
         targetSdkVersion 24
-        versionCode 50
-        versionName "1.9.6"
+        versionCode 1
+        versionName "1.0.0"
+        vectorDrawables.useSupportLibrary = true
     }
 
     sourceSets.main {
@@ -36,13 +39,27 @@ android {
     }
 }
 
-dependencies {
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support:design:24.2.1'
-    compile 'com.android.support.constraint:constraint-layout:1.1.2'
-    testCompile 'junit:junit:4.12'
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
 }
 
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+dependencies {
+    implementation 'com.android.support:appcompat-v7:24.2.1'
+    implementation 'com.android.support:design:24.2.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    testImplementation 'junit:junit:4.12'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    //Kotlin coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.21'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:0.21'
+
+    //Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    //Rx kotlin
+    implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+}
