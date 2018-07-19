@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.admin.DevicePolicyManager
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import org.strongswan.android.data.datasource.FlowData
@@ -40,7 +41,6 @@ class FlowController : AppCompatActivity() {
             !flowData.isVpnProfileSaved()!! -> showGardionLoginScreen()
             else -> startVpnService()
         }
-
     }
 
     private fun startEnableAdminService() {
@@ -66,9 +66,7 @@ class FlowController : AppCompatActivity() {
     }
 
     private fun handleVpnStart(resultCode: Int) {
-        if (resultCode == Activity.RESULT_OK){
-            finish()
-        }
+        finish()
     }
 
     private fun handleGardionLogin(resultCode: Int) {
@@ -78,6 +76,7 @@ class FlowController : AppCompatActivity() {
     }
 
     private fun startVpnService() {
+
         startActivityForResult(GardionVpnActivity.getIntent(this), REQUEST_VPN_START)
     }
 
@@ -86,7 +85,7 @@ class FlowController : AppCompatActivity() {
     }
 
     private fun handleDeviceAdminCreation() {
-        if (isDeviceAdminActive()){
+        if (isDeviceAdminActive()) {
             showGardionLoginScreen()
         }
     }

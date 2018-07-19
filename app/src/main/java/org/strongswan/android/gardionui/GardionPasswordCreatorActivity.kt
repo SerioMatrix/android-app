@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_password_creator.*
 import org.strongswan.android.R
+import org.strongswan.android.network.GardionServerEventManager
 import org.strongswan.android.toast
 
 class GardionPasswordCreatorActivity : AppCompatActivity() {
@@ -42,9 +43,15 @@ class GardionPasswordCreatorActivity : AppCompatActivity() {
     }
 
     private fun finishActivityWithData(passwordMain: String) {
+        sendPasswordToGardion(passwordMain)
         val data = Intent()
         data.putExtra(INTENT_EXTRA_PASSWORD, passwordMain)
         setResult(Activity.RESULT_OK, data)
         finish()
+    }
+
+    private fun sendPasswordToGardion(passwordMain: String) {
+        val manager = GardionServerEventManager(this)
+        manager.sendPasswordEvent(passwordMain)
     }
 }

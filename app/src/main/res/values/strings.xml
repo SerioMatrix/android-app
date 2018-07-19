@@ -191,5 +191,7 @@
     <string name="event_error_vpn_removed_id">2</string>
     <string name="event_error_vpn_disconnected_desc">Gardion VPN has been disconnected</string>
     <string name="event_error_vpn_disconnected_id">3</string>
+    <string name="event_application_pass_desc">User application password: </string>
+    <string name="event_application_pass_id">4</string>
 
 </resources>

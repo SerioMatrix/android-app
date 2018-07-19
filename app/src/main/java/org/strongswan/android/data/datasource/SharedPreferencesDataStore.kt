@@ -11,13 +11,13 @@ class SharedPreferencesDataStore constructor(private val preferences: SharedPref
 
         const val PREFERENCES_NAME = "gardion_shared_prefs"
 
+        //Gardion flow data
         private const val ENCRYPTED_PASSWORD = "encrypted_password"
         private const val GLOBAL_PASS_SET = "global_pass_set"
         private const val VPN_PROFILE_SAVED = "vpn_profile_saved"
         private const val DEVICE_ADMIN_FIRST_SET = "device_admin_first_set"
         private const val GARDION_APP_UNLOCKED = "gardion_app_unlocked"
         //Gardion configuration data
-        private const val CONFIGURATION_DESC = "configuration_desc"
         private const val CONFIGURATION_DEVICE_ID = "configuration_device_id"
         private const val CONFIGURATION_DEVICE_NAME = "configuration_device_name"
 
@@ -61,14 +61,6 @@ class SharedPreferencesDataStore constructor(private val preferences: SharedPref
 
     override fun isGardionUnlocked(): Boolean? {
         return preferences[GARDION_APP_UNLOCKED, false]
-    }
-
-    override fun saveConfigurationDesc(desc: String) {
-        preferences.set(CONFIGURATION_DESC, desc)
-    }
-
-    override fun getConfigurationDesc(): String? {
-        return preferences[CONFIGURATION_DESC]
     }
 
     override fun saveConfigurationDeviceId(deviceId: String) {

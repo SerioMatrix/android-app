@@ -2,7 +2,10 @@ package org.strongswan.android
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
 import android.widget.Toast
+import org.strongswan.android.data.datasource.DataStore
+import org.strongswan.android.data.datasource.SharedPreferencesDataStore
 import org.strongswan.android.network.model.GardionEvent
 
 fun Context.toast(message: CharSequence) =
@@ -34,10 +37,4 @@ inline operator fun <reified T: Any> SharedPreferences.get(key: String, defaultV
         Long::class -> getLong(key, defaultValue as? Long ?: -1) as T?
         else -> throw UnsupportedOperationException("Unsupported type")
     }
-}
-
-fun GardionEvent.build(desc: String, errorId: String, deviceId: String, deviceName: String): GardionEvent {
-    val device = GardionEvent.Event.Device(deviceId, deviceName)
-    val event = GardionEvent.Event(desc, errorId, device)
-    return GardionEvent(event)
 }

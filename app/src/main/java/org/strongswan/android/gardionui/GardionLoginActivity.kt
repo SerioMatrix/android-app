@@ -89,7 +89,6 @@ class GardionLoginActivity : AppCompatActivity() {
     }
 
     private fun saveConfigurationDataToSharedPrefs(data: GardionData) {
-        dataStore.saveConfigurationDesc(data.desc)
         dataStore.saveConfigurationDeviceId(data.device.id)
         dataStore.saveConfigurationDeviceName(data.device.name)
     }

@@ -20,8 +20,6 @@ import org.strongswan.android.utils.GardionUtils
 class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener {
 
     companion object {
-        const val PROFILE_REQUIRES_PASSWORD = "org.strongswan.android.MainActivity.REQUIRES_PASSWORD"
-        const val PROFILE_NAME = "org.strongswan.android.MainActivity.PROFILE_NAME"
         const val KEY_IS_FROM_BOOT_RECEIVER = "key_is_from_boot_receiver"
         const val KEY_IS_FROM_USER_PRESENT_RECEIVER = "key_is_from_user_present"
 
@@ -116,31 +114,34 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
     }
 
     private fun startVPNprofile() {
-        val intent: Intent?
-        try {
-            intent = VpnService.prepare(this)
-        } catch (ex: IllegalStateException) {
-            this.toast(getString(R.string.vpn_not_supported_during_lockdown))
-            return
-        } catch (ex: NullPointerException) {
-            /* not sure when this happens exactly, but apparently it does */
-            this.toast(getString(R.string.vpn_not_supported))
-            return
-        }
-        /* store profile info until the user grants us permission */
-        if (intent != null) {
+        val state: VpnStateService.State? = mService?.state
+        if (state != State.CONNECTED) {
+            val intent: Intent?
             try {
-                startActivityForResult(intent, PREPARE_VPN_SERVICE)
-            } catch (ex: ActivityNotFoundException) {
-                /* it seems some devices, even though they come with Android 4,
-				 * don't have the VPN components built into the system image.
-				 * com.android.vpndialogs/com.android.vpndialogs.ConfirmDialog
-				 * will not be found then */
+                intent = VpnService.prepare(this)
+            } catch (ex: IllegalStateException) {
+                this.toast(getString(R.string.vpn_not_supported_during_lockdown))
+                return
+            } catch (ex: NullPointerException) {
+                /* not sure when this happens exactly, but apparently it does */
                 this.toast(getString(R.string.vpn_not_supported))
+                return
             }
+            /* store profile info until the user grants us permission */
+            if (intent != null) {
+                try {
+                    startActivityForResult(intent, PREPARE_VPN_SERVICE)
+                } catch (ex: ActivityNotFoundException) {
+                    /* it seems some devices, even though they come with Android 4,
+                     * don't have the VPN components built into the system image.
+                     * com.android.vpndialogs/com.android.vpndialogs.ConfirmDialog
+                     * will not be found then */
+                    this.toast(getString(R.string.vpn_not_supported))
+                }
 
-        } else {    /* user already granted permission to use VpnService */
-            onActivityResult(PREPARE_VPN_SERVICE, Activity.RESULT_OK, null)
+            } else {    /* user already granted permission to use VpnService */
+                onActivityResult(PREPARE_VPN_SERVICE, Activity.RESULT_OK, null)
+            }
         }
     }
 
