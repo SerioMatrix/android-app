@@ -58,6 +58,7 @@ class CheckAdminService : Service() {
             stopSelf()
         } else {
             val launchActivity = Intent(this, GardionEnableAdminActivity::class.java)
+            launchActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(launchActivity)
         }
     }
