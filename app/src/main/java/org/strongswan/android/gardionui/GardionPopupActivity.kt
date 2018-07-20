@@ -33,8 +33,8 @@ class GardionPopupActivity : AppCompatActivity() {
         secured_content_group.visibility = GONE
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onStop() {
+        super.onStop()
         popup_ask_password_editText.text.clear()
     }
 
