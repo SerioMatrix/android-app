@@ -27,6 +27,12 @@ class GardionPopupActivity : AppCompatActivity() {
         unlock_view_group.visibility = VISIBLE
     }
 
+    override fun onStart() {
+        super.onStart()
+        unlock_view_group.visibility = VISIBLE
+        secured_content_group.visibility = GONE
+    }
+
     private fun unlockGardion() {
         val sharedPrefs = this.getSharedPreferences(SharedPreferencesDataStore.PREFERENCES_NAME, Context.MODE_PRIVATE)
         flowData = SharedPreferencesDataStore(sharedPrefs)
