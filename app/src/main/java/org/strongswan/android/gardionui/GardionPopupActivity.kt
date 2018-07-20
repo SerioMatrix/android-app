@@ -33,6 +33,11 @@ class GardionPopupActivity : AppCompatActivity() {
         secured_content_group.visibility = GONE
     }
 
+    override fun onPause() {
+        super.onPause()
+        popup_ask_password_editText.text.clear()
+    }
+
     private fun unlockGardion() {
         val sharedPrefs = this.getSharedPreferences(SharedPreferencesDataStore.PREFERENCES_NAME, Context.MODE_PRIVATE)
         flowData = SharedPreferencesDataStore(sharedPrefs)
