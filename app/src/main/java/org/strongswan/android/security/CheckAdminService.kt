@@ -5,21 +5,14 @@ import android.app.admin.DevicePolicyManager
 import android.content.Context
 import android.content.Intent
 import android.os.Binder
-import android.os.Build
 import android.os.IBinder
-import android.util.Log
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.Job
-import kotlinx.coroutines.experimental.launch
-import org.strongswan.android.R
+import io.reactivex.disposables.Disposable
 import org.strongswan.android.data.datasource.DataStore
 import org.strongswan.android.data.datasource.SharedPreferencesDataStore
-import org.strongswan.android.gardionui.GardionEnableAdminActivity
-import org.strongswan.android.network.GardionApi
+import org.strongswan.android.gardionui.GardionPopupActivity
 import org.strongswan.android.network.GardionServerEventManager
-import org.strongswan.android.network.model.GardionEvent
 import java.util.concurrent.TimeUnit
 
 class CheckAdminService : Service() {
@@ -28,6 +21,7 @@ class CheckAdminService : Service() {
 
     private lateinit var manager: DevicePolicyManager
     private lateinit var dataStore: DataStore
+    private lateinit var disposable: Disposable
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         manager = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
@@ -36,7 +30,7 @@ class CheckAdminService : Service() {
         dataStore = SharedPreferencesDataStore(sharedPrefs)
         informServerAboutDeactivation()
 
-        Observable.interval(3000L, TimeUnit.MILLISECONDS)
+        disposable = Observable.interval(3000L, TimeUnit.MILLISECONDS)
                 .timeInterval()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { showEnableAdminScreen() }
@@ -57,7 +51,7 @@ class CheckAdminService : Service() {
         if (isDeviceAdminActive()) {
             stopSelf()
         } else {
-            val launchActivity = Intent(this, GardionEnableAdminActivity::class.java)
+            val launchActivity = Intent(this, GardionPopupActivity::class.java)
             launchActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(launchActivity)
         }
@@ -65,6 +59,11 @@ class CheckAdminService : Service() {
 
     override fun onBind(bindIntent: Intent?): IBinder {
         return binder
+    }
+
+    override fun onDestroy() {
+        disposable.dispose()
+        super.onDestroy()
     }
 
     class EnableAdminLocalBinder : Binder() {
