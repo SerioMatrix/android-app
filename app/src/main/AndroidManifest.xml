@@ -173,7 +173,6 @@
         <activity
             android:name=".gardionui.GardionPopupActivity"
             android:launchMode="singleInstance" />
-        <activity android:name=".gardionui.GardionAskForPasswordActivity" />
 
         <!--Gardion services-->
         <service android:name=".security.CheckAdminService" />

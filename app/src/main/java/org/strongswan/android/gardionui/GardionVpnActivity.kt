@@ -2,17 +2,18 @@ package org.strongswan.android.gardionui
 
 import android.app.Activity
 import android.app.Service
-import android.content.ActivityNotFoundException
-import android.content.ComponentName
-import android.content.Intent
-import android.content.ServiceConnection
+import android.content.*
 import android.net.VpnService
 import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.widget.EditText
 import kotlinx.android.synthetic.main.activity_gardion_vpn.*
 import org.strongswan.android.R
+import org.strongswan.android.data.datasource.FlowData
+import org.strongswan.android.data.datasource.SharedPreferencesDataStore
 import org.strongswan.android.logic.CharonVpnService
 import org.strongswan.android.logic.VpnStateService
 import org.strongswan.android.logic.VpnStateService.State
@@ -20,7 +21,7 @@ import org.strongswan.android.toast
 import org.strongswan.android.utils.GardionUtils
 
 
-class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener {
+class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener, GardionPasswordDialog.GardionPasswordDialogListener {
 
     companion object {
         const val KEY_IS_FROM_BOOT_RECEIVER = "key_is_from_boot_receiver"
@@ -31,6 +32,7 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
         }
     }
 
+    private lateinit var flowData: FlowData
     private var handlerCounter = 1
     private val handler: Handler = Handler()
     private val PREPARE_VPN_SERVICE = 0
@@ -60,8 +62,43 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
                 startVPNprofile()
             }
         }
-        vpn_status_dismiss_button.setOnClickListener { dismissActivity() }
+        initButtons()
         startVPNprofile()
+    }
+
+    private fun initButtons() {
+        vpn_status_dismiss_button.setOnClickListener { dismissActivity() }
+        vpn_status_reconnect.setOnClickListener { reconnectVpn() }
+        vpn_status_disconnect_button.setOnClickListener { tryDisconnectGardionVpn() }
+    }
+
+    private fun tryDisconnectGardionVpn() {
+        showDialogWithPasswordInput()
+    }
+
+    private fun showDialogWithPasswordInput() {
+        val gardionDialog = GardionPasswordDialog()
+        gardionDialog.show(supportFragmentManager, "fragment_gardion_dialog")
+    }
+
+    override fun onFisnishEditDialog(inputText: String) {
+        val sharedPrefs = this.getSharedPreferences(SharedPreferencesDataStore.PREFERENCES_NAME, Context.MODE_PRIVATE)
+        flowData = SharedPreferencesDataStore(sharedPrefs)
+        val savedPassword = flowData.getEncryptedPass()
+        if (inputText == savedPassword){
+            mService?.disconnect()
+        } else {
+            toast("Wrong password")
+        }
+    }
+
+    private fun reconnectVpn() {
+        val state: VpnStateService.State? = mService?.state
+        when (state) {
+            State.CONNECTED -> toast("Already connected")
+            State.CONNECTING -> toast("Vpn is trying to connect")
+            State.DISCONNECTING, State.DISABLED -> startVPNprofile()
+        }
     }
 
     private fun dismissActivity() {
@@ -104,10 +141,6 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
             }
             State.DISABLED -> {
                 vpn_status_info.text = "disabled"
-                vpn_status_image.setImageResource(R.drawable.ic_conn_fail)
-            }
-            else -> {
-                vpn_status_info.text = "Unknown state"
                 vpn_status_image.setImageResource(R.drawable.ic_conn_fail)
             }
         }
