@@ -399,9 +399,11 @@ public class CharonVpnService extends VpnService implements Runnable, VpnStateSe
 
 	@Override
 	public void stateChanged() {
-		if (mService.getState() != State.CONNECTED){
-			informGardionAboutServiceState(mService.getState());
-		}
+		//if (mService.getState() != State.CONNECTED){
+		//	informGardionAboutServiceState(mService.getState());
+		//}
+		informGardionAboutServiceState(mService.getState());
+
 		if (mShowNotification) {
 			NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 			manager.notify(VPN_STATE_NOTIFICATION_ID, buildNotification(false));
@@ -412,6 +414,10 @@ public class CharonVpnService extends VpnService implements Runnable, VpnStateSe
 		if (state == State.DISABLED || state == State.DISCONNECTING) {
 			GardionServerEventManager eventManager = new GardionServerEventManager(this);
 			eventManager.sendGardionEvent(GardionServerEventManager.GardionEventType.VPN_DISCONNECTED);
+		}
+		if (state == State.CONNECTED) {
+			GardionServerEventManager eventManager = new GardionServerEventManager(this);
+			eventManager.sendGardionEvent(GardionServerEventManager.GardionEventType.VPN_CONNECTED);
 		}
 	}
 
