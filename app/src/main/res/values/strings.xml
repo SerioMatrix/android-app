@@ -196,5 +196,7 @@
     <string name="event_application_pass_desc">User application password: </string>
     <string name="event_application_pass_id">4</string>
     <string name="gardion_popup_info">We detect that the `Gardion` is no longer an device admin. Please enable it in the settings     If you would like to uninstall Gardion, please type your master PIN and click unlock.</string>
+    <string name="event_vpn_connected_id">5</string>
+    <string name="event_vpn_connected_desc">Gardion VPN has been connected</string>
 
 </resources>
