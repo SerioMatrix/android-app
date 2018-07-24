@@ -95,10 +95,17 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
     private fun reconnectVpn() {
         val state: VpnStateService.State? = mService?.state
         when (state) {
-            State.CONNECTED -> toast("Already connected")
+            State.CONNECTED -> forceReconnectVpn()
             State.CONNECTING -> toast("Vpn is trying to connect")
             State.DISCONNECTING, State.DISABLED -> startVPNprofile()
         }
+    }
+
+    private fun forceReconnectVpn() {
+        toast("Forcing reconnect")
+        mService?.disconnect()
+        val intent = Intent(this, CharonVpnService::class.java)
+        this.startService(intent)
     }
 
     private fun dismissActivity() {
