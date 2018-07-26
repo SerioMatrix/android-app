@@ -18,7 +18,7 @@
 
     <!-- Application -->
     <string name="app_name">Gardion</string>
-    <string name="main_activity_name">strongSwan</string>
+    <string name="main_activity_name">Gardion</string>
     <string name="show_log">View log</string>
     <string name="search">Search</string>
     <string name="vpn_not_supported_title">VPN not supported</string>
@@ -26,13 +26,13 @@
     <string name="vpn_not_supported_during_lockdown">VPN connections are not supported in lockdown mode.</string>
     <string name="loading">Loading&#8230;</string>
     <string name="profile_not_found">Profile not found</string>
-    <string name="strongswan_shortcut">strongSwan shortcut</string>
+    <string name="gardion_shortcut">Gardion shortcut</string>
 
     <!-- Log view -->
     <string name="log_title">Log</string>
     <string name="send_log">Send log file</string>
     <string name="empty_log">Log file is empty</string>
-    <string name="log_mail_subject">strongSwan %1$s Log File</string>
+    <string name="log_mail_subject">Gardion %1$s Log File</string>
 
     <!-- VPN profile list -->
     <string name="no_profiles">No VPN profiles.</string>

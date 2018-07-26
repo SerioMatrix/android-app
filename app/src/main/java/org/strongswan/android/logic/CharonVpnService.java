@@ -39,17 +39,18 @@ import android.support.v4.content.ContextCompat;
 import android.system.OsConstants;
 import android.util.Log;
 
-import org.strongswan.android.R;
-import org.strongswan.android.data.VpnProfile;
-import org.strongswan.android.data.VpnProfile.SelectedAppsHandling;
-import org.strongswan.android.data.VpnProfileDataSource;
-import org.strongswan.android.data.VpnType.VpnTypeFeature;
+import com.gardion.android.family.client.R;
+import com.gardion.android.family.client.data.VpnProfile;
+import com.gardion.android.family.client.data.VpnProfile.SelectedAppsHandling;
+import com.gardion.android.family.client.data.VpnProfileDataSource;
+import com.gardion.android.family.client.data.VpnType.VpnTypeFeature;
+
 import org.strongswan.android.logic.VpnStateService.ErrorState;
 import org.strongswan.android.logic.VpnStateService.State;
 import org.strongswan.android.logic.imc.ImcState;
 import org.strongswan.android.logic.imc.RemediationInstruction;
-import org.strongswan.android.network.GardionServerEventManager;
-import org.strongswan.android.ui.MainActivity;
+import com.gardion.android.family.client.network.GardionServerEventManager;
+import com.gardion.android.family.client.ui.MainActivity;
 import org.strongswan.android.utils.IPRange;
 import org.strongswan.android.utils.IPRangeSet;
 import org.strongswan.android.utils.SettingsWriter;
@@ -343,7 +344,7 @@ public class CharonVpnService extends VpnService implements Runnable, VpnStateSe
 			name = profile.getName();
 		}
 		android.support.v4.app.NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-				.setSmallIcon(R.drawable.ic_notification)
+				.setSmallIcon(R.drawable.ic_stat_notification)
 				.setCategory(NotificationCompat.CATEGORY_SERVICE)
 				.setVisibility(publicVersion ? NotificationCompat.VISIBILITY_PUBLIC
 											 : NotificationCompat.VISIBILITY_PRIVATE);

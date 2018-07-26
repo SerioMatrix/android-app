@@ -22,7 +22,7 @@ import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 
-import org.strongswan.android.data.VpnProfile;
+import com.gardion.android.family.client.data.VpnProfile;
 import org.strongswan.android.logic.imc.ImcState;
 import org.strongswan.android.logic.imc.RemediationInstruction;
 

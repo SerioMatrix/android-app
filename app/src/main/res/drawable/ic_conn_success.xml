@@ -6,5 +6,5 @@
     android:height="24dp">
     <path
         android:pathData="M12 2C6.48 2 2 6.48 2 12 2 17.52 6.48 22 12 22 17.52 22 22 17.52 22 12 22 6.48 17.52 2 12 2ZM10 17L5 12 6.41 10.59 10 14.17 17.59 6.58 19 8 10 17Z"
-        android:fillColor="#99d13e" />
+        android:fillColor="@color/gardion_primary" />
 </vector>

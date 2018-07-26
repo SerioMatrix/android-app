@@ -45,4 +45,17 @@
     <color
         name="pressed">#5a5a5a</color>
 
+    <color
+        name="gardion_primary">#008B95</color>
+
+    <color
+        name="gardion_primary_80">#CC008B95</color>
+    <color
+        name="gardion_primary_60">#99008B95</color>
+    <color
+        name="gardion_accent">#F26101</color>
+
+    <color
+        name="gardion_primary_dark">#005f6a</color>
+
 </resources>
