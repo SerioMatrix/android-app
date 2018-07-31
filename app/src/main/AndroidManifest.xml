@@ -31,7 +31,7 @@
         <activity
             android:name="com.gardion.android.family.client.logic.FlowController"
             android:label="@string/main_activity_name"
-            android:screenOrientation="nosensor">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -153,11 +153,16 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name="com.gardion.android.family.client.gardionui.GardionEnableProfileActivity" />
-        <activity android:name="com.gardion.android.family.client.gardionui.GardionPasswordCreatorActivity" />
-        <activity android:name="com.gardion.android.family.client.gardionui.GardionLoginActivity" />
-        <activity android:name="com.gardion.android.family.client.gardionui.GardionVpnActivity" />
-        <activity android:name="com.gardion.android.family.client.gardionui.EnableProfileActivity" />
+        <activity android:name="com.gardion.android.family.client.gardionui.GardionEnableProfileActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.gardion.android.family.client.gardionui.GardionPasswordCreatorActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.gardion.android.family.client.gardionui.GardionLoginActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.gardion.android.family.client.gardionui.GardionVpnActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.gardion.android.family.client.gardionui.EnableProfileActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.gardion.android.family.client.gardionui.GardionPopupActivity"
             android:launchMode="singleInstance" />
