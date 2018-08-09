@@ -23,13 +23,13 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
-        android:name="com.gardion.android.family.client.logic.StrongSwanApplication"
+        android:name=".logic.StrongSwanApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/GardionTheme">
         <activity
-            android:name="com.gardion.android.family.client.logic.FlowController"
+            android:name=".logic.FlowController"
             android:label="@string/main_activity_name"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -44,21 +44,21 @@
             <!-- <category android:name="android.intent.category.DEFAULT" /> -->
             <!-- </intent-filter> -->
         </activity>
-        <activity android:name="com.gardion.android.family.client.ui.VpnProfileDetailActivity" />
+        <activity android:name=".ui.VpnProfileDetailActivity" />
         <activity
-            android:name="com.gardion.android.family.client.ui.TrustedCertificatesActivity"
+            android:name=".ui.TrustedCertificatesActivity"
             android:label="@string/trusted_certs_title" />
         <activity
-            android:name="com.gardion.android.family.client.ui.SelectedApplicationsActivity"
+            android:name=".ui.SelectedApplicationsActivity"
             android:label="@string/profile_select_apps" />
         <activity
-            android:name="com.gardion.android.family.client.ui.LogActivity"
+            android:name=".ui.LogActivity"
             android:label="@string/log_title" />
         <activity
-            android:name="com.gardion.android.family.client.ui.RemediationInstructionsActivity"
+            android:name=".ui.RemediationInstructionsActivity"
             android:label="@string/remediation_instructions_title" />
         <activity
-            android:name="com.gardion.android.family.client.ui.VpnProfileSelectActivity"
+            android:name=".ui.VpnProfileSelectActivity"
             android:label="@string/gardion_shortcut">
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
@@ -67,7 +67,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.gardion.android.family.client.ui.VpnProfileImportActivity"
+            android:name=".ui.VpnProfileImportActivity"
             android:excludeFromRecents="true"
             android:label="@string/profile_import"
             android:taskAffinity="">
@@ -101,7 +101,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.gardion.android.family.client.ui.TrustedCertificateImportActivity"
+            android:name=".ui.TrustedCertificateImportActivity"
             android:label="@string/import_certificate"
             android:theme="@style/AlertDialogTheme">
             <intent-filter>
@@ -130,7 +130,7 @@
 
         <!-- Gardion receivers -->
         <receiver
-            android:name="com.gardion.android.family.client.security.GardionDeviceAdminReceiver"
+            android:name=".security.GardionDeviceAdminReceiver"
             android:description="@string/app_name"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_DEVICE_ADMIN">
@@ -142,34 +142,41 @@
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.gardion.android.family.client.security.BootCompletedReceiver">
+        <receiver android:name=".security.BootCompletedReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.gardion.android.family.client.logic.UserPresentReceiver">
+        <receiver android:name=".logic.UserPresentReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
 
-        <activity android:name="com.gardion.android.family.client.gardionui.GardionEnableProfileActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name="com.gardion.android.family.client.gardionui.GardionPasswordCreatorActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name="com.gardion.android.family.client.gardionui.GardionLoginActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name="com.gardion.android.family.client.gardionui.GardionVpnActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name="com.gardion.android.family.client.gardionui.EnableProfileActivity"
-            android:screenOrientation="portrait"/>
         <activity
-            android:name="com.gardion.android.family.client.gardionui.GardionPopupActivity"
+            android:name=".gardionui.GardionEnableProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".gardionui.GardionPasswordCreatorActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".gardionui.GardionLoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".gardionui.GardionVpnActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".gardionui.EnableProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".gardionui.GardionPopupActivity"
             android:launchMode="singleInstance" />
 
-        <!--Gardion services-->
-        <service android:name="com.gardion.android.family.client.security.CheckAdminService" />
-        <service android:name="com.gardion.android.family.client.security.GardionConnectionService" />
+        <!-- Gardion services -->
+        <service android:name=".security.CheckAdminService" />
+        <service android:name=".security.GardionConnectionService" />
+
+        <activity android:name=".gardionui.GardionWelcomeActivity"></activity>
     </application>
 
 </manifest>

@@ -10,10 +10,7 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.gardion.android.family.client.data.datasource.FlowData
 import com.gardion.android.family.client.data.datasource.SharedPreferencesDataStore
-import com.gardion.android.family.client.gardionui.GardionEnableProfileActivity
-import com.gardion.android.family.client.gardionui.GardionLoginActivity
-import com.gardion.android.family.client.gardionui.GardionVpnActivity
-import com.gardion.android.family.client.gardionui.GardionPasswordCreatorActivity
+import com.gardion.android.family.client.gardionui.*
 import com.gardion.android.family.client.security.CheckAdminService
 import com.gardion.android.family.client.security.GardionConnectionService
 import com.gardion.android.family.client.security.GardionDeviceAdminReceiver
@@ -28,6 +25,7 @@ class FlowController : AppCompatActivity() {
         private const val REQUEST_PROFILE_OWNER: Int = 102
         private const val REQUEST_GARDION_LOGIN: Int = 103
         private const val REQUEST_VPN_START: Int = 104
+        private const val REQUEST_WELCOME_SCREEN: Int = 105
     }
 
     private val TAG = FlowController::class.java.simpleName
@@ -48,11 +46,16 @@ class FlowController : AppCompatActivity() {
             }
         }
         when {
+            flowData.isGardionFirstStart()!! -> startWelcomeScreen()
             !flowData.isDeviceAdminFirstSet()!! && !isDeviceAdminActive() -> startEnableAdminService()
             !flowData.isGlobalPasswordCreated()!! -> startPasswordCreationScreen()
             !flowData.isVpnProfileSaved()!! -> showGardionLoginScreen()
             else -> startVpnService()
         }
+    }
+
+    private fun startWelcomeScreen() {
+        startActivityForResult(GardionWelcomeActivity.getIntent(this), REQUEST_WELCOME_SCREEN)
     }
 
     private fun startEnableAdminService() {
@@ -83,12 +86,18 @@ class FlowController : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
+            REQUEST_WELCOME_SCREEN -> handleWelcomeScreen()
             REQUEST_PASSWORD_CREATION -> handlePasswordCreation(data, resultCode)
             REQUEST_CODE_ENABLE_ADMIN -> handleDeviceAdminCreation()
             REQUEST_PROFILE_OWNER -> handleProfileOwnerCreation(data, resultCode)
             REQUEST_GARDION_LOGIN -> handleGardionLogin(resultCode)
             REQUEST_VPN_START -> handleVpnStart()
         }
+    }
+
+    private fun handleWelcomeScreen() {
+        flowData.gardionFirstStart(false)
+        startPasswordCreationScreen()
     }
 
     private fun handleVpnStart() {

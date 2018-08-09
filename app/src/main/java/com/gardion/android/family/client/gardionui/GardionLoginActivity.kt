@@ -19,6 +19,8 @@ import com.gardion.android.family.client.network.GardionApi
 import com.gardion.android.family.client.network.model.GardionData
 import com.gardion.android.family.client.toast
 import java.util.*
+import com.gardion.android.family.client.network.GardionMailer
+
 
 class GardionLoginActivity : AppCompatActivity() {
 
@@ -40,6 +42,7 @@ class GardionLoginActivity : AppCompatActivity() {
         val sharedPrefs = this.getSharedPreferences(SharedPreferencesDataStore.PREFERENCES_NAME, Context.MODE_PRIVATE)
         dataStore = SharedPreferencesDataStore(sharedPrefs)
         login_button.setOnClickListener { fetchData() }
+        contact_support_button.setOnClickListener { GardionMailer(this).sendMailToSupport() }
     }
 
     private fun fetchData() {

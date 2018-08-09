@@ -11,4 +11,6 @@ interface FlowData {
     fun isDeviceAdminFirstSet(): Boolean?
     fun setGardionUnlocked(unlocked: Boolean)
     fun isGardionUnlocked(): Boolean?
+    fun isGardionFirstStart(): Boolean?
+    fun gardionFirstStart(firstStart: Boolean)
 }

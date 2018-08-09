@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.activity_gardion_vpn.*
 import com.gardion.android.family.client.R
 import com.gardion.android.family.client.data.datasource.FlowData
 import com.gardion.android.family.client.data.datasource.SharedPreferencesDataStore
+import com.gardion.android.family.client.network.GardionMailer
 import org.strongswan.android.logic.CharonVpnService
 import org.strongswan.android.logic.VpnStateService
 import org.strongswan.android.logic.VpnStateService.State
@@ -65,9 +66,9 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
     }
 
     private fun initButtons() {
-        vpn_status_dismiss_button.setOnClickListener { dismissActivity() }
-        vpn_status_reconnect.setOnClickListener { reconnectVpn() }
         vpn_status_disconnect_button.setOnClickListener { tryDisconnectGardionVpn() }
+        vpn_status_reconnect_button.setOnClickListener { reconnectVpn() }
+        contact_support_button.setOnClickListener { GardionMailer(this).sendMailToSupport() }
     }
 
     private fun tryDisconnectGardionVpn() {
@@ -104,10 +105,6 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
         mService?.disconnect()
         val intent = Intent(this, CharonVpnService::class.java)
         this.startService(intent)
-    }
-
-    private fun dismissActivity() {
-        onBackPressed()
     }
 
     private fun startVpnAfterBoot() {

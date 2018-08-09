@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="100dp"
+       android:layout_height="100dp"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,51 +21,52 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
+        android:layout_marginBottom="16dp"
         android:text="Connecting..."
         android:textAllCaps="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintBottom_toTopOf="@id/vpn_status_image"/>
 
     <ImageView
         android:id="@+id/vpn_status_image"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginBottom="216dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/vpn_status_info"
+        app:layout_constraintBottom_toTopOf="@id/vpn_status_reconnect_button"
         app:srcCompat="@drawable/ic_conn_sync" />
 
     <Button
-        android:id="@+id/vpn_status_dismiss_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="Dismiss"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/vpn_status_reconnect"
+        android:id="@+id/vpn_status_reconnect_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="reconnect"
-        app:layout_constraintBottom_toTopOf="@+id/vpn_status_dismiss_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/vpn_status_disconnect_button"/>
 
     <Button
         android:id="@+id/vpn_status_disconnect_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="32dp"
         android:text="disconnect"
-        app:layout_constraintBottom_toTopOf="@+id/vpn_status_reconnect"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/contact_support_button"/>
+
+    <Button
+        android:id="@+id/contact_support_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Contact support"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
 </android.support.constraint.ConstraintLayout>
