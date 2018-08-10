@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".gardionui.GardionWelcomeActivity">
+    tools:context=".gardionui.GardionAdminActivity">
 
     <ImageView
         android:id="@+id/imageView"
@@ -17,14 +17,14 @@
         app:srcCompat="@drawable/ic_gardion_logo" />
 
     <TextView
-        android:id="@+id/welcome_info_textView"
+        android:id="@+id/device_admin_info_textView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:autoLink="web"
-        android:text="@string/welcome_infotext"
+        android:text="@string/device_admin_infotext"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,12 +32,12 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
-        android:id="@+id/start_initial_setup_button"
+        android:id="@+id/device_admin_start_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="@string/welcome_button_setup"
+        android:text="@string/device_admin_button_start"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcome_info_textView" />
+        app:layout_constraintTop_toBottomOf="@+id/device_admin_info_textView" />
 </android.support.constraint.ConstraintLayout>

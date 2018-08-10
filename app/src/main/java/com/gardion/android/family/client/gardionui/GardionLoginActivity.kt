@@ -54,13 +54,13 @@ class GardionLoginActivity : AppCompatActivity() {
 
                 response?.let { saveToDataBase(response) }
                 withContext(UI, CoroutineStart.DEFAULT, {
-                    toast("Data saved")
+                    toast(getString(R.string.login_toast_success))
                     finishWithData(Activity.RESULT_OK)
                 })
             } catch (e: Exception) {
                 Log.w(TAG, "Failed to fetch data: " + e.message)
                 withContext(UI, CoroutineStart.DEFAULT, {
-                    toast("Failed to fetch vpn data")
+                    toast(getString(R.string.login_toast_error))
                 })
             }
         }

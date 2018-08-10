@@ -26,6 +26,7 @@ class FlowController : AppCompatActivity() {
         private const val REQUEST_GARDION_LOGIN: Int = 103
         private const val REQUEST_VPN_START: Int = 104
         private const val REQUEST_WELCOME_SCREEN: Int = 105
+        private const val REQUEST_EXPLAIN_ADMIN_SCREEN: Int = 106
     }
 
     private val TAG = FlowController::class.java.simpleName
@@ -47,7 +48,7 @@ class FlowController : AppCompatActivity() {
         }
         when {
             flowData.isGardionFirstStart()!! -> startWelcomeScreen()
-            !flowData.isDeviceAdminFirstSet()!! && !isDeviceAdminActive() -> startEnableAdminService()
+            !flowData.isDeviceAdminFirstSet()!! && !isDeviceAdminActive() -> startExplainAdminScreen()
             !flowData.isGlobalPasswordCreated()!! -> startPasswordCreationScreen()
             !flowData.isVpnProfileSaved()!! -> showGardionLoginScreen()
             else -> startVpnService()
@@ -56,6 +57,10 @@ class FlowController : AppCompatActivity() {
 
     private fun startWelcomeScreen() {
         startActivityForResult(GardionWelcomeActivity.getIntent(this), REQUEST_WELCOME_SCREEN)
+    }
+
+    private fun startExplainAdminScreen() {
+        startActivityForResult(GardionAdminActivity.getIntent(this), REQUEST_EXPLAIN_ADMIN_SCREEN)
     }
 
     private fun startEnableAdminService() {
@@ -88,6 +93,7 @@ class FlowController : AppCompatActivity() {
         when (requestCode) {
             REQUEST_WELCOME_SCREEN -> handleWelcomeScreen()
             REQUEST_PASSWORD_CREATION -> handlePasswordCreation(data, resultCode)
+            REQUEST_EXPLAIN_ADMIN_SCREEN -> handleExplainAdminScreen()
             REQUEST_CODE_ENABLE_ADMIN -> handleDeviceAdminCreation()
             REQUEST_PROFILE_OWNER -> handleProfileOwnerCreation(data, resultCode)
             REQUEST_GARDION_LOGIN -> handleGardionLogin(resultCode)
@@ -98,6 +104,10 @@ class FlowController : AppCompatActivity() {
     private fun handleWelcomeScreen() {
         flowData.gardionFirstStart(false)
         startPasswordCreationScreen()
+    }
+
+    private fun handleExplainAdminScreen() {
+        askForDeviceAdmin()
     }
 
     private fun handleVpnStart() {
@@ -149,7 +159,7 @@ class FlowController : AppCompatActivity() {
                 //save encrypted password to sharedPreferences
                 flowData.saveEncryptedPass(data.getStringExtra(GardionPasswordCreatorActivity.INTENT_EXTRA_PASSWORD))
                 flowData.setGlobalPasswordCreated(true)
-                askForDeviceAdmin()
+                startExplainAdminScreen()
             } else {
                 flowData.setGlobalPasswordCreated(false)
             }

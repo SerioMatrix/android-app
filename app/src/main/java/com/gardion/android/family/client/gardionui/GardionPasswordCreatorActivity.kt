@@ -35,7 +35,7 @@ class GardionPasswordCreatorActivity : AppCompatActivity() {
             passwordMain.length !in 4..6 -> toast("Your password is too short")
             passwordMain != passwordRepeat -> toast("Typed passwords don't match")
             else -> {
-                toast("Password created successfully")
+                toast(getString(R.string.password_toast_created_successfully))
                 passwordCreated = true
             }
         }

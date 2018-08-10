@@ -17,14 +17,14 @@
         app:srcCompat="@drawable/ic_gardion_logo" />
 
     <TextView
-        android:id="@+id/password_info_textView"
+        android:id="@+id/login_info_textView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="48dp"
         android:autoLink="web"
-        android:text="Enter 6-digit code here"
+        android:text="@string/login_infotext"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
         android:ems="10"
-        android:hint="6-digit code"
+        android:hint="@string/login_hint"
         android:inputType="number"
         android:maxLength="6"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -50,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Login"
+        android:text="@string/login_button_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gardion_login_pincode" />
@@ -61,7 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
-        android:text="Contact support"
+        android:text="@string/all_button_contact_support"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

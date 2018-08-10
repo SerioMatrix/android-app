@@ -99,7 +99,8 @@
         <service android:name=".security.CheckAdminService" />
         <service android:name=".security.GardionConnectionService" />
 
-        <activity android:name=".gardionui.GardionWelcomeActivity"></activity>
+        <activity android:name=".gardionui.GardionWelcomeActivity" />
+        <activity android:name=".gardionui.GardionAdminActivity"></activity>
     </application>
 
 </manifest>

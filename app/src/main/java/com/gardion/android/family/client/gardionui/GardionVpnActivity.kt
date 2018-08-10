@@ -101,7 +101,7 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
     }
 
     private fun forceReconnectVpn() {
-        toast("Forcing reconnect")
+        toast(getString(R.string.vpn_toast_force_reconnect))
         mService?.disconnect()
         val intent = Intent(this, CharonVpnService::class.java)
         this.startService(intent)
@@ -130,19 +130,19 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
         val state: VpnStateService.State? = mService?.state
         when (state) {
             State.CONNECTING -> {
-                vpn_status_info.text = "connecting..."
+                vpn_status_info.text = getString(R.string.vpn_status_connecting)
                 vpn_status_image.setImageResource(R.drawable.ic_conn_sync)
             }
             State.CONNECTED -> {
-                vpn_status_info.text = "connected"
+                vpn_status_info.text = getString(R.string.vpn_status_connected)
                 vpn_status_image.setImageResource(R.drawable.ic_conn_success)
             }
             State.DISCONNECTING -> {
-                vpn_status_info.text = "disconnecting"
+                vpn_status_info.text = getString(R.string.vpn_status_disconnecting)
                 vpn_status_image.setImageResource(R.drawable.ic_conn_sync)
             }
             State.DISABLED -> {
-                vpn_status_info.text = "disabled"
+                vpn_status_info.text = getString(R.string.vpn_status_disabled)
                 vpn_status_image.setImageResource(R.drawable.ic_conn_fail)
             }
         }
