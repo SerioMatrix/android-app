@@ -44,14 +44,14 @@ class GardionPopupActivity : AppCompatActivity() {
         val savedPassword = flowData.getEncryptedPass()
         when (savedPassword) {
             popup_ask_password_editText.text.toString() -> unlockTillLockScreen()
-            else -> toast("Typed password is incorrect")
+            else -> toast(getString(R.string.password_toast_pin_wrong))
         }
     }
 
     private fun unlockTillLockScreen() {
         stopService(Intent(this, CheckAdminService::class.java))
         flowData.setGardionUnlocked(true)
-        toast("Gardion unlocked")
+        toast(getString(R.string.popup_toast_unlocked))
         showSecuredContent()
     }
 

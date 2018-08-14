@@ -18,10 +18,9 @@
 
     <TextView
         android:id="@+id/login_info_textView"
+        style="@style/GardionInfoText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginStart="24dp"
         android:layout_marginTop="48dp"
         android:autoLink="web"
         android:text="@string/login_infotext"

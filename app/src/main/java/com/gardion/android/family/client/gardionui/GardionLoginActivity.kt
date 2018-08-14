@@ -16,6 +16,7 @@ import com.gardion.android.family.client.data.VpnType
 import com.gardion.android.family.client.data.datasource.DataStore
 import com.gardion.android.family.client.data.datasource.SharedPreferencesDataStore
 import com.gardion.android.family.client.network.GardionApi
+import com.gardion.android.family.client.network.GardionLinks
 import com.gardion.android.family.client.network.model.GardionData
 import com.gardion.android.family.client.toast
 import java.util.*
@@ -42,7 +43,7 @@ class GardionLoginActivity : AppCompatActivity() {
         val sharedPrefs = this.getSharedPreferences(SharedPreferencesDataStore.PREFERENCES_NAME, Context.MODE_PRIVATE)
         dataStore = SharedPreferencesDataStore(sharedPrefs)
         login_button.setOnClickListener { fetchData() }
-        contact_support_button.setOnClickListener { GardionMailer(this).sendMailToSupport() }
+        contact_support_button.setOnClickListener { GardionLinks(this).goToForum() }
     }
 
     private fun fetchData() {

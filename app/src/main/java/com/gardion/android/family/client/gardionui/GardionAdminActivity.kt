@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import com.gardion.android.family.client.R
 import kotlinx.android.synthetic.main.activity_gardion_device_admin.*
 
@@ -23,5 +24,9 @@ class GardionAdminActivity : AppCompatActivity() {
 
     private fun startDeviceAdmin() {
         finish()
+    }
+
+    override fun onBackPressed() {
+        moveTaskToBack(true)
     }
 }

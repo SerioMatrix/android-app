@@ -6,7 +6,7 @@ import android.support.v4.content.ContextCompat.startActivity
 
 
 class GardionMailer(private val context: Context) {
-    fun sendMail(recipients : Array<String>, subject: String){
+    private fun sendMail(recipients : Array<String>, subject: String){
         val email = Intent(Intent.ACTION_SEND)
         email.putExtra(Intent.EXTRA_EMAIL, recipients)
         email.putExtra(Intent.EXTRA_SUBJECT, subject)

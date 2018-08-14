@@ -48,8 +48,8 @@ class FlowController : AppCompatActivity() {
         }
         when {
             flowData.isGardionFirstStart()!! -> startWelcomeScreen()
-            !flowData.isDeviceAdminFirstSet()!! && !isDeviceAdminActive() -> startExplainAdminScreen()
             !flowData.isGlobalPasswordCreated()!! -> startPasswordCreationScreen()
+            !flowData.isDeviceAdminFirstSet()!! || !isDeviceAdminActive() -> startExplainAdminScreen()
             !flowData.isVpnProfileSaved()!! -> showGardionLoginScreen()
             else -> startVpnService()
         }

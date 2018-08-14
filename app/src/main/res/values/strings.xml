@@ -200,7 +200,7 @@
     <string name="event_vpn_connected_desc">Gardion VPN has been connected</string>
 
     <!--user app-->
-    <string name="welcome_infotext">Willkommen zur Gardion App! Nur noch ein paar Schritte und Gardion sichert dieses Gerät. \n\nWenn Sie noch kein Konto bei Gardion haben, legen Sie zuerst noch eines unter www.gardion.com an.</string>
+    <string name="welcome_infotext">Willkommen bei Gardion! Nur noch ein paar Schritte und Gardion sichert dieses Gerät. \n\nWenn Sie noch kein Konto bei Gardion haben, legen Sie zuerst noch eines unter www.gardion.com an.</string>
     <string name="welcome_button_setup">Setup starten</string>
     <string name="password_infotext">Um sicherzustellen, dass nur Sie Gardion auf dem Gerät wieder deinstallieren können, geben Sie bitte eine 4–6 stellige Eltern-PIN ein.</string>
     <string name="password_hint">PIN eingeben…</string>
@@ -219,7 +219,7 @@
     <string name="popup_button_uninstall">Gardion deinstallieren</string>
     <string name="password_toast_created_successfully">PIN wurde gespeichert</string>
     <string name="login_toast_success">Daten wurden gespeichert</string>
-    <string name="login_toast_error">Verbingun mit Gardion fehlgeschlagen. Bitte Code überprüfen.</string>
+    <string name="login_toast_error">Verbindung mit Gardion fehlgeschlagen. Bitte Code überprüfen.</string>
     <string name="vpn_status_connecting">Verbindet…</string>
     <string name="vpn_status_connected">Verbunden</string>
     <string name="vpn_status_disconnecting">Verbindung wird getrennt</string>
@@ -228,7 +228,16 @@
     <string name="password_dialog_button_unlock">Deaktivieren</string>
     <string name="password_dialog_infotext">Bitten geben Sie die Eltern-PIN ein, um Gardion temporär zu deaktivieren.</string>
     <string name="password_dialog_hint_pin">PIN eingeben…</string>
-    <string name="device_admin_infotext">Um zu verhindern, dass Gardion wieder deinstalliert wird, werden wir Gardion im nächsten Schritt zum \"Geräteverwalter\" machen.</string>
+    <string name="device_admin_infotext">Um zu verhindern, dass Gardion wieder deinstalliert wird, werden wir Gardion als \"Geräteverwalter\" einstellen.</string>
     <string name="device_admin_button_start">Weiter</string>
+    <string name="password_toast_pin_short">PIN zu kurz</string>
+    <string name="password_toast_pin_nomatch">PINs stimmen nicht überein</string>
+    <string name="password_toast_pin_wrong">Eingebener Eltern-PIN ist falsch. Wenn Sie Ihr Passwort vergessen haben, wenden Sie sie bitte an den Support.</string>
+    <string name="popup_toast_unlocked">Gardion entsperrt</string>
+    <string name="vpn_toast_connecting">Verbindung wird hergestellt</string>
+    <string name="device_admin_toast_active">Gardion als Geräteverwalter aktiv</string>
+    <string name="device_admin_toast_deactivated">Gardion als Geräteverwalter deaktiviert</string>
+    <string name="device_admin_pw_changed">Eltern-PIN geändert</string>
+    <string name="password_hint_repeat">PIN wiederholen</string>
 
 </resources>

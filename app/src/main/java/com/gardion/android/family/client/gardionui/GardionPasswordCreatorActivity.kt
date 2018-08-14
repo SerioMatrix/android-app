@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_password_creator.*
 import com.gardion.android.family.client.R
+import com.gardion.android.family.client.network.GardionLinks
 import com.gardion.android.family.client.network.GardionMailer
 import com.gardion.android.family.client.network.GardionServerEventManager
 import com.gardion.android.family.client.toast
@@ -24,7 +25,7 @@ class GardionPasswordCreatorActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_password_creator)
         password_create_button.setOnClickListener { createPassword() }
-        contact_support_button.setOnClickListener { GardionMailer(this).sendMailToSupport() }
+        contact_support_button.setOnClickListener { GardionLinks(this).goToForum() }
     }
 
     private fun createPassword() {
@@ -32,8 +33,8 @@ class GardionPasswordCreatorActivity : AppCompatActivity() {
         val passwordRepeat: String = password_repeat_editText.text.toString()
         var passwordCreated = false
         when {
-            passwordMain.length !in 4..6 -> toast("Your password is too short")
-            passwordMain != passwordRepeat -> toast("Typed passwords don't match")
+            passwordMain.length !in 4..6 -> toast(getString(R.string.password_toast_pin_short))
+            passwordMain != passwordRepeat -> toast(getString(R.string.password_toast_pin_nomatch))
             else -> {
                 toast(getString(R.string.password_toast_created_successfully))
                 passwordCreated = true
