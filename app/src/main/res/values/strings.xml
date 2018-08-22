@@ -240,5 +240,6 @@
     <string name="device_admin_pw_changed">Eltern-PIN geändert</string>
     <string name="password_hint_repeat">PIN wiederholen…</string>
     <string name="vpn_toast_device_offline">Gerät ist offline</string>
+    <string name="login_toast_too_short">Eingegebener Code ist zu kurz</string>
 
 </resources>
