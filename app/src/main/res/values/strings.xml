@@ -238,7 +238,7 @@
     <string name="device_admin_toast_active">Gardion als Geräteverwalter aktiv</string>
     <string name="device_admin_toast_deactivated">Gardion als Geräteverwalter deaktiviert</string>
     <string name="device_admin_pw_changed">Eltern-PIN geändert</string>
-    <string name="password_hint_repeat">PIN wiederholen</string>
+    <string name="password_hint_repeat">PIN wiederholen…</string>
     <string name="vpn_toast_device_offline">Gerät ist offline</string>
 
 </resources>
