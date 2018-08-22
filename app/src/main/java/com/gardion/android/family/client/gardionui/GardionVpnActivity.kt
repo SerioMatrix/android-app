@@ -13,12 +13,14 @@ import com.gardion.android.family.client.R
 import com.gardion.android.family.client.data.datasource.FlowData
 import com.gardion.android.family.client.data.datasource.SharedPreferencesDataStore
 import com.gardion.android.family.client.network.GardionLinks
-import com.gardion.android.family.client.network.GardionMailer
 import org.strongswan.android.logic.CharonVpnService
 import org.strongswan.android.logic.VpnStateService
 import org.strongswan.android.logic.VpnStateService.State
 import com.gardion.android.family.client.toast
 import org.strongswan.android.utils.GardionUtils
+import android.net.ConnectivityManager
+
+
 
 
 class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener, GardionPasswordDialog.GardionPasswordDialogListener {
@@ -93,11 +95,16 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
     }
 
     private fun reconnectVpn() {
-        val state: VpnStateService.State? = mService?.state
-        when (state) {
-            State.CONNECTED -> forceReconnectVpn()
-            State.CONNECTING -> toast(getString(R.string.vpn_toast_connecting))
-            State.DISCONNECTING, State.DISABLED -> startVPNprofile()
+        //if(isNetworkAvailable())
+        if(isNetworkAvailable()!!)
+        {
+            val state: VpnStateService.State? = mService?.state
+            when (state) {
+                State.CONNECTED, State.CONNECTING -> forceReconnectVpn()
+                State.DISCONNECTING, State.DISABLED -> startVPNprofile()
+            }
+        } else {
+            toast(getString(R.string.vpn_toast_device_offline))
         }
     }
 
@@ -106,6 +113,11 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
         mService?.disconnect()
         val intent = Intent(this, CharonVpnService::class.java)
         this.startService(intent)
+    }
+
+    private fun isNetworkAvailable(): Boolean? {
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        return connectivityManager.activeNetworkInfo?.isAvailable ?: false
     }
 
     private fun startVpnAfterBoot() {
