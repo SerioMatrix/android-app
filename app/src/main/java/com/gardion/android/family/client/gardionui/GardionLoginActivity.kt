@@ -20,7 +20,6 @@ import com.gardion.android.family.client.network.GardionLinks
 import com.gardion.android.family.client.network.model.GardionData
 import com.gardion.android.family.client.toast
 import java.util.*
-import com.gardion.android.family.client.network.GardionMailer
 
 
 class GardionLoginActivity : AppCompatActivity() {
@@ -42,16 +41,29 @@ class GardionLoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_gardion_login)
         val sharedPrefs = this.getSharedPreferences(SharedPreferencesDataStore.PREFERENCES_NAME, Context.MODE_PRIVATE)
         dataStore = SharedPreferencesDataStore(sharedPrefs)
-        login_button.setOnClickListener { fetchData() }
+        login_button.setOnClickListener { buttonLogin() }
         contact_support_button.setOnClickListener { GardionLinks(this).goToForum() }
     }
 
-    private fun fetchData() {
+    private fun buttonLogin() {
         val gardionCode = gardion_login_pincode.text.toString()
+        if(isGardionCodeValid(gardionCode)) fetchData(gardionCode)
+        else return
+    }
+
+    private fun isGardionCodeValid(gardionCode: String): Boolean {
+        return if(gardionCode.length < 6) {
+            toast(getString(R.string.login_toast_too_short))
+            (false)
+        }
+        else (true)
+    }
+
+    private fun fetchData(gardionCode: String) {
         job.cancel()
         job = launch(CommonPool) {
             try {
-                val response = api.fetchGardionData(gardionCode).execute().body()
+                val response = api.fetchGardionData(gardionCode).execute().body()!!
 
                 response?.let { saveToDataBase(response) }
                 withContext(UI, CoroutineStart.DEFAULT, {
