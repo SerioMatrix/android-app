@@ -218,7 +218,7 @@
     <string name="popup_infotext_unlocked">Achtung: Gardion ist nun auf diesem Gerät entsperrt. Sie können nun: \n- fortfahren und Gardion deinstallieren \n- die Geräteverwaltung in den Einstellungen wieder aktivieren</string>
     <string name="popup_button_uninstall">Gardion deinstallieren</string>
     <string name="password_toast_created_successfully">PIN wurde gespeichert</string>
-    <string name="login_toast_success">Daten wurden gespeichert</string>
+    <string name="login_toast_success">Gerät mit Gardion verbunden</string>
     <string name="login_toast_error">Verbindung mit Gardion fehlgeschlagen. Bitte Code überprüfen.</string>
     <string name="vpn_status_connecting">Verbindet…</string>
     <string name="vpn_status_connected">Verbunden</string>
@@ -232,7 +232,7 @@
     <string name="device_admin_button_start">Weiter</string>
     <string name="password_toast_pin_short">PIN zu kurz</string>
     <string name="password_toast_pin_nomatch">PINs stimmen nicht überein</string>
-    <string name="password_toast_pin_wrong">Eingebener Eltern-PIN ist falsch. Wenn Sie Ihr Passwort vergessen haben, wenden Sie sie bitte an den Support.</string>
+    <string name="password_toast_pin_wrong">Eingebener Eltern-PIN ist falsch. Wenn Sie Ihren Eltern-PIN vergessen haben, wenden Sie sie bitte an den Support.</string>
     <string name="popup_toast_unlocked">Gardion entsperrt</string>
     <string name="vpn_toast_connecting">Verbindung wird hergestellt</string>
     <string name="device_admin_toast_active">Gardion als Geräteverwalter aktiv</string>
@@ -241,5 +241,8 @@
     <string name="password_hint_repeat">PIN wiederholen…</string>
     <string name="vpn_toast_device_offline">Gerät ist offline</string>
     <string name="login_toast_too_short">Eingegebener Code ist zu kurz</string>
+    <string name="password_toast_gardion_deactivated">Gardion wurde temporär deaktiviert.</string>
+    <string name="password_dialog_button_cancel">Zurück</string>
+    <string name="login_toast_connecting">Gerät wird mit Gardion verbunden…</string>
 
 </resources>
