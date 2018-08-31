@@ -139,10 +139,6 @@ class FlowController : AppCompatActivity() {
         }
     }
 
-    private fun askForProfileOwner() {
-        startActivityForResult(GardionEnableProfileActivity.getIntent(this), REQUEST_PROFILE_OWNER)
-    }
-
     private fun showGardionLoginScreen() {
         startActivityForResult(GardionLoginActivity.getIntent(this), REQUEST_GARDION_LOGIN)
     }

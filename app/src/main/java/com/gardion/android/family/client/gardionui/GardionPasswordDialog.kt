@@ -11,7 +11,7 @@ import com.gardion.android.family.client.R
 class GardionPasswordDialog: DialogFragment() {
 
     interface GardionPasswordDialogListener {
-        fun onFisnishEditDialog(inputText: String)
+        fun onFinishEditDialog(inputText: String)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -21,12 +21,12 @@ class GardionPasswordDialog: DialogFragment() {
 
     override fun onStart() {
         super.onStart()
-        password_dialog_unlock_button.setOnClickListener { takeTypedValueAndDIsmissDIalog() }
+        password_dialog_unlock_button.setOnClickListener { takeTypedValueAndDismissDIalog() }
     }
 
-    private fun takeTypedValueAndDIsmissDIalog() {
+    private fun takeTypedValueAndDismissDIalog() {
         val listener: GardionPasswordDialogListener = activity as GardionPasswordDialogListener
-        listener.onFisnishEditDialog(password_dialog_editText.text.toString())
+        listener.onFinishEditDialog(password_dialog_editText.text.toString())
         this.dismiss()
     }
 }

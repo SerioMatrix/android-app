@@ -50,7 +50,7 @@ import org.strongswan.android.logic.VpnStateService.State;
 import org.strongswan.android.logic.imc.ImcState;
 import org.strongswan.android.logic.imc.RemediationInstruction;
 import com.gardion.android.family.client.network.GardionServerEventManager;
-import com.gardion.android.family.client.ui.MainActivity;
+import org.strongswan.android.ui.MainActivity;
 import org.strongswan.android.utils.IPRange;
 import org.strongswan.android.utils.IPRangeSet;
 import org.strongswan.android.utils.SettingsWriter;

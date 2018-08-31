@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import com.gardion.android.family.client.data.datasource.SharedPreferencesDataStore
 import com.gardion.android.family.client.gardionui.GardionVpnActivity
-import org.strongswan.android.utils.GardionUtils
+import com.gardion.android.family.client.utils.GardionUtils
 
 class UserPresentReceiver : BroadcastReceiver() {
 
