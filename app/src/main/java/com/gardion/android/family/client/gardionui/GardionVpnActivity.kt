@@ -86,6 +86,7 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
         val savedPassword = flowData.getEncryptedPass()
         if (inputText == savedPassword){
             mService?.disconnect()
+            toast(getString(R.string.password_toast_gardion_deactivated))
         } else {
             toast(getString(R.string.password_toast_pin_wrong))
         }

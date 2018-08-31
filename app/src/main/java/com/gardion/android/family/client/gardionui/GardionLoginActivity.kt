@@ -60,11 +60,11 @@ class GardionLoginActivity : AppCompatActivity() {
     }
 
     private fun fetchData(gardionCode: String) {
+        toast(getString(R.string.login_toast_connecting))
         job.cancel()
         job = launch(CommonPool) {
             try {
                 val response = api.fetchGardionData(gardionCode).execute().body()!!
-
                 response?.let { saveToDataBase(response) }
                 withContext(UI, CoroutineStart.DEFAULT, {
                     toast(getString(R.string.login_toast_success))
