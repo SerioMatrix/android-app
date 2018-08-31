@@ -19,19 +19,19 @@
     android:orientation="vertical" >
 
     <fragment
-            class="com.gardion.android.family.client.ui.VpnStateFragment"
+            class="org.strongswan.android.ui.VpnStateFragment"
             android:id="@+id/vpn_state_frag"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
     <fragment
-            class="com.gardion.android.family.client.ui.ImcStateFragment"
+            class="org.strongswan.android.ui.ImcStateFragment"
             android:id="@+id/imc_state_frag"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
     <fragment
-            class="com.gardion.android.family.client.ui.VpnProfileListFragment"
+            class="org.strongswan.android.ui.VpnProfileListFragment"
             android:id="@+id/profile_list_frag"
             android:layout_width="match_parent"
             android:layout_height="0dp"

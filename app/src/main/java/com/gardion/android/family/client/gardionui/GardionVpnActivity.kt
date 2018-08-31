@@ -17,10 +17,7 @@ import org.strongswan.android.logic.CharonVpnService
 import org.strongswan.android.logic.VpnStateService
 import org.strongswan.android.logic.VpnStateService.State
 import com.gardion.android.family.client.toast
-import org.strongswan.android.utils.GardionUtils
-import android.net.ConnectivityManager
-
-
+import com.gardion.android.family.client.utils.GardionUtils
 
 
 class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener, GardionPasswordDialog.GardionPasswordDialogListener {
@@ -83,7 +80,7 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
         gardionDialog.show(supportFragmentManager, "fragment_gardion_dialog")
     }
 
-    override fun onFisnishEditDialog(inputText: String) {
+    override fun onFinishEditDialog(inputText: String) {
         val sharedPrefs = this.getSharedPreferences(SharedPreferencesDataStore.PREFERENCES_NAME, Context.MODE_PRIVATE)
         flowData = SharedPreferencesDataStore(sharedPrefs)
         val savedPassword = flowData.getEncryptedPass()
@@ -96,7 +93,7 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
 
     private fun reconnectVpn() {
         //if(isNetworkAvailable())
-        if(isNetworkAvailable()!!)
+        if(GardionUtils.isNetworkAvailable(this)!!)
         {
             val state: VpnStateService.State? = mService?.state
             when (state) {
@@ -113,11 +110,6 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
         mService?.disconnect()
         val intent = Intent(this, CharonVpnService::class.java)
         this.startService(intent)
-    }
-
-    private fun isNetworkAvailable(): Boolean? {
-        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        return connectivityManager.activeNetworkInfo?.isAvailable ?: false
     }
 
     private fun startVpnAfterBoot() {

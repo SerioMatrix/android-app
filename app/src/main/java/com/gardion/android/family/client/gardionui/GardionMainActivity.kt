@@ -18,7 +18,6 @@ class GardionMainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gardion_main)
-        main_create_mdm_button.setOnClickListener { createMDM() }
         main_go_to_vpn.setOnClickListener { startVpnActivity() }
         val manager: DevicePolicyManager = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
         main_apply_policies_button.setOnClickListener { applyPolicies(manager) }
@@ -35,11 +34,6 @@ class GardionMainActivity : AppCompatActivity() {
     private fun startVpnActivity() {
         val startVpn = Intent(this, GardionVpnActivity::class.java)
         startActivity(startVpn)
-    }
-
-    private fun createMDM() {
-        val startMDM = Intent(this, GardionEnableProfileActivity::class.java)
-        startActivity(startMDM)
     }
 
     private fun applyPolicies(manager: DevicePolicyManager) {

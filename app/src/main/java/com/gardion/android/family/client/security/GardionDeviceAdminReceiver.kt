@@ -7,7 +7,6 @@ import android.content.Intent
 import com.gardion.android.family.client.R
 import com.gardion.android.family.client.data.datasource.DataStore
 import com.gardion.android.family.client.data.datasource.SharedPreferencesDataStore
-import com.gardion.android.family.client.gardionui.EnableProfileActivity
 import com.gardion.android.family.client.toast
 
 class GardionDeviceAdminReceiver: DeviceAdminReceiver() {
@@ -18,12 +17,6 @@ class GardionDeviceAdminReceiver: DeviceAdminReceiver() {
         fun getComponentName(context: Context): ComponentName{
             return ComponentName(context.applicationContext, GardionDeviceAdminReceiver::class.java)
         }
-    }
-
-    override fun onProfileProvisioningComplete(context: Context?, intent: Intent?) {
-        val launch = Intent(context, EnableProfileActivity::class.java)
-        launch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        context?.startActivity(launch)
     }
 
     override fun onEnabled(context: Context?, intent: Intent?) {
