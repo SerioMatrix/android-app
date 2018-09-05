@@ -21,6 +21,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 
     <application
         android:name=".logic.GardionApplication"
@@ -65,7 +66,7 @@
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".security.BootCompletedReceiver">
+        <receiver android:name=".logic.BootCompletedReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
@@ -74,6 +75,11 @@
             <intent-filter>
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
+        </receiver>
+
+        <!-- TODO - remove if not needed after testing -->
+        <receiver android:name=".network.GardionNetworkReceiver">
+
         </receiver>
 
         <activity

@@ -2,6 +2,7 @@ package com.gardion.android.family.client.network
 
 import com.gardion.android.family.client.network.model.GardionData
 import com.gardion.android.family.client.network.model.GardionEvent
+import kotlinx.android.synthetic.main.imc_state_fragment.view.*
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -29,5 +30,4 @@ interface GardionApi {
 
     @POST("event.json")
     fun postEvent(@Body event: GardionEvent): Call<GardionEvent>
-
 }
