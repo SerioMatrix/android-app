@@ -26,7 +26,6 @@ class GardionUtils {
             return false
         }
 
-        //TODO - check if Context? is necessary
         fun isInternetConnectionActive(context: Context): Boolean {
             val connectivityManager: ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val networks: Array<out Network>? = connectivityManager.allNetworks
