@@ -19,6 +19,9 @@ import com.gardion.android.family.client.network.GardionApi
 import com.gardion.android.family.client.network.GardionLinks
 import com.gardion.android.family.client.network.model.GardionData
 import com.gardion.android.family.client.toast
+import com.gardion.android.family.client.utils.GardionUtils
+import org.apache.http.conn.ConnectTimeoutException
+import java.net.SocketTimeoutException
 import java.util.*
 
 
@@ -47,33 +50,48 @@ class GardionLoginActivity : AppCompatActivity() {
 
     private fun buttonLogin() {
         val gardionCode = gardion_login_pincode.text.toString()
-        if(isGardionCodeValid(gardionCode)) fetchData(gardionCode)
-        else return
+
+        when {
+            !isGardionCodeValid(gardionCode) -> toast(getString(R.string.login_toast_too_short))
+            !GardionUtils.isNetworkAvailable(this)!! -> toast(getString(R.string.general_toast_device_offline))
+            else -> fetchData(gardionCode)
+        }
     }
 
     private fun isGardionCodeValid(gardionCode: String): Boolean {
-        return if(gardionCode.length < 6) {
-            toast(getString(R.string.login_toast_too_short))
-            (false)
-        }
-        else (true)
+        return (gardionCode.length == 6)
     }
 
     private fun fetchData(gardionCode: String) {
-        toast(getString(R.string.login_toast_connecting))
         job.cancel()
         job = launch(CommonPool) {
             try {
-                val response = api.fetchGardionData(gardionCode).execute().body()!!
-                response?.let { saveToDataBase(response) }
-                withContext(UI, CoroutineStart.DEFAULT, {
-                    toast(getString(R.string.login_toast_success))
-                    finishWithData(Activity.RESULT_OK)
-                })
+                val response = api.fetchGardionData(gardionCode).execute()
+                if (response.isSuccessful) {
+                    val gardionProfile = response.body()!!
+
+                    gardionProfile?.let { saveToDataBase(gardionProfile) }
+                    withContext(UI, CoroutineStart.DEFAULT, {
+                        toast(getString(R.string.login_toast_success))
+                        finishWithData(Activity.RESULT_OK)
+                    })
+                } else {
+                    val responseCode = response.code()
+                    val errorMessage = when (responseCode) {
+                        // if gardionCode does not exist at backend response code 500 is received
+                        // code 500 can of course also result from different events on server
+                        // server should actually send a message / code stating explicitly that the gardionCode does not exist
+                        500 -> getString(R.string.login_toast_error_500)
+                        else -> getString(R.string.login_toast_error_general)
+                    }
+                    withContext(UI, CoroutineStart.DEFAULT, {
+                        toast("$errorMessage (Code: $responseCode)")
+                    })
+                }
             } catch (e: Exception) {
-                Log.w(TAG, "Failed to fetch data: " + e.message)
+                Log.w(TAG, e.message)
                 withContext(UI, CoroutineStart.DEFAULT, {
-                    toast(getString(R.string.login_toast_error))
+                    toast(getString(R.string.login_toast_error_general))
                 })
             }
         }

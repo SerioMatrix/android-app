@@ -26,8 +26,9 @@ class GardionUtils {
             return false
         }
 
-        fun isInternetConnectionActive(context: Context?): Boolean {
-            val connectivityManager: ConnectivityManager = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        //TODO - check if Context? is necessary
+        fun isInternetConnectionActive(context: Context): Boolean {
+            val connectivityManager: ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val networks: Array<out Network>? = connectivityManager.allNetworks
             for (i in networks?.indices!!) {
                 val networkInfo: NetworkInfo = connectivityManager.getNetworkInfo(networks[i])
@@ -38,8 +39,8 @@ class GardionUtils {
             return false
         }
 
-        fun isNetworkAvailable(context: Context?): Boolean? {
-            val connectivityManager: ConnectivityManager = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        fun isNetworkAvailable(context: Context): Boolean? {
+            val connectivityManager: ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             return connectivityManager.activeNetworkInfo?.isAvailable ?: false
         }
 
@@ -57,7 +58,7 @@ class GardionUtils {
             if (view == null) {
                 view = View(activity)
             }
-            imm.hideSoftInputFromWindow(view!!.windowToken, 0)
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
 }

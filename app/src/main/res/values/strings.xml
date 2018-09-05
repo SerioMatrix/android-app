@@ -219,7 +219,7 @@
     <string name="popup_button_uninstall">Gardion deinstallieren</string>
     <string name="password_toast_created_successfully">PIN wurde gespeichert</string>
     <string name="login_toast_success">Gerät mit Gardion verbunden</string>
-    <string name="login_toast_error">Verbindung mit Gardion fehlgeschlagen. Bitte Code überprüfen.</string>
+    <string name="login_toast_error_general">Fehler - Bitte kontaktieren Sie den Support</string>
     <string name="vpn_status_connecting">Verbindet…</string>
     <string name="vpn_status_connected">Verbunden</string>
     <string name="vpn_status_disconnecting">Verbindung wird getrennt</string>
@@ -244,5 +244,7 @@
     <string name="password_toast_gardion_deactivated">Gardion wurde temporär deaktiviert.</string>
     <string name="password_dialog_button_cancel">Zurück</string>
     <string name="login_toast_connecting">Gerät wird mit Gardion verbunden…</string>
+    <string name="general_toast_device_offline">Gerät ist offline, bitte gehen Sie zunächst online</string>
+    <string name="login_toast_error_500">Fehler - bitte überprüfen Sie den Code.</string>
 
 </resources>

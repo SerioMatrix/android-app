@@ -8,11 +8,13 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import kotlinx.android.synthetic.main.activity_gardion_vpn.*
 import com.gardion.android.family.client.R
 import com.gardion.android.family.client.data.datasource.FlowData
 import com.gardion.android.family.client.data.datasource.SharedPreferencesDataStore
 import com.gardion.android.family.client.network.GardionLinks
+import com.gardion.android.family.client.network.GardionNetwork
 import org.strongswan.android.logic.CharonVpnService
 import org.strongswan.android.logic.VpnStateService
 import org.strongswan.android.logic.VpnStateService.State
@@ -25,6 +27,7 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
     companion object {
         const val KEY_IS_FROM_BOOT_RECEIVER = "key_is_from_boot_receiver"
         const val KEY_IS_FROM_USER_PRESENT_RECEIVER = "key_is_from_user_present"
+        const val KEY_IS_FROM_NETWORK_AVAILABLE = "key_is_from_network_available"
 
         fun getIntent(activity: Activity): Intent {
             return Intent(activity, GardionVpnActivity::class.java)
@@ -55,9 +58,15 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
                 mServiceConnection, Service.BIND_AUTO_CREATE)
         if (intent.extras != null) {
             if (intent.extras.getBoolean(KEY_IS_FROM_BOOT_RECEIVER, false)) {
+                Log.d("GARDION_CONNECTION", KEY_IS_FROM_BOOT_RECEIVER)
                 startVpnAfterBoot()
             }
             if (intent.extras.getBoolean(KEY_IS_FROM_USER_PRESENT_RECEIVER, false)) {
+                Log.d("GARDION_CONNECTION", KEY_IS_FROM_USER_PRESENT_RECEIVER)
+                startVPNprofile()
+            }
+            if (intent.extras.getBoolean(KEY_IS_FROM_NETWORK_AVAILABLE, false)) {
+                toast(KEY_IS_FROM_NETWORK_AVAILABLE)
                 startVPNprofile()
             }
         }
@@ -93,7 +102,6 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
     }
 
     private fun reconnectVpn() {
-        //if(isNetworkAvailable())
         if(GardionUtils.isNetworkAvailable(this)!!)
         {
             val state: VpnStateService.State? = mService?.state
@@ -102,7 +110,7 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
                 State.DISCONNECTING, State.DISABLED -> startVPNprofile()
             }
         } else {
-            toast(getString(R.string.vpn_toast_device_offline))
+            toast(getString(R.string.general_toast_device_offline))
         }
     }
 
@@ -114,12 +122,13 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
     }
 
     private fun startVpnAfterBoot() {
-        if (GardionUtils.isInternetConnectionActive(this)) {
+        if (GardionUtils.isNetworkAvailable(this)!!) {
             startVPNprofile()
         } else {
-            if (handlerCounter <= 3) {
-                handler.postDelayed({ checkInternetConnectionAndIncreaseCounter() }, 10000)
-            }
+            GardionNetwork.requestNetworkInternet(this)
+            //if (handlerCounter <= 3) {
+            //    handler.postDelayed({ checkInternetConnectionAndIncreaseCounter() }, 10000)
+            //}
         }
     }
 

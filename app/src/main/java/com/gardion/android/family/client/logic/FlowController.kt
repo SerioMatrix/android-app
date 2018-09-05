@@ -14,6 +14,7 @@ import com.gardion.android.family.client.gardionui.*
 import com.gardion.android.family.client.security.CheckAdminService
 import com.gardion.android.family.client.security.GardionConnectionService
 import com.gardion.android.family.client.security.GardionDeviceAdminReceiver
+import com.gardion.android.family.client.network.GardionNetwork
 
 class FlowController : AppCompatActivity() {
 
@@ -49,7 +50,8 @@ class FlowController : AppCompatActivity() {
         when {
             flowData.isGardionFirstStart()!! -> startWelcomeScreen()
             !flowData.isGlobalPasswordCreated()!! -> startPasswordCreationScreen()
-            !flowData.isDeviceAdminFirstSet()!! || !isDeviceAdminActive() -> startExplainAdminScreen()
+            //!flowData.isDeviceAdminFirstSet()!! || !isDeviceAdminActive() -> startExplainAdminScreen()
+            !isDeviceAdminActive() -> startExplainAdminScreen()
             !flowData.isVpnProfileSaved()!! -> showGardionLoginScreen()
             else -> startVpnService()
         }
@@ -95,7 +97,6 @@ class FlowController : AppCompatActivity() {
             REQUEST_PASSWORD_CREATION -> handlePasswordCreation(data, resultCode)
             REQUEST_EXPLAIN_ADMIN_SCREEN -> handleExplainAdminScreen()
             REQUEST_CODE_ENABLE_ADMIN -> handleDeviceAdminCreation()
-            REQUEST_PROFILE_OWNER -> handleProfileOwnerCreation(data, resultCode)
             REQUEST_GARDION_LOGIN -> handleGardionLogin(resultCode)
             REQUEST_VPN_START -> handleVpnStart()
         }
@@ -127,13 +128,13 @@ class FlowController : AppCompatActivity() {
         startActivityForResult(GardionVpnActivity.getIntent(this), REQUEST_VPN_START)
     }
 
-    private fun handleProfileOwnerCreation(data: Intent?, resultCode: Int) {
-
-    }
-
     private fun handleDeviceAdminCreation() {
         if (isDeviceAdminActive()) {
-            showGardionLoginScreen()
+            if(!flowData.isVpnProfileSaved()!!) {
+                showGardionLoginScreen()
+            } else {
+                startVpnService()
+            }
         } else {
             finish()
         }
