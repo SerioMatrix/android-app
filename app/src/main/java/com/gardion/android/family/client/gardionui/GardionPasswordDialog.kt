@@ -34,12 +34,10 @@ class GardionPasswordDialog: DialogFragment() {
     private fun takeTypedValueAndDismissDialog() {
         val listener: GardionPasswordDialogListener = activity as GardionPasswordDialogListener
         listener.onFinishEditDialog(password_dialog_editText.text.toString())
-        //GardionUtils.hideKeyboard(activity)
         this.dismiss()
     }
 
     private fun cancelGoBack() {
-        //GardionUtils.hideKeyboard(activity)
         this.dismiss()
     }
 
