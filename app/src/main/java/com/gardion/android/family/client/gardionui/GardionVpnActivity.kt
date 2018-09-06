@@ -66,7 +66,7 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
                 startVPNprofile()
             }
             if (intent.extras.getBoolean(KEY_IS_FROM_NETWORK_AVAILABLE, false)) {
-                toast(KEY_IS_FROM_NETWORK_AVAILABLE)
+                Log.d("GARDION_CONNECTION", KEY_IS_FROM_NETWORK_AVAILABLE)
                 startVPNprofile()
             }
         }
