@@ -30,7 +30,7 @@ import android.support.v7.app.AppCompatDialogFragment;
 import android.widget.Toast;
 
 import com.gardion.android.family.client.R;
-import com.gardion.android.family.client.data.VpnProfileDataSource;
+import org.strongswan.android.data.VpnProfileDataSource;
 import org.strongswan.android.logic.TrustedCertificateManager;
 
 import java.io.FileNotFoundException;

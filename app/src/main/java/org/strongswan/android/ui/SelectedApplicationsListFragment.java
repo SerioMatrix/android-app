@@ -36,7 +36,7 @@ import android.widget.Filter;
 import android.widget.ListView;
 
 import com.gardion.android.family.client.R;
-import com.gardion.android.family.client.data.VpnProfileDataSource;
+import org.strongswan.android.data.VpnProfileDataSource;
 import org.strongswan.android.ui.adapter.SelectedApplicationEntry;
 import org.strongswan.android.ui.adapter.SelectedApplicationsAdapter;
 

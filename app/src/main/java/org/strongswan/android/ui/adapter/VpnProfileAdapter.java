@@ -22,8 +22,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.gardion.android.family.client.R;
-import com.gardion.android.family.client.data.VpnProfile;
-import com.gardion.android.family.client.data.VpnType.VpnTypeFeature;
+import org.strongswan.android.data.VpnProfile;
+import org.strongswan.android.data.VpnType.VpnTypeFeature;
 
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -1,6 +1,5 @@
 package com.gardion.android.family.client.gardionui
 
-import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.view.LayoutInflater
@@ -8,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.gardion_dialog_password_fragment.*
 import com.gardion.android.family.client.R
-import android.view.inputmethod.InputMethodManager
 import com.gardion.android.family.client.utils.GardionUtils
 
 

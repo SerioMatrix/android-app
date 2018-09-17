@@ -22,7 +22,7 @@ class GardionNetwork {
                     .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
                     .build()
             val pendingIntent = PendingIntent.getBroadcast(context, 10, intent, FLAG_CANCEL_CURRENT)
-            //TODO - Pending Intent only added in AP level 23, find solution for lower API if function is needed
+            //<TODO - Pending Intent only added in AP level 23, find solution for lower API if function is needed
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 manager.registerNetworkCallback(request, pendingIntent)
             }

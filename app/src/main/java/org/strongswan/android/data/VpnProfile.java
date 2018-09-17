@@ -15,7 +15,7 @@
  * for more details.
  */
 
-package com.gardion.android.family.client.data;
+package org.strongswan.android.data;
 
 
 import android.text.TextUtils;

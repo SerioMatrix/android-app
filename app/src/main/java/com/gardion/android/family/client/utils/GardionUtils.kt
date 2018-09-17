@@ -1,11 +1,13 @@
 package com.gardion.android.family.client.utils
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkInfo
+import android.support.v4.app.ActivityCompat
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 
@@ -58,6 +60,12 @@ class GardionUtils {
                 view = View(activity)
             }
             imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+
+        fun makeRequest(activity: Activity) {
+            ActivityCompat.requestPermissions(activity,
+                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                    100)
         }
     }
 }

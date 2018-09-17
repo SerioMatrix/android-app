@@ -4,17 +4,21 @@ import android.app.admin.DeviceAdminReceiver
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.util.Log
 import com.gardion.android.family.client.R
 import com.gardion.android.family.client.data.datasource.DataStore
 import com.gardion.android.family.client.data.datasource.SharedPreferencesDataStore
 import com.gardion.android.family.client.toast
 
+
 class GardionDeviceAdminReceiver: DeviceAdminReceiver() {
 
+    private var TAG = this::class.java.name
     private lateinit var dataStore: DataStore
 
     companion object {
-        fun getComponentName(context: Context): ComponentName{
+        fun getComponentName(context: Context): ComponentName {
             return ComponentName(context.applicationContext, GardionDeviceAdminReceiver::class.java)
         }
     }
@@ -22,10 +26,12 @@ class GardionDeviceAdminReceiver: DeviceAdminReceiver() {
     override fun onEnabled(context: Context?, intent: Intent?) {
         context?.toast(context.getString(R.string.device_admin_toast_active))
         context?.stopService(Intent(context.applicationContext, CheckAdminService::class.java))
+        Log.d(TAG, "Device admin enabled")
     }
 
     override fun onDisabled(context: Context?, intent: Intent?) {
         context?.toast(context.getString(R.string.device_admin_toast_deactivated))
+        Log.d(TAG, "Device admin disabled")
         val sharedPrefs = context?.getSharedPreferences(SharedPreferencesDataStore.PREFERENCES_NAME, Context.MODE_PRIVATE)
         dataStore = SharedPreferencesDataStore(sharedPrefs!!)
         dataStore.deviceAdminFirstSet(false)
@@ -34,5 +40,12 @@ class GardionDeviceAdminReceiver: DeviceAdminReceiver() {
 
     override fun onPasswordChanged(context: Context?, intent: Intent?) {
         context?.toast(context.getString(R.string.device_admin_pw_changed))
+    }
+
+    //TODO - get to work not working atm
+    override fun onChoosePrivateKeyAlias(context: Context?, intent: Intent?, uid: Int, uri: Uri?, alias: String?): String? {
+        super.onChoosePrivateKeyAlias(context, intent, uid, uri, alias)
+        Log.d(TAG, "onChosePrivateKeyAlias called")
+        return alias
     }
 }

@@ -31,7 +31,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.gardion.android.family.client.R;
-import com.gardion.android.family.client.data.VpnProfileDataSource;
+import org.strongswan.android.data.VpnProfileDataSource;
 import org.strongswan.android.logic.TrustedCertificateManager;
 import org.strongswan.android.logic.TrustedCertificateManager.TrustedCertificateSource;
 import com.gardion.android.family.client.security.TrustedCertificateEntry;

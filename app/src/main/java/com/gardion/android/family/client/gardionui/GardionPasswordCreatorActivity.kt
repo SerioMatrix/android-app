@@ -7,7 +7,6 @@ import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_password_creator.*
 import com.gardion.android.family.client.R
 import com.gardion.android.family.client.network.GardionLinks
-import com.gardion.android.family.client.network.GardionMailer
 import com.gardion.android.family.client.network.GardionServerEventManager
 import com.gardion.android.family.client.toast
 

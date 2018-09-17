@@ -23,7 +23,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import com.gardion.android.family.client.data.VpnProfileDataSource;
+import org.strongswan.android.data.VpnProfileDataSource;
 
 public class SelectedApplicationsActivity extends AppCompatActivity
 {

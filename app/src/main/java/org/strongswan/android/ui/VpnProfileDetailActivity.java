@@ -59,11 +59,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.gardion.android.family.client.R;
-import com.gardion.android.family.client.data.VpnProfile;
-import com.gardion.android.family.client.data.VpnProfile.SelectedAppsHandling;
-import com.gardion.android.family.client.data.VpnProfileDataSource;
-import com.gardion.android.family.client.data.VpnType;
-import com.gardion.android.family.client.data.VpnType.VpnTypeFeature;
+import org.strongswan.android.data.VpnProfile;
+import org.strongswan.android.data.VpnProfile.SelectedAppsHandling;
+import org.strongswan.android.data.VpnProfileDataSource;
+import org.strongswan.android.data.VpnType;
+import org.strongswan.android.data.VpnType.VpnTypeFeature;
 import org.strongswan.android.logic.TrustedCertificateManager;
 import com.gardion.android.family.client.security.TrustedCertificateEntry;
 import org.strongswan.android.ui.adapter.CertificateIdentitiesAdapter;

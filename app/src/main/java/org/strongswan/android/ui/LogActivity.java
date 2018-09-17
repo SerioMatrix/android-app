@@ -24,7 +24,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.gardion.android.family.client.R;
-import com.gardion.android.family.client.data.LogContentProvider;
+import org.strongswan.android.data.LogContentProvider;
 import org.strongswan.android.logic.CharonVpnService;
 
 import java.io.File;

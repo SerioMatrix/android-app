@@ -20,7 +20,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.gardion.android.family.client.R;
-import com.gardion.android.family.client.data.VpnProfile;
+import org.strongswan.android.data.VpnProfile;
 import org.strongswan.android.ui.VpnProfileListFragment.OnVpnProfileSelectedListener;
 
 public class VpnProfileSelectActivity extends AppCompatActivity implements OnVpnProfileSelectedListener

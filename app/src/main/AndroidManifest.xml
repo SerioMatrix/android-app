@@ -23,6 +23,9 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 
+    <!-- TODO - for dev atm, remove if not needed anymore -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:name=".logic.GardionApplication"
         android:allowBackup="false"
@@ -35,7 +38,6 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -78,20 +80,22 @@
         </receiver>
 
         <!-- TODO - remove if not needed after testing -->
-        <receiver android:name=".network.GardionNetworkReceiver">
-
-        </receiver>
+        <receiver android:name=".network.GardionNetworkReceiver" />
 
         <activity
             android:name=".gardionui.GardionPasswordCreatorActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".gardionui.GardionLoginActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" >
+
+        </activity>
         <activity
             android:name=".gardionui.GardionVpnActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
+
         <activity
             android:name=".gardionui.GardionPopupActivity"
             android:launchMode="singleInstance" />
@@ -105,6 +109,6 @@
         <!-- Gardion services -->
         <service android:name=".security.CheckAdminService" />
         <service android:name=".security.GardionConnectionService" />
-    </application>
 
+    </application>
 </manifest>

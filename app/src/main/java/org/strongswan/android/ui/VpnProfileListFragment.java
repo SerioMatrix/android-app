@@ -41,8 +41,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.gardion.android.family.client.R;
-import com.gardion.android.family.client.data.VpnProfile;
-import com.gardion.android.family.client.data.VpnProfileDataSource;
+import org.strongswan.android.data.VpnProfile;
+import org.strongswan.android.data.VpnProfileDataSource;
 import com.gardion.android.family.client.gardionui.GardionVpnActivity;
 import org.strongswan.android.ui.adapter.VpnProfileAdapter;
 import org.strongswan.android.utils.Constants;

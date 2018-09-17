@@ -37,7 +37,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.gardion.android.family.client.R;
-import com.gardion.android.family.client.data.VpnProfile;
+import org.strongswan.android.data.VpnProfile;
 import org.strongswan.android.logic.VpnStateService;
 import org.strongswan.android.logic.VpnStateService.ErrorState;
 import org.strongswan.android.logic.VpnStateService.State;

@@ -1,14 +1,11 @@
-package org.strongswan.android.utils
+package com.gardion.android.family.client.utils
 
 import android.os.Build
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.util.Base64
-import java.nio.charset.Charset
 import java.security.*
 import javax.crypto.Cipher
-import javax.crypto.KeyGenerator
-import javax.crypto.spec.GCMParameterSpec
 
 class KeyStoreManager {
 

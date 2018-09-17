@@ -25,6 +25,7 @@ data class GardionData(
 
 
     data class Connection(
+            @SerializedName("name") val name: String,
             @SerializedName("protocol") val protocol: String,
             @SerializedName("url") val url: List<String>,
             @SerializedName("local_routing") val localRouting: List<String>,
@@ -37,7 +38,9 @@ data class GardionData(
                 @SerializedName("password") val password: String,
                 @SerializedName("ca_certs") val caCerts: String,
                 @SerializedName("client_cert") val clientCert: String,
-                @SerializedName("client-key") val clientKey: String
+                @SerializedName("client-key") val clientKey: String,
+                @SerializedName("user_certificate_alias") val userCertificateAlias: String,
+                @SerializedName("pkcs12_base64") val pkcs12Base64: String
         )
     }
 
