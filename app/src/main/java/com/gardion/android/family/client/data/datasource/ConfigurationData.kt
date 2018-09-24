@@ -5,4 +5,8 @@ interface ConfigurationData {
     fun getConfigurationDeviceId(): String?
     fun saveConfigurationDeviceName(deviceName: String)
     fun getConfigurationDeviceName(): String?
+    fun saveConfigurationPkcs12(deviceName: String)
+    fun getConfigurationPkcs12(): String?
+    fun saveConfigurationUserCertificateAlias(deviceName: String)
+    fun getConfigurationUserCertificateAlias(): String?
 }

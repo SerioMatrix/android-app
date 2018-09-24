@@ -246,5 +246,7 @@
     <string name="login_toast_connecting">Gerät wird mit Gardion verbunden…</string>
     <string name="general_toast_device_offline">Gerät ist offline, bitte gehen Sie zunächst online</string>
     <string name="login_toast_error_500">Fehler - bitte überprüfen Sie den Code.</string>
+    <string name="certificate_infotext">EXPLANATION ABOUT CERTIFICATE</string>
+    <string name="certificate_button_setup">Zertifikat installieren</string>
 
 </resources>

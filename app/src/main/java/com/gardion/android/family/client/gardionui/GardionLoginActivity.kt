@@ -34,6 +34,7 @@ class GardionLoginActivity : AppCompatActivity() {
 
     companion object {
         private var TAG = GardionLoginActivity::class.java.name
+        const val INTENT_CERTIFICATE_USED: String = "intent_certificate_used"
 
         fun getIntent(activity: Activity): Intent {
             return Intent(activity, GardionLoginActivity::class.java)
@@ -83,7 +84,7 @@ class GardionLoginActivity : AppCompatActivity() {
                     gardionProfile?.let { saveToDataBase(gardionProfile) }
                     withContext(UI, CoroutineStart.DEFAULT, {
                         toast(getString(R.string.login_toast_success))
-                        finishWithData(Activity.RESULT_OK)
+                        finishWithData(Activity.RESULT_OK, gardionProfile.connection.authentication.authType)
                     })
                 } else {
                     val responseCode = response.code()
@@ -114,14 +115,20 @@ class GardionLoginActivity : AppCompatActivity() {
             val gardionProfile  = Gson().fromJson(input, GardionData::class.java)
             Log.d("GARDION_PROFILE", gardionProfile.toString())
             gardionProfile?.let { saveToDataBase(gardionProfile) }
-            finishWithData(Activity.RESULT_OK)
+            finishWithData(Activity.RESULT_OK, gardionProfile.connection.authentication.authType)
         } catch(e: Exception) {
             toast(e.toString())
         }
     }
 
-    private fun finishWithData(result: Int) {
+    private fun finishWithData(result: Int, vpnType: String) {
         val data = Intent()
+
+        if(vpnType == "IKEV2_EAP_TLS") {
+            data.putExtra(INTENT_CERTIFICATE_USED, true)
+        } else {
+            data.putExtra(INTENT_CERTIFICATE_USED, false)
+        }
         setResult(result, data)
         finish()
     }
@@ -135,8 +142,6 @@ class GardionLoginActivity : AppCompatActivity() {
         val gardionUserCertificateAlias = gardionData.connection.authentication.userCertificateAlias
         val pkcs12Base64 = gardionData.connection.authentication.pkcs12Base64
 
-        //TODO save name of UserCertificate and use later when choose key?
-
         val vpnProfile = VpnProfile()
         vpnProfile.name = gardionNameVpn
         vpnProfile.gateway = gardionUrl
@@ -145,12 +150,6 @@ class GardionLoginActivity : AppCompatActivity() {
         vpnProfile.uuid = UUID.randomUUID()
         vpnProfile.vpnType = VpnType.valueOf(gardionVpnType)
         vpnProfile.userCertificateAlias = gardionUserCertificateAlias
-
-        //TODO - extraActivity for this?
-        if(gardionVpnType == "IKEV2_EAP_TLS") {
-            importPkcs12(pkcs12Base64, gardionUserCertificateAlias)
-            chooseKey(gardionUserCertificateAlias)
-        }
 
         val database = VpnProfileDataSource(this)
         database.open()
@@ -161,8 +160,11 @@ class GardionLoginActivity : AppCompatActivity() {
     }
 
     private fun saveConfigurationDataToSharedPrefs(data: GardionData) {
+        //TODO - functions necessary?
         dataStore.saveConfigurationDeviceId(data.device.id)
         dataStore.saveConfigurationDeviceName(data.device.name)
+        dataStore.saveConfigurationPkcs12(data.connection.authentication.pkcs12Base64)
+        dataStore.saveConfigurationUserCertificateAlias(data.connection.authentication.userCertificateAlias)
     }
 
     private fun importPkcs12(pkcs12Base64: String, alias: String) {
@@ -175,27 +177,6 @@ class GardionLoginActivity : AppCompatActivity() {
             startActivityForResult(intent, INSTALL_PKCS12)
         } catch (e: Exception) {
             Log.d("GARDION_IMPORT_PKCS12", e.toString())
-        }
-    }
-
-    private fun chooseKey(defaultAlias: String) {
-        //TODO - change to meaningful Callback, can maybe be used for checking if user has successfully installed certificates
-        val keyChainAliasCallback = KeyChainAliasCallback {toast("hallo")}
-        //TODO - change null to better defaults
-        KeyChain.choosePrivateKeyAlias(this, keyChainAliasCallback, null, null, null, -1, defaultAlias)
-    }
-
-    //TODO - check if / how to make onActivityResult work
-    //atm always returns RESULT_CANCELED might be a known bug (https://issuetracker.google.com/issues/37030890)
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == INSTALL_PKCS12) {
-            if(resultCode == Activity.RESULT_OK) {
-                Log.d("GARDION_CREDENTIALS", "installed credentials")
-            }
-            if(resultCode == Activity.RESULT_CANCELED) {
-                Log.d("GARDION_CREDENTIALS", "failed installing credentials")
-            }
         }
     }
 

@@ -36,8 +36,10 @@
             android:name=".logic.FlowController"
             android:label="@string/main_activity_name"
             android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -87,15 +89,11 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".gardionui.GardionLoginActivity"
-            android:screenOrientation="portrait" >
-
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".gardionui.GardionVpnActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden">
-        </activity>
-
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".gardionui.GardionPopupActivity"
             android:launchMode="singleInstance" />
@@ -105,10 +103,14 @@
         <activity
             android:name=".gardionui.GardionAdminActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".gardionui.GardionCertificateActivity"
+            android:screenOrientation="portrait" />
 
         <!-- Gardion services -->
         <service android:name=".security.CheckAdminService" />
         <service android:name=".security.GardionConnectionService" />
 
     </application>
+
 </manifest>

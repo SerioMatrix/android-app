@@ -18,9 +18,13 @@ class SharedPreferencesDataStore constructor(private val preferences: SharedPref
         private const val DEVICE_ADMIN_FIRST_SET = "device_admin_first_set"
         private const val GARDION_APP_UNLOCKED = "gardion_app_unlocked"
         private const val GARDION_FIRST_START = "gardion_first_start"
+        private const val USER_CERTIFICATE_CHOSEN = "user_certificate_chosen"
+        private const val USER_CERTIFICATE_USED = "user_certificate_used"
         //Gardion configuration data
         private const val CONFIGURATION_DEVICE_ID = "configuration_device_id"
         private const val CONFIGURATION_DEVICE_NAME = "configuration_device_name"
+        private const val CONFIGURATION_PKCS12 = "configuration_pkcs12"
+        private const val CONFIGURATION_USER_CERTIFICATE_ALIAS = "configuration_user_certificate_alias"
 
     }
 
@@ -80,11 +84,43 @@ class SharedPreferencesDataStore constructor(private val preferences: SharedPref
         return preferences[CONFIGURATION_DEVICE_NAME]
     }
 
+    override fun saveConfigurationPkcs12(pkcs12Base64: String) {
+        preferences.set(CONFIGURATION_PKCS12, pkcs12Base64)
+    }
+
+    override fun getConfigurationPkcs12(): String? {
+        return preferences[CONFIGURATION_PKCS12]
+    }
+
+    override fun saveConfigurationUserCertificateAlias(alias: String) {
+        preferences.set(CONFIGURATION_USER_CERTIFICATE_ALIAS, alias)
+    }
+
+    override fun getConfigurationUserCertificateAlias(): String? {
+        return preferences[CONFIGURATION_USER_CERTIFICATE_ALIAS]
+    }
+
     override fun isGardionFirstStart(): Boolean? {
         return preferences[GARDION_FIRST_START, true]
     }
 
     override fun gardionFirstStart(firstStart: Boolean) {
         preferences.set(GARDION_FIRST_START, firstStart)
+    }
+
+    override fun isUserCertificateChosen(): Boolean? {
+        return preferences[USER_CERTIFICATE_CHOSEN, false]
+    }
+
+    override fun userCertificateChosen(certificateChosen: Boolean) {
+        preferences.set(USER_CERTIFICATE_CHOSEN, certificateChosen)
+    }
+
+    override fun isUserCertificateUsed(): Boolean? {
+        return preferences[USER_CERTIFICATE_USED, false]
+    }
+
+    override fun userCertificateUsed(certificate_used: Boolean) {
+        preferences.set(USER_CERTIFICATE_USED, certificate_used)
     }
 }

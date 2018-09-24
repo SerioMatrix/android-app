@@ -13,4 +13,8 @@ interface FlowData {
     fun isGardionUnlocked(): Boolean?
     fun isGardionFirstStart(): Boolean?
     fun gardionFirstStart(firstStart: Boolean)
+    fun isUserCertificateChosen(): Boolean?
+    fun userCertificateChosen(chosen: Boolean)
+    fun isUserCertificateUsed(): Boolean?
+    fun userCertificateUsed(certificate: Boolean)
 }

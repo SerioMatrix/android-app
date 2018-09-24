@@ -14,7 +14,6 @@ import com.gardion.android.family.client.gardionui.*
 import com.gardion.android.family.client.security.CheckAdminService
 import com.gardion.android.family.client.security.GardionConnectionService
 import com.gardion.android.family.client.security.GardionDeviceAdminReceiver
-import com.gardion.android.family.client.network.GardionNetwork
 
 class FlowController : AppCompatActivity() {
 
@@ -28,6 +27,9 @@ class FlowController : AppCompatActivity() {
         private const val REQUEST_VPN_START: Int = 104
         private const val REQUEST_WELCOME_SCREEN: Int = 105
         private const val REQUEST_EXPLAIN_ADMIN_SCREEN: Int = 106
+        private const val REQUEST_IMPORT_CERTIFICATE: Int = 107
+
+        private const val INSTALL_PKCS12 = 200
     }
 
     private val TAG = FlowController::class.java.simpleName
@@ -53,6 +55,7 @@ class FlowController : AppCompatActivity() {
             //!flowData.isDeviceAdminFirstSet()!! || !isDeviceAdminActive() -> startExplainAdminScreen()
             !isDeviceAdminActive() -> startExplainAdminScreen()
             !flowData.isVpnProfileSaved()!! -> showGardionLoginScreen()
+            flowData.isUserCertificateUsed()!! && !flowData.isUserCertificateChosen()!! -> startCertificateInstallation()
             else -> startVpnService()
         }
     }
@@ -81,6 +84,10 @@ class FlowController : AppCompatActivity() {
         startActivityForResult(GardionPasswordCreatorActivity.getIntent(this), REQUEST_PASSWORD_CREATION)
     }
 
+    private fun startCertificateInstallation() {
+        startActivityForResult(GardionCertificateActivity.getIntent(this), REQUEST_IMPORT_CERTIFICATE)
+    }
+
     private fun isMyServiceRunning(serviceClass: Class<*>): Boolean {
         val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         for (service in manager.getRunningServices(Integer.MAX_VALUE)) {
@@ -97,8 +104,20 @@ class FlowController : AppCompatActivity() {
             REQUEST_PASSWORD_CREATION -> handlePasswordCreation(data, resultCode)
             REQUEST_EXPLAIN_ADMIN_SCREEN -> handleExplainAdminScreen()
             REQUEST_CODE_ENABLE_ADMIN -> handleDeviceAdminCreation()
-            REQUEST_GARDION_LOGIN -> handleGardionLogin(resultCode)
+            REQUEST_GARDION_LOGIN -> handleGardionLogin(data, resultCode)
+            REQUEST_IMPORT_CERTIFICATE -> handleGardionCertificate(resultCode)
             REQUEST_VPN_START -> handleVpnStart()
+        }
+    }
+
+    private fun handleGardionCertificate(resultCode: Int) {
+        if (resultCode == Activity.RESULT_OK) {
+            flowData.userCertificateChosen(true)
+            startVpnService()
+            startGardionConnectionService()
+        } else {
+            flowData.userCertificateChosen(false)
+            finish()
         }
     }
 
@@ -115,10 +134,20 @@ class FlowController : AppCompatActivity() {
         finish()
     }
 
-    private fun handleGardionLogin(resultCode: Int) {
+    private fun handleGardionLogin(data: Intent?, resultCode: Int) {
         if (resultCode == Activity.RESULT_OK) {
-            startVpnService()
-            startGardionConnectionService()
+            if (data != null) {
+                flowData.userCertificateUsed(data.extras.getBoolean(GardionLoginActivity.INTENT_CERTIFICATE_USED))
+            } else {
+                flowData.userCertificateUsed(false)
+            }
+
+            if(flowData.isUserCertificateUsed()!!) {
+                startCertificateInstallation()
+            } else {
+                startVpnService()
+                startGardionConnectionService()
+            }
         } else {
             finish()
         }
@@ -128,6 +157,7 @@ class FlowController : AppCompatActivity() {
         startActivityForResult(GardionVpnActivity.getIntent(this), REQUEST_VPN_START)
     }
 
+    //TODO - check if that still make sense
     private fun handleDeviceAdminCreation() {
         if (isDeviceAdminActive()) {
             if(!flowData.isVpnProfileSaved()!!) {
