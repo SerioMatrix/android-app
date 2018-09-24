@@ -11,20 +11,20 @@ import android.util.Base64
 import android.util.Log
 import com.gardion.android.family.client.R
 import com.gardion.android.family.client.data.datasource.DataStore
-import com.gardion.android.family.client.data.datasource.FlowData
 import com.gardion.android.family.client.data.datasource.SharedPreferencesDataStore
-import com.gardion.android.family.client.logic.FlowController
 import kotlinx.android.synthetic.main.activity_gardion_certificate.*
-import kotlinx.android.synthetic.main.activity_password_creator.*
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.Job
+import kotlinx.coroutines.experimental.launch
 import org.strongswan.android.data.VpnProfileDataSource
 
 class GardionCertificateActivity : AppCompatActivity() {
 
-    private lateinit var flowData: FlowData
-
-    //TODO - check if only dataStore is enough here and we dont need exte flowData
+    private var job: Job = Job()
     private lateinit var dataStore: DataStore
     private val INSTALL_PKCS12 = 100
+    private val TAG =  this::class.java.name
+
     companion object {
 
 
@@ -45,14 +45,16 @@ class GardionCertificateActivity : AppCompatActivity() {
         val pkcs12Base64 = dataStore.getConfigurationPkcs12()
         val alias = dataStore.getConfigurationUserCertificateAlias() ?: "Gardion User"
 
-        Log.d("GARDION_CONNECTION", pkcs12Base64.toString())
+        Log.d(TAG, pkcs12Base64.toString())
 
         if(pkcs12Base64 != null) {
-            importPkcs12(pkcs12Base64, alias)
+            job.cancel()
+            job = launch(CommonPool) {
+                importPkcs12(pkcs12Base64, alias)
+            }
         } else {
-            Log.e("GARDION_CERTIFICATE", "installCertificate: no PKCS12 found in dataStore")
+            Log.e(TAG, "installCertificate: no PKCS12 found in dataStore")
         }
-        //chooseKeyForVpn()
     }
 
     private fun chooseKeyForVpn() {
@@ -65,7 +67,7 @@ class GardionCertificateActivity : AppCompatActivity() {
                 chooseKey(vpnProfile.userCertificateAlias)
             }
         } catch (e: Exception) {
-            Log.d("GARDION_CERTIFICATE", e.toString())
+            Log.d(TAG, e.toString())
         }
     }
 
@@ -73,11 +75,11 @@ class GardionCertificateActivity : AppCompatActivity() {
     private fun chooseKey(defaultAlias: String) {
         val keyChainAliasCallback = KeyChainAliasCallback {
             if(it != null) {
-                Log.d("GARDION_CERTIFICATE", "installed Certificate: " + it.toString())
+                Log.d(TAG, "installed Certificate: " + it.toString())
                 finishActivity()
             }
             else {
-                Log.d("GARDION_CERTIFICATE", "not installed")
+                Log.d(TAG, "not installed")
             }
         }
         KeyChain.choosePrivateKeyAlias(this, keyChainAliasCallback, null, null, null, -1, defaultAlias)
@@ -89,10 +91,10 @@ class GardionCertificateActivity : AppCompatActivity() {
             val intent = KeyChain.createInstallIntent()
             intent.putExtra(KeyChain.EXTRA_NAME, alias)
             intent.putExtra(KeyChain.EXTRA_PKCS12, pkcs12ByteArray)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            //intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivityForResult(intent, INSTALL_PKCS12)
         } catch (e: Exception) {
-            Log.d("GARDION_IMPORT_PKCS12", e.toString())
+            Log.d(TAG, e.toString())
         }
     }
 
@@ -103,15 +105,13 @@ class GardionCertificateActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        //TODO - check if / how to make onActivityResult for chooseKey work
-        //atm always returns RESULT_CANCELED might be a known bug (https://issuetracker.google.com/issues/37030890)
-        //TODO - move to activity gardion certificate
         if(requestCode == INSTALL_PKCS12) {
             if(resultCode == Activity.RESULT_OK) {
-                Log.d("GARDION_CREDENTIALS", "installed credentials")
+                Log.d(TAG, "installed certificate")
+                chooseKeyForVpn()
             }
             if(resultCode == Activity.RESULT_CANCELED) {
-                Log.d("GARDION_CREDENTIALS", "failed installing credentials")
+                Log.d(TAG, "failed installing credentials")
             }
         }
     }
