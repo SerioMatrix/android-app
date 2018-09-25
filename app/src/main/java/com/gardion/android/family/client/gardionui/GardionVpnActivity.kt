@@ -58,15 +58,15 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
                 mServiceConnection, Service.BIND_AUTO_CREATE)
         if (intent.extras != null) {
             if (intent.extras.getBoolean(KEY_IS_FROM_BOOT_RECEIVER, false)) {
-                Log.d("GARDION_CONNECTION", KEY_IS_FROM_BOOT_RECEIVER)
+                Log.d("GARDION_CONNECTION", "${this::class.java.simpleName}: $KEY_IS_FROM_BOOT_RECEIVER")
                 startVpnAfterBoot()
             }
             if (intent.extras.getBoolean(KEY_IS_FROM_USER_PRESENT_RECEIVER, false)) {
-                Log.d("GARDION_CONNECTION", KEY_IS_FROM_USER_PRESENT_RECEIVER)
+                Log.d("GARDION_CONNECTION", "${this::class.java.simpleName}: $KEY_IS_FROM_USER_PRESENT_RECEIVER")
                 startVPNprofile()
             }
             if (intent.extras.getBoolean(KEY_IS_FROM_NETWORK_AVAILABLE, false)) {
-                Log.d("GARDION_CONNECTION", KEY_IS_FROM_NETWORK_AVAILABLE)
+                Log.d("GARDION_CONNECTION", "${this::class.java.simpleName}: $KEY_IS_FROM_NETWORK_AVAILABLE")
                 startVPNprofile()
             }
         }
