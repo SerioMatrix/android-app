@@ -10,6 +10,7 @@ import android.net.NetworkInfo
 import android.support.v4.app.ActivityCompat
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import com.gardion.android.family.client.data.datasource.SharedPreferencesDataStore
 
 class GardionUtils {
 
@@ -66,6 +67,14 @@ class GardionUtils {
             ActivityCompat.requestPermissions(activity,
                     arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
                     100)
+        }
+
+        fun isVpnReady(context: Context?): Boolean {
+            val sharedPrefs = context?.applicationContext?.getSharedPreferences(SharedPreferencesDataStore.PREFERENCES_NAME, Context.MODE_PRIVATE)
+            val dataStore = SharedPreferencesDataStore(sharedPrefs!!)
+            return dataStore.isVpnProfileSaved()!! &&
+                    (!dataStore.isUserCertificateUsed()!! ||
+                            (dataStore.isUserCertificateUsed()!! && dataStore.isUserCertificateChosen()!!))
         }
     }
 }

@@ -21,15 +21,11 @@ class FlowController : AppCompatActivity() {
         private const val REQUEST_CODE_ENABLE_ADMIN: Int = 200
 
         private const val REQUEST_PASSWORD_CREATION: Int = 100
-        private const val REQUEST_DEVICE_ADMIN_INFO_SCREEN: Int = 101
-        private const val REQUEST_PROFILE_OWNER: Int = 102
+        private const val REQUEST_EXPLAIN_ADMIN_SCREEN: Int = 101
         private const val REQUEST_GARDION_LOGIN: Int = 103
         private const val REQUEST_VPN_START: Int = 104
         private const val REQUEST_WELCOME_SCREEN: Int = 105
-        private const val REQUEST_EXPLAIN_ADMIN_SCREEN: Int = 106
         private const val REQUEST_IMPORT_CERTIFICATE: Int = 107
-
-        private const val INSTALL_PKCS12 = 200
     }
 
     private val TAG = FlowController::class.java.simpleName
@@ -163,7 +159,7 @@ class FlowController : AppCompatActivity() {
             if(!flowData.isVpnProfileSaved()!!) {
                 showGardionLoginScreen()
             } else {
-                startVpnService()
+                finish()
             }
         } else {
             finish()

@@ -36,7 +36,7 @@ class GardionCertificateActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gardion_certificate)
 
-        start_initial_setup_button.setOnClickListener {installCertificate(this)}
+        install_certificate_button.setOnClickListener {installCertificate(this)}
     }
 
     private fun installCertificate(context: Context?) {

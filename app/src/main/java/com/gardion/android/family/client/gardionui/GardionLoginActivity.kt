@@ -160,7 +160,6 @@ class GardionLoginActivity : AppCompatActivity() {
     }
 
     private fun saveConfigurationDataToSharedPrefs(data: GardionData) {
-        //TODO - functions necessary?
         dataStore.saveConfigurationDeviceId(data.device.id)
         dataStore.saveConfigurationDeviceName(data.device.name)
         dataStore.saveConfigurationPkcs12(data.connection.authentication.pkcs12Base64)
