@@ -13,14 +13,11 @@ class GardionNetworkReceiver : BroadcastReceiver() {
         var mService: VpnStateService? = null
         val state: VpnStateService.State? = mService?.state
 
-        Log.d("GARDION_CONNECTION", state.toString())
+        Log.d("GARDION_CONNECTION", "${this::class.java.simpleName}: state: ${state.toString()}")
 
         when (state) {
             VpnStateService.State.CONNECTED, VpnStateService.State.CONNECTING -> Log.d("GARDION_CONNECTION", "connec")
             VpnStateService.State.DISCONNECTING, VpnStateService.State.DISABLED -> Log.d("GARDION_CONNECTION", "disconnec")
         }
-
-
     }
-
 }
