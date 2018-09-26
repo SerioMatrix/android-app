@@ -15,6 +15,8 @@ import com.gardion.android.family.client.data.datasource.SharedPreferencesDataSt
 class GardionUtils {
 
     companion object {
+
+        //TODO - check if this is really the easiest way to implement this functionality
         fun isVpnConnected(context: Context?): Boolean {
             val connectivityManager: ConnectivityManager =
                     context?.applicationContext?.getSystemService(Context.CONNECTIVITY_SERVICE)
