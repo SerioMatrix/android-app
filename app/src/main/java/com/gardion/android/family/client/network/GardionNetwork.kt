@@ -63,7 +63,6 @@ class GardionNetwork {
 
                 val intent = Intent(context, GardionVpnActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                intent.putExtra(GardionVpnActivity.KEY_IS_FROM_NO_VPN, true)
 
                 //TODO - attention FLAG changed
                 val pendingIntent = PendingIntent.getActivity(context, 10, intent, FLAG_ONE_SHOT)
