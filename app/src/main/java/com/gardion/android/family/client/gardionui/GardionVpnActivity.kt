@@ -75,8 +75,8 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
     }
 
     private fun initButtons() {
-        vpn_status_disconnect_button.setOnClickListener { tryDisconnectGardionVpn() }
         vpn_status_reconnect_button.setOnClickListener { reconnectVpn() }
+        vpn_status_disconnect_button.setOnClickListener { tryDisconnectGardionVpn() }
         contact_support_button.setOnClickListener { GardionLinks(this).goToForum() }
     }
 
@@ -151,6 +151,7 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
             State.CONNECTED -> {
                 vpn_status_info.text = getString(R.string.vpn_status_connected)
                 vpn_status_image.setImageResource(R.drawable.ic_conn_success)
+                Log.d("GARDION_CONNECTION", "connected")
             }
             State.DISCONNECTING -> {
                 vpn_status_info.text = getString(R.string.vpn_status_disconnecting)
@@ -159,6 +160,7 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
             State.DISABLED -> {
                 vpn_status_info.text = getString(R.string.vpn_status_disabled)
                 vpn_status_image.setImageResource(R.drawable.ic_conn_fail)
+                Log.d("GARDION_CONNECTION", "disabled")
             }
         }
     }
