@@ -17,4 +17,7 @@ interface FlowData {
     fun userCertificateChosen(chosen: Boolean)
     fun isUserCertificateUsed(): Boolean?
     fun userCertificateUsed(certificate: Boolean)
+    fun isGardionDeactivatedAllowed(): Boolean?
+    fun gardionDeactivatedAllowed(deactivated: Boolean)
+
 }

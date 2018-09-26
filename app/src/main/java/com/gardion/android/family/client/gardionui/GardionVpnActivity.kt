@@ -96,14 +96,18 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
         if (inputText == savedPassword){
             mService?.disconnect()
             toast(getString(R.string.password_toast_gardion_deactivated))
+            flowData.gardionDeactivatedAllowed(true)
         } else {
             toast(getString(R.string.password_toast_pin_wrong))
         }
     }
 
     private fun reconnectVpn() {
+        val sharedPrefs = this.getSharedPreferences(SharedPreferencesDataStore.PREFERENCES_NAME, Context.MODE_PRIVATE)
+        flowData = SharedPreferencesDataStore(sharedPrefs)
         if(GardionUtils.isNetworkAvailable(this)!!)
         {
+            flowData.gardionDeactivatedAllowed(false)
             val state: VpnStateService.State? = mService?.state
             when (state) {
                 State.CONNECTED, State.CONNECTING -> forceReconnectVpn()
@@ -161,12 +165,28 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
                 vpn_status_info.text = getString(R.string.vpn_status_disabled)
                 vpn_status_image.setImageResource(R.drawable.ic_conn_fail)
                 Log.d("GARDION_CONNECTION", "disabled")
+                onDisabled()
             }
         }
     }
 
     override fun stateChanged() {
         updateView()
+    }
+
+    private fun onDisabled() {
+        //TODO - check if it makes sense to have this flowData = in that many functions or can do only once?
+        val sharedPrefs = this.getSharedPreferences(SharedPreferencesDataStore.PREFERENCES_NAME, Context.MODE_PRIVATE)
+        flowData = SharedPreferencesDataStore(sharedPrefs)
+        Log.d("GARDION_CONNECTION", "onDisabled")
+        if(flowData.isGardionDeactivatedAllowed()!!) {
+            Log.d("GARDION_CONNECTION", "deactivated allowed")
+        } else {
+            Log.d("GARDION_CONNECTION", "deactivated not allowed will reconnect")
+            startVPNprofile()
+        }
+        //TODO - check if allowed (flag) and act - force connect / no action
+        //TODO - send out event accordingly. done here?. already implmented?
     }
 
     private fun startVPNprofile() {

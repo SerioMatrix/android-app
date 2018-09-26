@@ -20,6 +20,7 @@ class SharedPreferencesDataStore constructor(private val preferences: SharedPref
         private const val GARDION_FIRST_START = "gardion_first_start"
         private const val USER_CERTIFICATE_CHOSEN = "user_certificate_chosen"
         private const val USER_CERTIFICATE_USED = "user_certificate_used"
+        private const val GARDION_DEACTIVATED_ALLOWED = "gardion_deactivated_allowed"
         //Gardion configuration data
         private const val CONFIGURATION_DEVICE_ID = "configuration_device_id"
         private const val CONFIGURATION_DEVICE_NAME = "configuration_device_name"
@@ -122,5 +123,13 @@ class SharedPreferencesDataStore constructor(private val preferences: SharedPref
 
     override fun userCertificateUsed(certificate_used: Boolean) {
         preferences.set(USER_CERTIFICATE_USED, certificate_used)
+    }
+
+    override fun isGardionDeactivatedAllowed(): Boolean? {
+        return preferences[GARDION_DEACTIVATED_ALLOWED]
+    }
+
+    override fun gardionDeactivatedAllowed(deactivated: Boolean) {
+        preferences.set(GARDION_DEACTIVATED_ALLOWED, deactivated)
     }
 }
