@@ -23,7 +23,8 @@ class GardionServerEventManager(private val context: Context) {
     }
 
     enum class GardionEventType {
-        ADMIN_DEACTIVATION, VPN_DISCONNECTED, VPN_REMOVED, APPLICATION_PASS, VPN_INTERVAL_CHECK, VPN_CONNECTED
+        ADMIN_DEACTIVATION, VPN_DISCONNECTED, VPN_REMOVED, APPLICATION_PASS, VPN_INTERVAL_CHECK,
+        VPN_CONNECTED, VPN_DEACTIVATED
     }
 
     fun sendGardionEvent(type: GardionEventType) {
@@ -67,6 +68,7 @@ class GardionServerEventManager(private val context: Context) {
             GardionEventType.APPLICATION_PASS -> context.getString(R.string.event_application_pass_id)
             GardionEventType.VPN_INTERVAL_CHECK -> context.getString(R.string.event_interval_check_id)
             GardionEventType.VPN_CONNECTED -> context.getString(R.string.event_vpn_connected_id)
+            GardionEventType.VPN_DEACTIVATED -> context.getString(R.string.event_vpn_deactivated_id)
         }
     }
 
@@ -78,6 +80,7 @@ class GardionServerEventManager(private val context: Context) {
             GardionEventType.APPLICATION_PASS -> context.getString(R.string.event_application_pass_desc)
             GardionEventType.VPN_INTERVAL_CHECK -> context.getString(R.string.event_interval_check_desc)
             GardionEventType.VPN_CONNECTED -> context.getString(R.string.event_vpn_connected_desc)
+            GardionEventType.VPN_DEACTIVATED -> context.getString(R.string.event_vpn_deactivated)
         }
     }
 

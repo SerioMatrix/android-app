@@ -15,6 +15,7 @@ import com.gardion.android.family.client.data.datasource.FlowData
 import com.gardion.android.family.client.data.datasource.SharedPreferencesDataStore
 import com.gardion.android.family.client.network.GardionLinks
 import com.gardion.android.family.client.network.GardionNetwork
+import com.gardion.android.family.client.network.GardionServerEventManager
 import org.strongswan.android.logic.CharonVpnService
 import org.strongswan.android.logic.VpnStateService
 import org.strongswan.android.logic.VpnStateService.State
@@ -103,6 +104,8 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
             mService?.disconnect()
             toast(getString(R.string.password_toast_gardion_deactivated))
             flowData.gardionDeactivatedAllowed(true)
+            val eventManager = GardionServerEventManager(this)
+            eventManager.sendGardionEvent(GardionServerEventManager.GardionEventType.VPN_DEACTIVATED)
         } else {
             toast(getString(R.string.password_toast_pin_wrong))
         }

@@ -248,4 +248,6 @@
     <string name="login_toast_error_500">Fehler - bitte überprüfen Sie den Code.</string>
     <string name="certificate_infotext">Um Sie sicher mit Gardion zu verbinden, werden wir nun ein Zertifikat auf diesem Gerät installieren. Bitte whäen Sie hierzu \"Zertifikat installieren" aus. Im folgen Dialog bestätigen Sie bitte mit \"OK\" die Installation des Zertifikats. \nIm nächsten Schritt bestätigen Sie nochmals mit "Auswählen" das Zertifikat "Gardion User". </string>
     <string name="certificate_button_setup">Zertifikat installieren</string>
+    <string name="event_vpn_deactivated">Gardion VPN was deactivated</string>
+    <string name="event_vpn_deactivated_id">6</string>
 </resources>
