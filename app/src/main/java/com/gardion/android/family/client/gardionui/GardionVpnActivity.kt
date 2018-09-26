@@ -185,7 +185,6 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
             Log.d("GARDION_CONNECTION", "deactivated not allowed will reconnect")
             startVPNprofile()
         }
-        //TODO - check if allowed (flag) and act - force connect / no action
         //TODO - send out event accordingly. done here?. already implmented?
     }
 
