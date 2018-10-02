@@ -21,6 +21,8 @@ import org.strongswan.android.logic.VpnStateService
 import org.strongswan.android.logic.VpnStateService.State
 import com.gardion.android.family.client.toast
 import com.gardion.android.family.client.utils.GardionUtils
+import android.content.Intent
+import java.util.*
 
 
 class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener, GardionPasswordDialog.GardionPasswordDialogListener {
@@ -29,6 +31,7 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
         const val KEY_IS_FROM_BOOT_RECEIVER = "key_is_from_boot_receiver"
         const val KEY_IS_FROM_USER_PRESENT_RECEIVER = "key_is_from_user_present"
         const val KEY_IS_FROM_NETWORK_AVAILABLE = "key_is_from_network_available"
+        const val KEY_IS_FROM_DEACTIVATED_VPN = "key_is_from_deactivated_vpn"
 
         fun getIntent(activity: Activity): Intent {
             return Intent(activity, GardionVpnActivity::class.java)
@@ -75,6 +78,10 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
                 if (intent.extras.getBoolean(KEY_IS_FROM_NETWORK_AVAILABLE, false)) {
                     Log.d("GARDION_CONNECTION", "${this::class.java.simpleName}: $KEY_IS_FROM_NETWORK_AVAILABLE")
                     startVPNprofile()
+                }
+                if (intent.extras.getBoolean(KEY_IS_FROM_DEACTIVATED_VPN, false)) {
+                    Log.d("GARDION_CONNECTION", "${this::class.java.simpleName}: $KEY_IS_FROM_DEACTIVATED_VPN")
+                    //startVPNprofile()
                 }
             }
             startVPNprofile()
@@ -183,6 +190,8 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
         updateView()
     }
 
+
+    //TODO - finish implementing this
     private fun onDisabled() {
         //TODO - check if it makes sense to have this flowData = in that many functions or can do only once?
         val sharedPrefs = this.getSharedPreferences(SharedPreferencesDataStore.PREFERENCES_NAME, Context.MODE_PRIVATE)
@@ -192,9 +201,32 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
             Log.d("GARDION_CONNECTION", "deactivated allowed")
         } else {
             Log.d("GARDION_CONNECTION", "deactivated not allowed will reconnect")
-            startVPNprofile()
+            //startVPNprofile()
+            //startActivity(intent)
+            //bringUpVpn(this)
         }
         //TODO - send out event accordingly. done here?. already implmented?
+    }
+
+    //TODO -  rename this
+    private fun bringUpVpn(context: Context) {
+        val handler = Handler()
+        val timer = Timer()
+        val doTask = object : TimerTask() {
+            override fun run() {
+                handler.post {
+                    try {
+                        val intent = Intent(context, GardionVpnActivity::class.java)
+                        intent.putExtra(KEY_IS_FROM_DEACTIVATED_VPN, true)
+                        finish()
+                        startActivity(intent)
+                    } catch (e: Exception) {
+                        // TODO Auto-generated catch block
+                    }
+                }
+            }
+        }
+        timer.schedule(doTask, 0, 10000)
     }
 
     private fun startVPNprofile() {

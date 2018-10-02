@@ -36,7 +36,6 @@
             android:name=".logic.FlowController"
             android:label="@string/main_activity_name"
             android:screenOrientation="portrait">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -111,6 +110,7 @@
         <service android:name=".security.CheckAdminService" />
         <service android:name=".security.GardionConnectionService" />
 
+        <activity android:name=".gardionui.TestActivity"></activity>
     </application>
 
 </manifest>
