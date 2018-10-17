@@ -41,11 +41,4 @@ class GardionDeviceAdminReceiver: DeviceAdminReceiver() {
     override fun onPasswordChanged(context: Context?, intent: Intent?) {
         context?.toast(context.getString(R.string.device_admin_pw_changed))
     }
-
-    //TODO - get to work not working atm
-    override fun onChoosePrivateKeyAlias(context: Context?, intent: Intent?, uid: Int, uri: Uri?, alias: String?): String? {
-        super.onChoosePrivateKeyAlias(context, intent, uid, uri, alias)
-        Log.d(TAG, "onChosePrivateKeyAlias called")
-        return alias
-    }
 }

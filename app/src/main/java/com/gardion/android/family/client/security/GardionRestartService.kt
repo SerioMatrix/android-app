@@ -10,12 +10,9 @@ import android.util.Log
 import com.gardion.android.family.client.data.datasource.SharedPreferencesDataStore
 import com.gardion.android.family.client.gardionui.GardionVpnActivity
 import com.gardion.android.family.client.logic.GardionRestartReceiver
-import java.util.*
 import java.lang.Exception
 
 class GardionRestartService: Service() {
-
-    private val binder: IBinder = ConnectionLocalBinder()
 
     companion object {
         var handler: Handler = Handler()
@@ -24,7 +21,6 @@ class GardionRestartService: Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d("GARDION_CONNECTION", "${javaClass.simpleName} started")
-        //val handler = Handler()
         runnable = object : Runnable {
             override fun run() {
                 restartApp()
