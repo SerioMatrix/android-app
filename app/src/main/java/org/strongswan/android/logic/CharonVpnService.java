@@ -49,6 +49,9 @@ import org.strongswan.android.logic.VpnStateService.ErrorState;
 import org.strongswan.android.logic.VpnStateService.State;
 import org.strongswan.android.logic.imc.ImcState;
 import org.strongswan.android.logic.imc.RemediationInstruction;
+
+import com.gardion.android.family.client.logic.FlowController;
+import com.gardion.android.family.client.logic.GardionRestartReceiver;
 import com.gardion.android.family.client.network.GardionServerEventManager;
 import org.strongswan.android.ui.MainActivity;
 import org.strongswan.android.utils.IPRange;
@@ -176,6 +179,12 @@ public class CharonVpnService extends VpnService implements Runnable, VpnStateSe
 	{	/* the system revoked the rights grated with the initial prepare() call.
 		 * called when the user clicks disconnect in the system's VPN dialog */
 		setNextProfile(null);
+
+		//TODO - make own GardionVpnService which implements CHaronVpnService and overrides where necesasary?
+		// might be cleaner
+		Log.d("GARDION_CONNECTION", "onRevoke");
+		Intent intent = new Intent(getApplicationContext(), FlowController.class);
+		startActivity(intent);
 	}
 
 	@Override

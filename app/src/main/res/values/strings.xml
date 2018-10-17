@@ -226,7 +226,7 @@
     <string name="vpn_status_disabled">Deaktiviert</string>
     <string name="vpn_toast_force_reconnect">Neue Verbindung</string>
     <string name="password_dialog_button_unlock">Deaktivieren</string>
-    <string name="password_dialog_infotext">Bitten geben Sie die Eltern-PIN ein, um Gardion temporär zu deaktivieren.</string>
+    <string name="password_dialog_infotext">Bitten geben Sie die Eltern-PIN ein, um Gardion zu deaktivieren.</string>
     <string name="password_dialog_hint_pin">PIN eingeben…</string>
     <string name="device_admin_infotext">Um zu verhindern, dass Gardion wieder deinstalliert wird, werden wir Gardion als \"Geräteverwalter\" einstellen.</string>
     <string name="device_admin_button_start">Weiter</string>
@@ -241,11 +241,14 @@
     <string name="password_hint_repeat">PIN wiederholen…</string>
     <string name="vpn_toast_device_offline">Gerät ist offline</string>
     <string name="login_toast_too_short">Eingegebener Code ist zu kurz</string>
-    <string name="password_toast_gardion_deactivated">Gardion wurde temporär deaktiviert.</string>
+    <string name="password_toast_gardion_deactivated">Gardion wurde deaktiviert. Bitte denken Sie daran, Gardion wieder zu aktivieren.</string>
     <string name="password_dialog_button_cancel">Zurück</string>
     <string name="login_toast_connecting">Gerät wird mit Gardion verbunden…</string>
     <string name="general_toast_device_offline">Gerät ist offline, bitte gehen Sie zunächst online</string>
     <string name="login_toast_error_500">Fehler - bitte überprüfen Sie den Code.</string>
     <string name="certificate_infotext">Um Sie sicher mit Gardion zu verbinden, werden wir nun ein Zertifikat auf diesem Gerät installieren. Bitte whäen Sie hierzu \"Zertifikat installieren" aus. Im folgen Dialog bestätigen Sie bitte mit \"OK\" die Installation des Zertifikats. \nIm nächsten Schritt bestätigen Sie nochmals mit "Auswählen" das Zertifikat "Gardion User". </string>
     <string name="certificate_button_setup">Zertifikat installieren</string>
+    <string name="event_vpn_deactivated">Gardion VPN was deactivated</string>
+    <string name="event_vpn_deactivated_id">6</string>
+    <string name="vpn_reallow_vpn">Bitte OK wählen, um Gardion wieder zu aktivieren</string>
 </resources>

@@ -38,7 +38,6 @@
             android:name=".logic.FlowController"
             android:label="@string/main_activity_name"
             android:screenOrientation="portrait">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -82,6 +81,14 @@
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
+        
+        <receiver
+            android:name=".logic.GardionRestartReceiver"
+            android:label="RestartService"
+            android:enabled="true"
+            android:exported="false">
+        </receiver>
+
 
         <!-- TODO - remove if not needed after testing -->
         <receiver android:name=".network.GardionNetworkReceiver" />
@@ -112,6 +119,7 @@
         <!-- Gardion services -->
         <service android:name=".security.CheckAdminService" />
         <service android:name=".security.GardionConnectionService" />
+        <service android:name=".security.GardionRestartService" />
 
     </application>
 

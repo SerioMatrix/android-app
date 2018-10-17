@@ -4,6 +4,7 @@ import android.app.Service
 import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
+import android.util.Log
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -13,9 +14,10 @@ import java.util.concurrent.TimeUnit
 class GardionConnectionService: Service() {
 
     private val binder: IBinder = ConnectionLocalBinder()
-    private lateinit var disposable: Disposable
+    private var disposable: Disposable? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Log.d("GARDION_CONNECTION", "${javaClass.simpleName} started")
         disposable = Observable.interval(60, TimeUnit.MINUTES)
                 .timeInterval()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -33,7 +35,7 @@ class GardionConnectionService: Service() {
     }
 
     override fun onDestroy() {
-        disposable.dispose()
+        disposable?.dispose()
         super.onDestroy()
     }
 

@@ -117,7 +117,7 @@ class GardionLoginActivity : AppCompatActivity() {
             gardionProfile?.let { saveToDataBase(gardionProfile) }
             finishWithData(Activity.RESULT_OK, gardionProfile.connection.authentication.authType)
         } catch(e: Exception) {
-            toast(e.toString())
+            Log.e("GARDION_PROFILE", e.toString())
         }
     }
 

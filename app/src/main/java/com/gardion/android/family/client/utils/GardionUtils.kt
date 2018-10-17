@@ -2,6 +2,7 @@ package com.gardion.android.family.client.utils
 
 import android.Manifest
 import android.app.Activity
+import android.app.ActivityManager
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
@@ -12,9 +13,12 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.gardion.android.family.client.data.datasource.SharedPreferencesDataStore
 
+
 class GardionUtils {
 
     companion object {
+
+        //TODO - check if this is really the easiest way to implement this functionality
         fun isVpnConnected(context: Context?): Boolean {
             val connectivityManager: ConnectivityManager =
                     context?.applicationContext?.getSystemService(Context.CONNECTIVITY_SERVICE)
@@ -76,5 +80,18 @@ class GardionUtils {
                     (!dataStore.isUserCertificateUsed()!! ||
                             (dataStore.isUserCertificateUsed()!! && dataStore.isUserCertificateChosen()!!))
         }
+
+        //TODO - getRunningServices is deprecated check
+        fun isMyServiceRunning(serviceClass: Class<*>, context: Context): Boolean {
+            val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            for (service in manager.getRunningServices(Integer.MAX_VALUE)) {
+                if (serviceClass.name == service.service.className) {
+                    return true
+                }
+            }
+            return false
+        }
+
+
     }
 }

@@ -17,4 +17,12 @@ interface FlowData {
     fun userCertificateChosen(chosen: Boolean)
     fun isUserCertificateUsed(): Boolean?
     fun userCertificateUsed(certificate: Boolean)
+    fun isGardionDeactivatedAllowed(): Boolean?
+    fun gardionDeactivatedAllowed(deactivated: Boolean)
+    fun isGardionDisabledIllegal(): Boolean?
+    fun gardionDisabledIllegal(disabled: Boolean)
+    fun isVpnActivityOpen(): Boolean?
+    fun vpnActivityOpen(open: Boolean)
+
+
 }
