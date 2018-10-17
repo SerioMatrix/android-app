@@ -5,15 +5,18 @@ import android.app.ActivityManager
 import android.app.admin.DevicePolicyManager
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import com.gardion.android.family.client.R
 import com.gardion.android.family.client.data.datasource.FlowData
 import com.gardion.android.family.client.data.datasource.SharedPreferencesDataStore
 import com.gardion.android.family.client.gardionui.*
 import com.gardion.android.family.client.security.CheckAdminService
 import com.gardion.android.family.client.security.GardionConnectionService
 import com.gardion.android.family.client.security.GardionDeviceAdminReceiver
+import com.gardion.android.family.client.utils.GardionUtils
 
 class FlowController : AppCompatActivity() {
 
@@ -35,6 +38,15 @@ class FlowController : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //is the right please to do this here?
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            GardionUtils.createNotificationChannel(this,
+                    getString(R.string.notification_channel_id_general),
+                    getString(R.string.notification_channel_name_general),
+                    getString(R.string.notification_channel_description_general))
+        }
+
         manager = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
         val sharedPrefs = this.getSharedPreferences(SharedPreferencesDataStore.PREFERENCES_NAME, Context.MODE_PRIVATE)
         flowData = SharedPreferencesDataStore(sharedPrefs)

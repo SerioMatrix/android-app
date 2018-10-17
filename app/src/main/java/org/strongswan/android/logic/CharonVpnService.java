@@ -53,6 +53,8 @@ import org.strongswan.android.logic.imc.RemediationInstruction;
 import com.gardion.android.family.client.logic.FlowController;
 import com.gardion.android.family.client.logic.GardionRestartReceiver;
 import com.gardion.android.family.client.network.GardionServerEventManager;
+import com.gardion.android.family.client.utils.GardionUtils;
+
 import org.strongswan.android.ui.MainActivity;
 import org.strongswan.android.utils.IPRange;
 import org.strongswan.android.utils.IPRangeSet;
@@ -337,6 +339,7 @@ public class CharonVpnService extends VpnService implements Runnable, VpnStateSe
 		stopForeground(true);
 	}
 
+
 	/**
 	 * Build a notification matching the current state
 	 */
@@ -352,7 +355,10 @@ public class CharonVpnService extends VpnService implements Runnable, VpnStateSe
 		{
 			name = profile.getName();
 		}
-		android.support.v4.app.NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+
+		//TODO - can we do this somewhere else, should we have a Gardion function / class?
+		String channelId = getResources().getString(R.string.notification_channel_id_general);
+		android.support.v4.app.NotificationCompat.Builder builder = new NotificationCompat.Builder(this,  channelId)
 				.setSmallIcon(R.drawable.ic_stat_notification)
 				.setCategory(NotificationCompat.CATEGORY_SERVICE)
 				.setVisibility(publicVersion ? NotificationCompat.VISIBILITY_PUBLIC

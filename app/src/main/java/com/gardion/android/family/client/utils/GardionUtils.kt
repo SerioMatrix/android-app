@@ -3,11 +3,16 @@ package com.gardion.android.family.client.utils
 import android.Manifest
 import android.app.Activity
 import android.app.ActivityManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
+import android.content.Context.NOTIFICATION_SERVICE
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkInfo
+import android.os.Build
+import android.support.annotation.RequiresApi
 import android.support.v4.app.ActivityCompat
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -91,6 +96,19 @@ class GardionUtils {
             }
             return false
         }
+
+
+       //TODO - check preferences, parameterize?
+        //TODO - check if we leave this here
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun createNotificationChannel(context: Context, channelId: String, name: String, descriptionText: String,
+                                      importance: Int = NotificationManager.IMPORTANCE_DEFAULT) {
+            val mChannel = NotificationChannel(channelId, name, importance)
+            mChannel.description = descriptionText
+            val notificationManager = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(mChannel)
+        }
+
 
 
     }

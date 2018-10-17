@@ -230,6 +230,7 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
         stopService(intent)
     }
 
+
     private fun startVPNprofile() {
         if (!isVpnOn()) {
             val intent: Intent?

@@ -3,6 +3,8 @@ package com.gardion.android.family.client.logic
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.util.Log
+import com.gardion.android.family.client.data.datasource.SharedPreferencesDataStore
 import android.os.Build
 import android.support.v4.content.ContextCompat
 import android.util.Log
@@ -19,7 +21,6 @@ class GardionRestartReceiver : BroadcastReceiver() {
         val flowData = SharedPreferencesDataStore(sharedPrefs)
         if(flowData.isGardionDisabledIllegal()!!) {
             Log.d("GARDION_CONNECTION", "RestartReceiver is starting RestartService")
-
             ReceiverUtils.connectVpnOnReceive(context, GardionVpnActivity.KEY_IS_FROM_DEACTIVATED_VPN)
 
             //val serviceIntent = Intent(context, GardionRestartService::class.java)
