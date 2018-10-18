@@ -5,10 +5,9 @@ import com.google.gson.annotations.SerializedName
 
 data class GardionData(
         @SerializedName("desc") val desc: String,
-        @SerializedName("version") val version: Double,
+        @SerializedName("version") val version: String,
         @SerializedName("device") val device: Device,
         @SerializedName("group") val group: Group,
-        @SerializedName("messaging") val messaging: Messaging,
         @SerializedName("connection") val connection: Connection
 ) {
 
@@ -28,26 +27,19 @@ data class GardionData(
             @SerializedName("name") val name: String,
             @SerializedName("protocol") val protocol: String,
             @SerializedName("url") val url: List<String>,
+            @SerializedName("ip") val ip: List<String>,
             @SerializedName("local_routing") val localRouting: List<String>,
             @SerializedName("authentication") val authentication: Authentication
     ) {
 
         data class Authentication(
                 @SerializedName("auth_type") val authType: String,
-                @SerializedName("name") val name: String,
+                @SerializedName("user_id") val user_id: String,
                 @SerializedName("password") val password: String,
-                @SerializedName("ca_certs") val caCerts: String,
-                @SerializedName("client_cert") val clientCert: String,
-                @SerializedName("client-key") val clientKey: String,
                 @SerializedName("user_certificate_alias") val userCertificateAlias: String,
                 @SerializedName("pkcs12_base64") val pkcs12Base64: String
         )
     }
 
 
-    data class Messaging(
-            @SerializedName("push_id") val pushId: String,
-            @SerializedName("forum") val forum: String,
-            @SerializedName("email") val email: String
-    )
 }

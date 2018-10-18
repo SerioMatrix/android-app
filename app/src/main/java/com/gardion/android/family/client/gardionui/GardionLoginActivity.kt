@@ -136,7 +136,7 @@ class GardionLoginActivity : AppCompatActivity() {
     private fun saveToDataBase(gardionData: GardionData) {
         val gardionNameVpn = gardionData.connection.name
         val gardionUrl = gardionData.connection.url[0]
-        val gardionUsername = gardionData.connection.authentication.name
+        val gardionUsername = gardionData.connection.authentication.user_id
         val gardionPassword = gardionData.connection.authentication.password
         val gardionVpnType = gardionData.connection.authentication.authType
         val gardionUserCertificateAlias = gardionData.connection.authentication.userCertificateAlias
