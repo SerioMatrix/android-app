@@ -25,6 +25,7 @@ import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.net.VpnService;
@@ -51,9 +52,8 @@ import org.strongswan.android.logic.imc.ImcState;
 import org.strongswan.android.logic.imc.RemediationInstruction;
 
 import com.gardion.android.family.client.logic.FlowController;
-import com.gardion.android.family.client.logic.GardionRestartReceiver;
+import com.gardion.android.family.client.logic.UserPresentReceiver;
 import com.gardion.android.family.client.network.GardionServerEventManager;
-import com.gardion.android.family.client.utils.GardionUtils;
 
 import org.strongswan.android.ui.MainActivity;
 import org.strongswan.android.utils.IPRange;
@@ -79,6 +79,8 @@ public class CharonVpnService extends VpnService implements Runnable, VpnStateSe
 	public static final String DISCONNECT_ACTION = "org.strongswan.android.CharonVpnService.DISCONNECT";
 	public static final String LOG_FILE = "charon.log";
 	public static final int VPN_STATE_NOTIFICATION_ID = 1;
+
+	private UserPresentReceiver userPresentReceiver = new UserPresentReceiver();
 
 	private String mLogFile;
 	private String mAppDir;
@@ -174,6 +176,10 @@ public class CharonVpnService extends VpnService implements Runnable, VpnStateSe
 		/* the thread is started when the service is bound */
 		bindService(new Intent(this, VpnStateService.class),
 					mServiceConnection, Service.BIND_AUTO_CREATE);
+
+		//registering UserPresent is necessary as of Android API 26 (implicit broadcast receiver)
+		//doing this here in CharonService to persist destroying of app
+		registerUserPresentReceiver(CharonVpnService.this, userPresentReceiver);
 	}
 
 	@Override
@@ -208,6 +214,8 @@ public class CharonVpnService extends VpnService implements Runnable, VpnStateSe
 			unbindService(mServiceConnection);
 		}
 		mDataSource.close();
+
+		unregisterUserPresentReceiver(CharonVpnService.this, userPresentReceiver);
 	}
 
 	/**
@@ -426,6 +434,7 @@ public class CharonVpnService extends VpnService implements Runnable, VpnStateSe
 		}
 	}
 
+	//some Gardion functions here (ideally they might be somewhere else probably)
 	private void informGardionAboutServiceState(State state) {
 		if (state == State.DISABLED || state == State.DISCONNECTING) {
 			GardionServerEventManager eventManager = new GardionServerEventManager(this);
@@ -436,6 +445,23 @@ public class CharonVpnService extends VpnService implements Runnable, VpnStateSe
 			eventManager.sendGardionEvent(GardionServerEventManager.GardionEventType.VPN_CONNECTED);
 		}
 	}
+
+	private void registerUserPresentReceiver(Context context, UserPresentReceiver upr) {
+		IntentFilter intentFilter = new IntentFilter();
+		intentFilter.addAction("android.intent.action.USER_PRESENT");
+		context.registerReceiver(upr, intentFilter);
+		Log.d("GARDION_RECEIVER", "registered receiver User Present");
+	}
+
+	private void unregisterUserPresentReceiver(Context context, UserPresentReceiver upr) {
+		try {
+			context.unregisterReceiver(upr);
+			Log.d("GARDION_RECEIVER","unregistered receiver User Present");
+		} catch	(Exception e) {
+			Log.d("GARDION_RECEIVER", e.toString() + " / no registered receiver User Present found to unregister");
+		}
+	}
+
 
 	/**
 	 * Notify the state service about a new connection attempt.
