@@ -28,6 +28,6 @@ interface GardionApi {
     @GET("configuration/{code}")
     fun fetchGardionData(@Path("code") path: String): Call<GardionData>
 
-    @POST("event.json")
+    @POST("device/event.json")
     fun postEvent(@Body event: GardionEvent): Call<GardionEvent>
 }

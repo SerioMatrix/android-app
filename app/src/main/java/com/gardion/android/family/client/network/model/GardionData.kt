@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 
 data class GardionData(
-        @SerializedName("desc") val desc: String,
+        @SerializedName("description") val description: String,
         @SerializedName("version") val version: String,
         @SerializedName("device") val device: Device,
         @SerializedName("group") val group: Group,
