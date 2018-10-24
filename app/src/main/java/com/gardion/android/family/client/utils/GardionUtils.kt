@@ -103,10 +103,19 @@ class GardionUtils {
         @RequiresApi(Build.VERSION_CODES.O)
         fun createNotificationChannel(context: Context, channelId: String, name: String, descriptionText: String,
                                       importance: Int = NotificationManager.IMPORTANCE_DEFAULT) {
-            val mChannel = NotificationChannel(channelId, name, importance)
-            mChannel.description = descriptionText
-            val notificationManager = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(mChannel)
+
+           val mChannel = NotificationChannel(channelId, name, importance)
+           mChannel.description = descriptionText
+           mChannel.enableVibration(false)
+           mChannel.vibrationPattern = longArrayOf(0L)
+           mChannel.enableLights(false)
+           mChannel.importance = NotificationManager.IMPORTANCE_NONE
+           val notificationManager = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+           notificationManager.createNotificationChannel(mChannel)
+
+
+
+
         }
 
 
