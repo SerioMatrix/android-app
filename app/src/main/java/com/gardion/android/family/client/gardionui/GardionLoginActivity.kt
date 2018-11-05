@@ -53,7 +53,7 @@ class GardionLoginActivity : AppCompatActivity() {
 
         //TODO - remove devLocal = true only needed for dev
         GardionUtils.makeRequest(this)
-        login_button.setOnClickListener { buttonLogin(true) }
+        login_button.setOnClickListener { buttonLogin(false) }
         contact_support_button.setOnClickListener { GardionLinks(this).goToForum() }
     }
 

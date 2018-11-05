@@ -15,7 +15,6 @@ interface GardionApi {
 
     companion object {
         private const val BASE_URL = "https://api.gardion.net/v1/"
-
         val instance: GardionApi by lazy {
             val retrofit = Retrofit.Builder()
                     .baseUrl(BASE_URL)
