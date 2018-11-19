@@ -188,16 +188,22 @@
     <!--events-->
     <string name="event_interval_check_desc">Gardion vpn connectivity interval check</string>
     <string name="event_interval_check_id">0</string>
-    <string name="event_error_disable_admin_desc">Device Admin has been deactivated</string>
-    <string name="event_error_disable_admin_id">1</string>
-    <string name="event_error_vpn_removed_desc">Gardion VPN has been removed</string>
-    <string name="event_error_vpn_removed_id">2</string>
-    <string name="event_error_vpn_disconnected_desc">Gardion VPN has been disconnected</string>
-    <string name="event_error_vpn_disconnected_id">3</string>
+    <string name="event_disable_admin_desc">Device Admin has been deactivated</string>
+    <string name="event_disable_admin_id">1</string>
+    <string name="event_vpn_removed_desc">Gardion VPN has been removed</string>
+    <string name="event_vpn_removed_id">2</string>
+    <string name="event_vpn_disconnected_desc">Gardion VPN has been disconnected</string>
+    <string name="event_vpn_disconnected_id">3</string>
     <string name="event_application_pass_desc">User application password: </string>
     <string name="event_application_pass_id">4</string>
-    <string name="event_vpn_connected_id">5</string>
     <string name="event_vpn_connected_desc">Gardion VPN has been connected</string>
+    <string name="event_vpn_connected_id">5</string>
+    <string name="event_vpn_deactivated">Gardion VPN was deactivated</string>
+    <string name="event_vpn_deactivated_id">6</string>
+    <string name="event_enable_admin_desc">Device Admin has been activated</string>
+    <string name="event_enable_admin_id">7</string>
+    <string name="event_test_dev_id">999</string>
+    <string name="event_test_dev_desc">Gardion Test Dev Event</string>
 
     <!--user app-->
     <string name="welcome_infotext">Willkommen bei Gardion! Nur noch ein paar Schritte und Gardion sichert dieses Gerät. \n\nWenn Sie noch kein Konto bei Gardion haben, legen Sie zuerst noch eines unter www.gardion.com an.</string>
@@ -218,7 +224,7 @@
     <string name="popup_infotext_unlocked">Achtung: Gardion ist nun auf diesem Gerät entsperrt. Sie können nun: \n- fortfahren und Gardion deinstallieren \n- die Geräteverwaltung in den Einstellungen wieder aktivieren</string>
     <string name="popup_button_uninstall">Gardion deinstallieren</string>
     <string name="password_toast_created_successfully">PIN wurde gespeichert</string>
-    <string name="login_toast_success">Gerät mit Gardion verbunden</string>
+    <string name="login_toast_success">Gardion Profil heruntergeladen</string>
     <string name="login_toast_error_general">Fehler - Bitte kontaktieren Sie den Support</string>
     <string name="vpn_status_connecting">Verbindet…</string>
     <string name="vpn_status_connected">Verbunden</string>
@@ -232,7 +238,7 @@
     <string name="device_admin_button_start">Weiter</string>
     <string name="password_toast_pin_short">PIN zu kurz</string>
     <string name="password_toast_pin_nomatch">PINs stimmen nicht überein</string>
-    <string name="password_toast_pin_wrong">Eingebener Eltern-PIN ist falsch. Wenn Sie Ihren Eltern-PIN vergessen haben, wenden Sie sie bitte an den Support.</string>
+    <string name="password_toast_pin_wrong">Eingebener Eltern-PIN ist falsch. Wenn Sie Ihren Eltern-PIN vergessen haben, können Sie diese unter www.gardion.com bei den Geräten des Kinds nachschauen.</string>
     <string name="popup_toast_unlocked">Gardion entsperrt</string>
     <string name="vpn_toast_connecting">Verbindung wird hergestellt</string>
     <string name="device_admin_toast_active">Gardion als Geräteverwalter aktiv</string>
@@ -248,10 +254,13 @@
     <string name="login_toast_error_500">Fehler - bitte überprüfen Sie den Code.</string>
     <string name="certificate_infotext">Um Sie sicher mit Gardion zu verbinden, werden wir nun ein Zertifikat auf diesem Gerät installieren. Bitte wählen Sie hierzu \"Zertifikat installieren" aus. Im folgen Dialog bestätigen Sie bitte mit \"OK\" die Installation des Zertifikats. \nIm nächsten Schritt bestätigen Sie nochmals mit "Auswählen" das Zertifikat "Gardion User". </string>
     <string name="certificate_button_setup">Zertifikat installieren</string>
-    <string name="event_vpn_deactivated">Gardion VPN was deactivated</string>
-    <string name="event_vpn_deactivated_id">6</string>
     <string name="vpn_reallow_vpn">Bitte OK wählen, um Gardion wieder zu aktivieren</string>
     <string name="notification_channel_id_general">Gardion</string>
     <string name="notification_channel_name_general">Gardion</string>
     <string name="notification_channel_description_general">Benachrichtigungen Gardion</string>
+    <string name="show_parent_pin_infotext">Damit nur Sie Gardion auf diesem Gerät wieder deaktivieren können, habe wir eine Eltern-PIN hinterlegt. Die Eltern-PIN lautet:</string>
+    <string name="parent_pin_view_default">PIN</string>
+    <string name="show_parent_pin2_infotext">Die Eltern-PIN können sie auch auf www.gardion.com nachschauen, nachdem Sie sich eingeloggt haben.</string>
+    <string name="show_parent_pin_next_button">Weiter</string>
+
 </resources>

@@ -23,6 +23,9 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
 
     <!-- TODO - for dev atm, remove if not needed anymore -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -32,6 +35,7 @@
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/GardionTheme"
         tools:ignore="GoogleAppIndexingWarning"
 
@@ -87,21 +91,15 @@
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
-        
         <receiver
             android:name=".logic.GardionRestartReceiver"
-            android:label="RestartService"
             android:enabled="true"
-            android:exported="false">
-        </receiver>
-
+            android:exported="false"
+            android:label="RestartService" />
 
         <!-- TODO - remove if not needed after testing -->
         <receiver android:name=".network.GardionNetworkReceiver" />
 
-        <activity
-            android:name=".gardionui.GardionPasswordCreatorActivity"
-            android:screenOrientation="unspecified" />
         <activity
             android:name=".gardionui.GardionLoginActivity"
             android:screenOrientation="unspecified" />
@@ -121,12 +119,16 @@
         <activity
             android:name=".gardionui.GardionCertificateActivity"
             android:screenOrientation="unspecified" />
+        <activity
+            android:name=".gardionui.GardionShowParentPinActivity"
+            android:screenOrientation="unspecified" />
 
         <!-- Gardion services -->
         <service android:name=".security.CheckAdminService" />
         <service android:name=".security.GardionConnectionService" />
         <service android:name=".security.GardionRestartService" />
 
+        <activity android:name=".gardionui.UsageStatsTestActivity"></activity>
     </application>
 
 </manifest>

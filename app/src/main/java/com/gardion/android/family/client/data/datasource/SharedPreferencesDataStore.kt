@@ -24,10 +24,13 @@ class SharedPreferencesDataStore constructor(private val preferences: SharedPref
         private const val GARDION_DISABLED_ILLEGAL = "gardion_disabled_illegal"
         private const val VPN_ACTIVITY_OPEN = "vpn_activity_open"
         //Gardion configuration data
+        private const val CONFIGURATION_GROUP_ID = "configuration_group_id"
+        private const val CONFIGURATION_GROUP_NAME = "configuration_group_name"
         private const val CONFIGURATION_DEVICE_ID = "configuration_device_id"
         private const val CONFIGURATION_DEVICE_NAME = "configuration_device_name"
         private const val CONFIGURATION_PKCS12 = "configuration_pkcs12"
         private const val CONFIGURATION_USER_CERTIFICATE_ALIAS = "configuration_user_certificate_alias"
+        private const val CONFIGURATION_PARENT_PIN = "configuration_parent_pin"
 
     }
 
@@ -71,6 +74,22 @@ class SharedPreferencesDataStore constructor(private val preferences: SharedPref
         return preferences[GARDION_APP_UNLOCKED, false]
     }
 
+    override fun saveConfigurationGroupId(groupId: String) {
+        preferences.set(CONFIGURATION_GROUP_ID, groupId)
+    }
+
+    override fun getConfigurationGroupId(): String? {
+        return preferences[CONFIGURATION_GROUP_ID]
+    }
+
+    override fun saveConfigurationGroupName(groupName: String) {
+        preferences.set(CONFIGURATION_GROUP_NAME, groupName)
+    }
+
+    override fun getConfigurationGroupName(): String? {
+        return preferences[CONFIGURATION_GROUP_NAME]
+    }
+
     override fun saveConfigurationDeviceId(deviceId: String) {
         preferences.set(CONFIGURATION_DEVICE_ID, deviceId)
     }
@@ -101,6 +120,14 @@ class SharedPreferencesDataStore constructor(private val preferences: SharedPref
 
     override fun getConfigurationUserCertificateAlias(): String? {
         return preferences[CONFIGURATION_USER_CERTIFICATE_ALIAS]
+    }
+
+    override fun saveConfigurationParentPin(parentPin: String) {
+        preferences.set(CONFIGURATION_PARENT_PIN, parentPin)
+    }
+
+    override fun getConfigurationParentPin(): String? {
+        return preferences[CONFIGURATION_PARENT_PIN]
     }
 
     override fun isGardionFirstStart(): Boolean? {

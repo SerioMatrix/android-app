@@ -9,6 +9,7 @@ import android.util.Log
 import com.gardion.android.family.client.R
 import com.gardion.android.family.client.data.datasource.DataStore
 import com.gardion.android.family.client.data.datasource.SharedPreferencesDataStore
+import com.gardion.android.family.client.network.GardionServerEventManager
 import com.gardion.android.family.client.toast
 
 
@@ -26,6 +27,8 @@ class GardionDeviceAdminReceiver: DeviceAdminReceiver() {
     override fun onEnabled(context: Context?, intent: Intent?) {
         context?.toast(context.getString(R.string.device_admin_toast_active))
         context?.stopService(Intent(context.applicationContext, CheckAdminService::class.java))
+        val eventManager = GardionServerEventManager(context!!)
+        eventManager.sendGardionEvent(GardionServerEventManager.GardionEventType.ADMIN_ACTIVATION)
         Log.d(TAG, "Device admin enabled")
     }
 

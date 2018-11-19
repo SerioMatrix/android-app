@@ -22,6 +22,7 @@ import org.strongswan.android.logic.VpnStateService.State
 import com.gardion.android.family.client.toast
 import com.gardion.android.family.client.utils.GardionUtils
 import android.content.Intent
+import com.gardion.android.family.client.data.datasource.DataStore
 import com.gardion.android.family.client.security.GardionRestartService
 import java.lang.Exception
 
@@ -40,6 +41,7 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
     }
 
     private lateinit var flowData: FlowData
+    private lateinit var dataStore: DataStore
     private var handlerCounter = 1
     private val handler: Handler = Handler()
 
@@ -96,6 +98,7 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
         vpn_status_reconnect_button.setOnClickListener { reconnectVpn() }
         vpn_status_disconnect_button.setOnClickListener { tryDisconnectGardionVpn() }
         contact_support_button.setOnClickListener { GardionLinks(this).goToForum() }
+        test_event_button.setOnClickListener {sendTestEvent()}
     }
 
     private fun tryDisconnectGardionVpn() {
@@ -110,8 +113,10 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
     override fun onFinishEditDialog(inputText: String) {
         val sharedPrefs = this.getSharedPreferences(SharedPreferencesDataStore.PREFERENCES_NAME, Context.MODE_PRIVATE)
         flowData = SharedPreferencesDataStore(sharedPrefs)
-        val savedPassword = flowData.getEncryptedPass()
-        if (inputText == savedPassword){
+        dataStore = SharedPreferencesDataStore(sharedPrefs)
+        val hashedInputText = GardionUtils.hashSha256(inputText)
+        val savedParentPin = dataStore.getConfigurationParentPin()
+        if (hashedInputText == savedParentPin){
             mService?.disconnect()
             toast(getString(R.string.password_toast_gardion_deactivated))
             flowData.gardionDeactivatedAllowed(true)
@@ -217,6 +222,8 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
     private fun onConnected() {
         flowData.gardionDisabledIllegal(false)
         stopRestartService()
+        val eventManager = GardionServerEventManager(this)
+        eventManager.sendGardionEvent(GardionServerEventManager.GardionEventType.VPN_CONNECTED)
     }
 
     private fun onConnecting() {
@@ -342,5 +349,10 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
             } catch (e: Exception) {
                 Log.e("GARDION_CONNECTION", e.toString())
             }
+    }
+
+    private fun sendTestEvent() {
+        val eventManager = GardionServerEventManager(this)
+        eventManager.sendGardionEvent(GardionServerEventManager.GardionEventType.TEST_DEV)
     }
 }

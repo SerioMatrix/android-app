@@ -9,4 +9,10 @@ interface ConfigurationData {
     fun getConfigurationPkcs12(): String?
     fun saveConfigurationUserCertificateAlias(deviceName: String)
     fun getConfigurationUserCertificateAlias(): String?
+    fun saveConfigurationGroupId(groupId: String)
+    fun getConfigurationGroupId(): String?
+    fun saveConfigurationGroupName(groupName: String)
+    fun getConfigurationGroupName(): String?
+    fun saveConfigurationParentPin(parentPin: String)
+    fun getConfigurationParentPin(): String?
 }

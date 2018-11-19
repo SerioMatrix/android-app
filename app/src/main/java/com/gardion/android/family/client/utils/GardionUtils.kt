@@ -17,6 +17,7 @@ import android.support.v4.app.ActivityCompat
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.gardion.android.family.client.data.datasource.SharedPreferencesDataStore
+import java.security.MessageDigest
 
 
 class GardionUtils {
@@ -97,6 +98,13 @@ class GardionUtils {
             return false
         }
 
+        fun hashSha256(string: String): String {
+            val bytes = string.toByteArray()
+            val md = MessageDigest.getInstance("SHA-256")
+            val digest = md.digest(bytes)
+            return digest.fold("") { str, it -> str + "%02x".format(it) }
+        }
+
 
        //TODO - check preferences, parameterize?
         //TODO - check if we leave this here
@@ -112,13 +120,6 @@ class GardionUtils {
            mChannel.importance = NotificationManager.IMPORTANCE_NONE
            val notificationManager = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
            notificationManager.createNotificationChannel(mChannel)
-
-
-
-
         }
-
-
-
     }
 }

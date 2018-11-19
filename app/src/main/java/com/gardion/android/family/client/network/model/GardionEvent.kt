@@ -1,6 +1,7 @@
 package com.gardion.android.family.client.network.model
 
 import com.google.gson.annotations.SerializedName
+import java.sql.Timestamp
 
 
 data class GardionEvent(
@@ -8,14 +9,10 @@ data class GardionEvent(
 ) {
 
     data class Event(
+            @SerializedName("event_timestamp") val eventTimestamp: Timestamp,
             @SerializedName("desc") val desc: String,
-            @SerializedName("error_id") val errorId: String,
-            @SerializedName("device") val device: Device
-    ) {
-
-        data class Device(
-                @SerializedName("id") val id: String,
-                @SerializedName("name") val name: String
-        )
-    }
+            @SerializedName("event_id") val eventId: String,
+            @SerializedName("device_id") val deviceId: String,
+            @SerializedName("event_payload") val eventPayload: String?
+    )
 }

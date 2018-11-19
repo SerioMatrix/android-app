@@ -13,7 +13,8 @@ data class GardionData(
 
     data class Device(
             @SerializedName("id") val id: String,
-            @SerializedName("name") val name: String
+            @SerializedName("name") val name: String,
+            @SerializedName("parent_pin") val parentPin: String
     )
 
 

@@ -22,13 +22,14 @@ class FlowController : AppCompatActivity() {
 
     companion object {
         private const val REQUEST_CODE_ENABLE_ADMIN: Int = 200
-
-        private const val REQUEST_PASSWORD_CREATION: Int = 100
         private const val REQUEST_EXPLAIN_ADMIN_SCREEN: Int = 101
         private const val REQUEST_GARDION_LOGIN: Int = 103
         private const val REQUEST_VPN_START: Int = 104
         private const val REQUEST_WELCOME_SCREEN: Int = 105
         private const val REQUEST_IMPORT_CERTIFICATE: Int = 107
+        private const val REQUEST_SHOW_PARENT_PIN: Int = 108
+
+        const val INTENT_PARENT_PIN: String = "intent_parent_pin"
     }
 
     private val TAG = FlowController::class.java.simpleName
@@ -59,10 +60,8 @@ class FlowController : AppCompatActivity() {
         }
         when {
             flowData.isGardionFirstStart()!! -> startWelcomeScreen()
-            !flowData.isGlobalPasswordCreated()!! -> startPasswordCreationScreen()
-            //!flowData.isDeviceAdminFirstSet()!! || !isDeviceAdminActive() -> startExplainAdminScreen()
+            !flowData.isVpnProfileSaved()!! -> startGardionLogin()
             !isDeviceAdminActive() -> startExplainAdminScreen()
-            !flowData.isVpnProfileSaved()!! -> showGardionLoginScreen()
             flowData.isUserCertificateUsed()!! && !flowData.isUserCertificateChosen()!! -> startCertificateInstallation()
             else -> startVpnService()
         }
@@ -76,20 +75,18 @@ class FlowController : AppCompatActivity() {
         startActivityForResult(GardionAdminActivity.getIntent(this), REQUEST_EXPLAIN_ADMIN_SCREEN)
     }
 
-    private fun startEnableAdminService() {
-        startService(Intent(this, CheckAdminService::class.java))
-    }
-
     private fun startGardionConnectionService() {
         startService(Intent(this, GardionConnectionService::class.java))
     }
 
-    private fun isDeviceAdminActive(): Boolean {
-        return manager.isAdminActive(GardionDeviceAdminReceiver.getComponentName(this))
+    private fun startShowParentPin(parentPin: String) {
+        val intent = GardionShowParentPinActivity.getIntent(this)
+        intent.putExtra(INTENT_PARENT_PIN, parentPin)
+        startActivityForResult(intent, REQUEST_SHOW_PARENT_PIN)
     }
 
-    private fun startPasswordCreationScreen() {
-        startActivityForResult(GardionPasswordCreatorActivity.getIntent(this), REQUEST_PASSWORD_CREATION)
+    private fun isDeviceAdminActive(): Boolean {
+        return manager.isAdminActive(GardionDeviceAdminReceiver.getComponentName(this))
     }
 
     private fun startCertificateInstallation() {
@@ -109,12 +106,12 @@ class FlowController : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
             REQUEST_WELCOME_SCREEN -> handleWelcomeScreen()
-            REQUEST_PASSWORD_CREATION -> handlePasswordCreation(data, resultCode)
+            REQUEST_GARDION_LOGIN -> handleGardionLogin(data, resultCode)
             REQUEST_EXPLAIN_ADMIN_SCREEN -> handleExplainAdminScreen()
             REQUEST_CODE_ENABLE_ADMIN -> handleDeviceAdminCreation()
-            REQUEST_GARDION_LOGIN -> handleGardionLogin(data, resultCode)
             REQUEST_IMPORT_CERTIFICATE -> handleGardionCertificate(resultCode)
             REQUEST_VPN_START -> handleVpnStart()
+            REQUEST_SHOW_PARENT_PIN -> handleShowParentPin()
         }
     }
 
@@ -131,7 +128,7 @@ class FlowController : AppCompatActivity() {
 
     private fun handleWelcomeScreen() {
         flowData.gardionFirstStart(false)
-        startPasswordCreationScreen()
+        startGardionLogin()
     }
 
     private fun handleExplainAdminScreen() {
@@ -142,19 +139,19 @@ class FlowController : AppCompatActivity() {
         finish()
     }
 
+    private fun handleShowParentPin(){
+        flowData.setGlobalPasswordCreated(true)
+        startExplainAdminScreen()
+    }
+
     private fun handleGardionLogin(data: Intent?, resultCode: Int) {
         if (resultCode == Activity.RESULT_OK) {
             if (data != null) {
                 flowData.userCertificateUsed(data.extras.getBoolean(GardionLoginActivity.INTENT_CERTIFICATE_USED))
+                startShowParentPin(data.extras.getString(GardionLoginActivity.INTENT_PARENT_PIN))
             } else {
                 flowData.userCertificateUsed(false)
-            }
-
-            if(flowData.isUserCertificateUsed()!!) {
-                startCertificateInstallation()
-            } else {
-                startVpnService()
-                startGardionConnectionService()
+                finish()
             }
         } else {
             finish()
@@ -165,43 +162,17 @@ class FlowController : AppCompatActivity() {
         startActivityForResult(GardionVpnActivity.getIntent(this), REQUEST_VPN_START)
     }
 
-    //TODO - check if that still make sense
     private fun handleDeviceAdminCreation() {
-        if (isDeviceAdminActive()) {
-            if(!flowData.isVpnProfileSaved()!!) {
-                showGardionLoginScreen()
-            } else {
-                finish()
-            }
-        } else {
-            finish()
+         if(flowData.isUserCertificateUsed()!!) {
+             startCertificateInstallation()
+         } else {
+             startVpnService()
+             startGardionConnectionService()
         }
     }
 
-    private fun showGardionLoginScreen() {
+    private fun startGardionLogin() {
         startActivityForResult(GardionLoginActivity.getIntent(this), REQUEST_GARDION_LOGIN)
-    }
-
-    private fun handlePasswordCreation(data: Intent?, resultCode: Int) {
-        if (resultCode == Activity.RESULT_OK) {
-            if (data != null) {
-                // Initialize KeyStore and generate key
-//                KeyStoreManager.generateKey()
-//                val masterKey = KeyStoreManager.getAndroidKeyStoreKeyPair()
-//                val password = data.getStringExtra(GardionPasswordCreatorActivity.INTENT_EXTRA_PASSWORD)
-//                //password encryption
-//                val encryptedPassword: String = KeyStoreManager.encryptData(password, masterKey?.public!!)
-                //save encrypted password to sharedPreferences
-                flowData.saveEncryptedPass(data.getStringExtra(GardionPasswordCreatorActivity.INTENT_EXTRA_PASSWORD))
-                flowData.setGlobalPasswordCreated(true)
-                startExplainAdminScreen()
-            } else {
-                flowData.setGlobalPasswordCreated(false)
-            }
-        } else {
-            flowData.setGlobalPasswordCreated(false)
-            finish()
-        }
     }
 
     private fun askForDeviceAdmin() {

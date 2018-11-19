@@ -5,19 +5,23 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.support.v7.app.AppCompatActivity
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import kotlinx.android.synthetic.main.activity_popup_gardion.*
 import com.gardion.android.family.client.R
+import com.gardion.android.family.client.data.datasource.DataStore
 import com.gardion.android.family.client.data.datasource.FlowData
 import com.gardion.android.family.client.data.datasource.SharedPreferencesDataStore
 import com.gardion.android.family.client.security.CheckAdminService
 import com.gardion.android.family.client.toast
+import com.gardion.android.family.client.utils.GardionUtils
 
 class GardionPopupActivity : AppCompatActivity() {
 
     private lateinit var flowData: FlowData
+    private lateinit var dataStore: DataStore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,16 +44,18 @@ class GardionPopupActivity : AppCompatActivity() {
 
     private fun unlockGardion() {
         val sharedPrefs = this.getSharedPreferences(SharedPreferencesDataStore.PREFERENCES_NAME, Context.MODE_PRIVATE)
-        flowData = SharedPreferencesDataStore(sharedPrefs)
-        val savedPassword = flowData.getEncryptedPass()
-        when (savedPassword) {
-            popup_ask_password_editText.text.toString() -> unlockTillLockScreen()
+        dataStore = SharedPreferencesDataStore(sharedPrefs)
+        val savedParentPin =  dataStore.getConfigurationParentPin()
+        when (savedParentPin) {
+            GardionUtils.hashSha256(popup_ask_password_editText.text.toString()) -> unlockTillLockScreen()
             else -> toast(getString(R.string.password_toast_pin_wrong))
         }
     }
 
     private fun unlockTillLockScreen() {
         stopService(Intent(this, CheckAdminService::class.java))
+        val sharedPrefs = this.getSharedPreferences(SharedPreferencesDataStore.PREFERENCES_NAME, Context.MODE_PRIVATE)
+        flowData = SharedPreferencesDataStore(sharedPrefs)
         flowData.setGardionUnlocked(true)
         toast(getString(R.string.popup_toast_unlocked))
         showSecuredContent()

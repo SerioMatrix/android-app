@@ -25,6 +25,7 @@ import com.gardion.android.family.client.toast
 import com.gardion.android.family.client.utils.GardionUtils
 import com.google.gson.Gson
 import java.io.File
+import java.security.MessageDigest
 import java.util.*
 
 
@@ -35,6 +36,7 @@ class GardionLoginActivity : AppCompatActivity() {
     companion object {
         private var TAG = GardionLoginActivity::class.java.name
         const val INTENT_CERTIFICATE_USED: String = "intent_certificate_used"
+        const val INTENT_PARENT_PIN: String = "intent_parent_pin"
 
         fun getIntent(activity: Activity): Intent {
             return Intent(activity, GardionLoginActivity::class.java)
@@ -80,11 +82,10 @@ class GardionLoginActivity : AppCompatActivity() {
                 val response = api.fetchGardionData(gardionCode).execute()
                 if (response.isSuccessful) {
                     val gardionProfile = response.body()!!
-
                     gardionProfile?.let { saveToDataBase(gardionProfile) }
                     withContext(UI, CoroutineStart.DEFAULT, {
                         toast(getString(R.string.login_toast_success))
-                        finishWithData(Activity.RESULT_OK, gardionProfile.connection.authentication.authType)
+                        finishWithData(Activity.RESULT_OK, gardionProfile.connection.authentication.authType, gardionProfile.device.parentPin)
                     })
                 } else {
                     val responseCode = response.code()
@@ -115,13 +116,13 @@ class GardionLoginActivity : AppCompatActivity() {
             val gardionProfile  = Gson().fromJson(input, GardionData::class.java)
             Log.d("GARDION_PROFILE", gardionProfile.toString())
             gardionProfile?.let { saveToDataBase(gardionProfile) }
-            finishWithData(Activity.RESULT_OK, gardionProfile.connection.authentication.authType)
+            finishWithData(Activity.RESULT_OK, gardionProfile.connection.authentication.authType, gardionProfile.device.parentPin)
         } catch(e: Exception) {
             Log.e("GARDION_PROFILE", e.toString())
         }
     }
 
-    private fun finishWithData(result: Int, vpnType: String) {
+    private fun finishWithData(result: Int, vpnType: String, parentPin: String) {
         val data = Intent()
 
         if(vpnType == "IKEV2_EAP_TLS") {
@@ -129,6 +130,7 @@ class GardionLoginActivity : AppCompatActivity() {
         } else {
             data.putExtra(INTENT_CERTIFICATE_USED, false)
         }
+        data.putExtra(INTENT_PARENT_PIN, parentPin)
         setResult(result, data)
         finish()
     }
@@ -162,8 +164,12 @@ class GardionLoginActivity : AppCompatActivity() {
     private fun saveConfigurationDataToSharedPrefs(data: GardionData) {
         dataStore.saveConfigurationDeviceId(data.device.id)
         dataStore.saveConfigurationDeviceName(data.device.name)
+        dataStore.saveConfigurationGroupId(data.group.id)
+        dataStore.saveConfigurationGroupName(data.group.name)
         dataStore.saveConfigurationPkcs12(data.connection.authentication.pkcs12Base64)
         dataStore.saveConfigurationUserCertificateAlias(data.connection.authentication.userCertificateAlias)
+        val hashedParentPin = GardionUtils.hashSha256(data.device.parentPin)
+        dataStore.saveConfigurationParentPin(hashedParentPin)
     }
 
     private fun importPkcs12(pkcs12Base64: String, alias: String) {
