@@ -9,7 +9,7 @@ data class GardionEvent(
 ) {
 
     data class Event(
-            @SerializedName("event_timestamp") val eventTimestamp: Timestamp,
+            @SerializedName("event_timestamp") val eventTimestamp: Long,
             @SerializedName("desc") val desc: String,
             @SerializedName("event_id") val eventId: String,
             @SerializedName("device_id") val deviceId: String,

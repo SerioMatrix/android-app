@@ -10,7 +10,6 @@ import com.gardion.android.family.client.data.datasource.DataStore
 import com.gardion.android.family.client.data.datasource.SharedPreferencesDataStore
 import com.gardion.android.family.client.network.model.GardionEvent
 import kotlinx.coroutines.experimental.delay
-import java.sql.Timestamp
 
 class GardionServerEventManager(private val context: Context) {
 
@@ -33,7 +32,7 @@ class GardionServerEventManager(private val context: Context) {
     }
 
     private fun getGardionEvent(type: GardionEventType): GardionEvent {
-        val eventTimestamp = Timestamp(System.currentTimeMillis())
+        val eventTimestamp = System.currentTimeMillis()
         val eventDescription = getEventDescription(type)
         val eventId = getEventId(type)
         val deviceId = dataStore.getConfigurationDeviceId()

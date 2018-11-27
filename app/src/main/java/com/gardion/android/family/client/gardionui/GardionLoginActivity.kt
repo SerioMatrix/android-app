@@ -83,10 +83,10 @@ class GardionLoginActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val gardionProfile = response.body()!!
                     gardionProfile?.let { saveToDataBase(gardionProfile) }
-                    withContext(UI, CoroutineStart.DEFAULT, {
+                    withContext(UI, CoroutineStart.DEFAULT) {
                         toast(getString(R.string.login_toast_success))
                         finishWithData(Activity.RESULT_OK, gardionProfile.connection.authentication.authType, gardionProfile.device.parentPin)
-                    })
+                    }
                 } else {
                     val responseCode = response.code()
                     val errorMessage = when (responseCode) {
@@ -96,21 +96,22 @@ class GardionLoginActivity : AppCompatActivity() {
                         500 -> getString(R.string.login_toast_error_500)
                         else -> getString(R.string.login_toast_error_general)
                     }
-                    withContext(UI, CoroutineStart.DEFAULT, {
+                    Log.w(TAG, "Could not fetch Gardion profile, response code: $responseCode")
+                    withContext(UI, CoroutineStart.DEFAULT) {
                         toast("$errorMessage (Code: $responseCode)")
-                    })
+                    }
                 }
             } catch (e: Exception) {
                 Log.w(TAG, e.message)
-                withContext(UI, CoroutineStart.DEFAULT, {
+                withContext(UI, CoroutineStart.DEFAULT) {
                     toast(getString(R.string.login_toast_error_general))
-                })
+                }
             }
         }
     }
 
     //TODO - remove only for dev
-    fun fetchDataLocal(gardionCode:String) {
+    private fun fetchDataLocal(gardionCode:String) {
         try {
             val input = File("sdcard/$gardionCode.json").readText()
             val gardionProfile  = Gson().fromJson(input, GardionData::class.java)
