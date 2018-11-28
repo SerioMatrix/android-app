@@ -43,6 +43,10 @@ class GardionDeviceAdminReceiver: DeviceAdminReceiver() {
         Log.d(TAG, "Device admin disabled")
     }
 
+    override fun onDisableRequested(context: Context?, intent: Intent?): CharSequence {
+        return context?.getString(R.string.device_admin_warning_deactivation).toString()
+    }
+
     override fun onPasswordChanged(context: Context?, intent: Intent?) {
         context?.toast(context.getString(R.string.device_admin_pw_changed))
     }
