@@ -28,7 +28,6 @@ class CheckAdminService : Service() {
 
         val sharedPrefs = this.getSharedPreferences(SharedPreferencesDataStore.PREFERENCES_NAME, Context.MODE_PRIVATE)
         dataStore = SharedPreferencesDataStore(sharedPrefs)
-        informServerAboutDeactivation()
 
         disposable = Observable.interval(3000L, TimeUnit.MILLISECONDS)
                 .timeInterval()
@@ -36,11 +35,6 @@ class CheckAdminService : Service() {
                 .subscribe { showEnableAdminScreen() }
 
         return START_STICKY
-    }
-
-    private fun informServerAboutDeactivation() {
-        val eventManager = GardionServerEventManager(this)
-        eventManager.sendGardionEvent(GardionServerEventManager.GardionEventType.ADMIN_DEACTIVATION)
     }
 
     private fun isDeviceAdminActive(): Boolean {

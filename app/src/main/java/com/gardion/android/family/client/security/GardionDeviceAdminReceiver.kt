@@ -25,20 +25,22 @@ class GardionDeviceAdminReceiver: DeviceAdminReceiver() {
     }
 
     override fun onEnabled(context: Context?, intent: Intent?) {
-        context?.toast(context.getString(R.string.device_admin_toast_active))
-        context?.stopService(Intent(context.applicationContext, CheckAdminService::class.java))
         val eventManager = GardionServerEventManager(context!!)
         eventManager.sendGardionEvent(GardionServerEventManager.GardionEventType.ADMIN_ACTIVATION)
+        context?.stopService(Intent(context.applicationContext, CheckAdminService::class.java))
+        context?.toast(context.getString(R.string.device_admin_toast_active))
         Log.d(TAG, "Device admin enabled")
     }
 
     override fun onDisabled(context: Context?, intent: Intent?) {
-        context?.toast(context.getString(R.string.device_admin_toast_deactivated))
-        Log.d(TAG, "Device admin disabled")
+        val eventManager = GardionServerEventManager(context!!)
+        eventManager.sendGardionEvent(GardionServerEventManager.GardionEventType.ADMIN_DEACTIVATION)
         val sharedPrefs = context?.getSharedPreferences(SharedPreferencesDataStore.PREFERENCES_NAME, Context.MODE_PRIVATE)
         dataStore = SharedPreferencesDataStore(sharedPrefs!!)
         dataStore.deviceAdminFirstSet(false)
         context.startService(Intent(context.applicationContext, CheckAdminService::class.java))
+        context?.toast(context.getString(R.string.device_admin_toast_deactivated))
+        Log.d(TAG, "Device admin disabled")
     }
 
     override fun onPasswordChanged(context: Context?, intent: Intent?) {
