@@ -1,5 +1,6 @@
 package com.gardion.android.family.client.security
 
+import android.app.Notification
 import android.app.PendingIntent
 import android.app.Service
 import android.app.admin.DevicePolicyManager
@@ -29,7 +30,6 @@ class CheckAdminService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         manager = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
-
         val sharedPrefs = this.getSharedPreferences(SharedPreferencesDataStore.PREFERENCES_NAME, Context.MODE_PRIVATE)
         dataStore = SharedPreferencesDataStore(sharedPrefs)
 
@@ -37,25 +37,7 @@ class CheckAdminService : Service() {
                 .timeInterval()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { showEnableAdminScreen() }
-
-        val channelId = resources.getString(R.string.notification_channel_id_general)
-        val intentNotification = Intent(this, GardionPopupActivity::class.java)
-        intentNotification.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-
-        val pendingIntentNotification = PendingIntent.getActivity(applicationContext,
-                123, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-
-        val notification = NotificationCompat.Builder(this, channelId)
-                .setContentTitle(getString(R.string.popup_notification_title))
-                .setContentText(getString(R.string.popup_notification_text))
-                .setSubText(getString(R.string.popup_notification_subtext))
-                .setSmallIcon(R.drawable.ic_notification_warning)
-                .setCategory(NotificationCompat.CATEGORY_STATUS)
-                .setColor(Color.RED)
-                .setContentIntent(pendingIntentNotification)
-                .build()
-
-        startForeground(1, notification)
+        startForeground(1, notificationDeviceAdminDisabled())
         return START_STICKY
     }
 
@@ -80,6 +62,24 @@ class CheckAdminService : Service() {
     override fun onDestroy() {
         disposable.dispose()
         super.onDestroy()
+    }
+
+    private fun notificationDeviceAdminDisabled(): Notification? {
+        val channelId = resources.getString(R.string.notification_channel_id_general)
+        val intentNotification = Intent(this, GardionPopupActivity::class.java)
+        intentNotification.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        val pendingIntentNotification = PendingIntent.getActivity(applicationContext,
+                123, intentNotification, PendingIntent.FLAG_UPDATE_CURRENT)
+        val notification = NotificationCompat.Builder(this, channelId)
+                .setContentTitle(getString(R.string.popup_notification_title))
+                .setContentText(getString(R.string.popup_notification_text))
+                .setSubText(getString(R.string.popup_notification_subtext))
+                .setSmallIcon(R.drawable.ic_notification_warning)
+                .setCategory(NotificationCompat.CATEGORY_STATUS)
+                .setColor(Color.RED)
+                .setContentIntent(pendingIntentNotification)
+                .build()
+        return notification
     }
 
     class EnableAdminLocalBinder : Binder() {
