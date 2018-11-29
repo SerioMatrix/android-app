@@ -263,5 +263,8 @@
     <string name="show_parent_pin2_infotext">Die Eltern-PIN können sie auch auf www.gardion.com nachschauen, nachdem Sie sich eingeloggt haben.</string>
     <string name="show_parent_pin_next_button">Weiter</string>
     <string name="device_admin_warning_deactivation">Sicher?\n\nWenn die Geräteverwaltung deaktiviert wird, wird das Gerät von Gardion gesperrt und muss mit der Eltern-PIN wieder entsperrt werden.</string>
+    <string name="popup_notification_title">Gerät gesperrt durch Gardion</string>
+    <string name="popup_notification_text">Bitte Eltern-PIN zum Entsperren eingeben.</string>
+    <string name="popup_notification_subtext">Gerät gesperrt</string>
 
 </resources>

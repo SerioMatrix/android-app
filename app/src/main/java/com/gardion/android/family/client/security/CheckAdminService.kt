@@ -1,11 +1,15 @@
 package com.gardion.android.family.client.security
 
+import android.app.PendingIntent
 import android.app.Service
 import android.app.admin.DevicePolicyManager
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Binder
 import android.os.IBinder
+import android.support.v4.app.NotificationCompat
+import com.gardion.android.family.client.R
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -34,6 +38,24 @@ class CheckAdminService : Service() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { showEnableAdminScreen() }
 
+        val channelId = resources.getString(R.string.notification_channel_id_general)
+        val intentNotification = Intent(this, GardionPopupActivity::class.java)
+        intentNotification.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+
+        val pendingIntentNotification = PendingIntent.getActivity(applicationContext,
+                123, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+        val notification = NotificationCompat.Builder(this, channelId)
+                .setContentTitle(getString(R.string.popup_notification_title))
+                .setContentText(getString(R.string.popup_notification_text))
+                .setSubText(getString(R.string.popup_notification_subtext))
+                .setSmallIcon(R.drawable.ic_notification_warning)
+                .setCategory(NotificationCompat.CATEGORY_STATUS)
+                .setColor(Color.RED)
+                .setContentIntent(pendingIntentNotification)
+                .build()
+
+        startForeground(1, notification)
         return START_STICKY
     }
 

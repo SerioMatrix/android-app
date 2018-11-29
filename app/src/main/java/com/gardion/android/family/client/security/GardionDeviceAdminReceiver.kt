@@ -5,6 +5,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.util.Log
 import com.gardion.android.family.client.R
 import com.gardion.android.family.client.data.datasource.DataStore
@@ -36,7 +37,11 @@ class GardionDeviceAdminReceiver: DeviceAdminReceiver() {
         val sharedPrefs = context?.getSharedPreferences(SharedPreferencesDataStore.PREFERENCES_NAME, Context.MODE_PRIVATE)
         dataStore = SharedPreferencesDataStore(sharedPrefs!!)
         dataStore.deviceAdminFirstSet(false)
-        context.startService(Intent(context.applicationContext, CheckAdminService::class.java))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(Intent(context.applicationContext, CheckAdminService::class.java))
+        } else {
+            context.startService(Intent(context.applicationContext, CheckAdminService::class.java))
+        }
         context?.toast(context.getString(R.string.device_admin_toast_deactivated))
         Log.d(TAG, "Device admin disabled")
     }
