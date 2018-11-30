@@ -57,8 +57,8 @@ class GardionUtils {
         }
 
 
-        fun forceKeyboardOpen(act: Activity){
-            val imm: InputMethodManager = act.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        fun forceKeyboardOpen(activity: Activity){
+            val imm: InputMethodManager = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
         }
 
