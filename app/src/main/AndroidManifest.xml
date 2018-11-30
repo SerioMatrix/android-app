@@ -18,15 +18,12 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
-
-    <!-- TODO - for dev atm, remove if not needed anymore -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".logic.GardionApplication"
@@ -123,7 +120,7 @@
         <service android:name=".security.GardionConnectionService" />
         <service android:name=".security.GardionRestartService" />
 
-        <activity android:name=".gardionui.UsageStatsTestActivity"></activity>
+        <activity android:name=".gardionui.UsageStatsTestActivity"/>
     </application>
 
 </manifest>
