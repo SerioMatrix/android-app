@@ -52,9 +52,9 @@ class GardionLoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_gardion_login)
         val sharedPrefs = this.getSharedPreferences(SharedPreferencesDataStore.PREFERENCES_NAME, Context.MODE_PRIVATE)
         dataStore = SharedPreferencesDataStore(sharedPrefs)
-
         login_button.setOnClickListener { buttonLogin(false) }
         contact_support_button.setOnClickListener { GardionLinks(this).goToForum() }
+
     }
 
     private fun buttonLogin(devLocal: Boolean = false) {
@@ -108,7 +108,7 @@ class GardionLoginActivity : AppCompatActivity() {
         }
     }
 
-    //TODO - remove only for dev
+    // only needed for dev
     private fun fetchDataLocal(gardionCode:String) {
         try {
             val input = File("sdcard/$gardionCode.json").readText()
