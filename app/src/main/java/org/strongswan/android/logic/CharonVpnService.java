@@ -22,6 +22,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -52,7 +53,9 @@ import org.strongswan.android.logic.imc.ImcState;
 import org.strongswan.android.logic.imc.RemediationInstruction;
 
 import com.gardion.android.family.client.logic.FlowController;
+import com.gardion.android.family.client.logic.PackageFullyRemovedReceiver;
 import com.gardion.android.family.client.logic.UserPresentReceiver;
+import com.gardion.android.family.client.logic.PackageAddedReceiver;
 import com.gardion.android.family.client.network.GardionServerEventManager;
 
 import org.strongswan.android.ui.MainActivity;
@@ -81,6 +84,8 @@ public class CharonVpnService extends VpnService implements Runnable, VpnStateSe
 	public static final int VPN_STATE_NOTIFICATION_ID = 1;
 
 	private UserPresentReceiver userPresentReceiver = new UserPresentReceiver();
+	private PackageAddedReceiver packageAddedReceiver = new PackageAddedReceiver();
+	private PackageFullyRemovedReceiver packageFullyRemoved = new PackageFullyRemovedReceiver();
 
 	private String mLogFile;
 	private String mAppDir;
@@ -180,6 +185,8 @@ public class CharonVpnService extends VpnService implements Runnable, VpnStateSe
 		//registering UserPresent is necessary as of Android API 26 (implicit broadcast receiver)
 		//doing this here in CharonService to persist destroying of app
 		registerUserPresentReceiver(CharonVpnService.this, userPresentReceiver);
+		registerPackageAddedReceiver(CharonVpnService.this, packageAddedReceiver);
+		registerPackageFullyRemovedReceiver(CharonVpnService.this, packageFullyRemoved);
 	}
 
 	@Override
@@ -216,6 +223,8 @@ public class CharonVpnService extends VpnService implements Runnable, VpnStateSe
 		mDataSource.close();
 
 		unregisterUserPresentReceiver(CharonVpnService.this, userPresentReceiver);
+		unregisterPackageAddedReceiver(CharonVpnService.this, packageAddedReceiver);
+		unregisterPackageFullyRemovedReceiver(CharonVpnService.this, packageFullyRemoved);
 	}
 
 	/**
@@ -461,6 +470,41 @@ public class CharonVpnService extends VpnService implements Runnable, VpnStateSe
 			Log.d("GARDION_RECEIVER", e.toString() + " / no registered receiver User Present found to unregister");
 		}
 	}
+
+	private void registerPackageAddedReceiver(Context context, PackageAddedReceiver par) {
+		IntentFilter intentFilter = new IntentFilter();
+		intentFilter.addAction("android.intent.action.PACKAGE_ADDED");
+		context.registerReceiver(par, intentFilter);
+		Log.d("GARDION_RECEIVER", "registered receiver Package Added");
+	}
+
+	private void unregisterPackageAddedReceiver(Context context, PackageAddedReceiver par) {
+		try {
+			context.unregisterReceiver(par);
+			Log.d("GARDION_RECEIVER","unregistered receiver Package Added");
+		} catch	(Exception e) {
+			Log.d("GARDION_RECEIVER", e.toString() + " / no registered receiver Package Added found to unregister");
+		}
+	}
+
+	private void registerPackageFullyRemovedReceiver(Context context, PackageFullyRemovedReceiver pfrr) {
+		IntentFilter intentFilter = new IntentFilter();
+		intentFilter.addAction("android.intent.action.PACKAGE_FULLY_REMOVED");
+		context.registerReceiver(pfrr, intentFilter);
+		Log.d("GARDION_RECEIVER", "registered receiver Package Fully Removed");
+	}
+
+	private void unregisterPackageFullyRemovedReceiver(Context context, PackageFullyRemovedReceiver pfrr) {
+		try {
+			context.unregisterReceiver(pfrr);
+			Log.d("GARDION_RECEIVER","unregistered receiver package Fully Removed");
+		} catch	(Exception e) {
+			Log.d("GARDION_RECEIVER", e.toString() + " / no registered receiver Package Fully Removed found to unregister");
+		}
+	}
+
+
+
 
 
 	/**

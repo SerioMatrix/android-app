@@ -23,6 +23,7 @@ import com.gardion.android.family.client.toast
 import com.gardion.android.family.client.utils.GardionUtils
 import android.content.Intent
 import com.gardion.android.family.client.data.datasource.DataStore
+import com.gardion.android.family.client.logic.PackageAddedReceiver
 import com.gardion.android.family.client.security.GardionRestartService
 import java.lang.Exception
 
@@ -355,4 +356,7 @@ class GardionVpnActivity : AppCompatActivity(), VpnStateService.VpnStateListener
         val eventManager = GardionServerEventManager(this)
         eventManager.sendGardionEvent(GardionServerEventManager.GardionEventType.TEST_DEV)
     }
+
+
+
 }
