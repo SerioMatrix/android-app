@@ -13,7 +13,6 @@ import com.gardion.android.family.client.R
 import com.gardion.android.family.client.data.datasource.FlowData
 import com.gardion.android.family.client.data.datasource.SharedPreferencesDataStore
 import com.gardion.android.family.client.gardionui.*
-import com.gardion.android.family.client.security.CheckAdminService
 import com.gardion.android.family.client.security.GardionConnectionService
 import com.gardion.android.family.client.security.GardionDeviceAdminReceiver
 import com.gardion.android.family.client.utils.GardionUtils
@@ -163,11 +162,11 @@ class FlowController : AppCompatActivity() {
     }
 
     private fun handleDeviceAdminCreation() {
-         if(flowData.isUserCertificateUsed()!!) {
-             startCertificateInstallation()
-         } else {
-             startVpnService()
-             startGardionConnectionService()
+        if(flowData.isUserCertificateUsed()!!) {
+            startCertificateInstallation()
+        } else {
+            startVpnService()
+            startGardionConnectionService()
         }
     }
 

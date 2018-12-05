@@ -262,9 +262,9 @@
     <string name="parent_pin_view_default">PIN</string>
     <string name="show_parent_pin2_infotext">Die Eltern-PIN können sie auch auf www.gardion.com nachschauen, nachdem Sie sich eingeloggt haben.</string>
     <string name="show_parent_pin_next_button">Weiter</string>
+    <string name="device_admin_external_storage_infotext">Gardion wurde auf dem externen Speicher des Geräts installiert. Damit Gardion als \"Geräteverwalter\" eingestellt werden kann, muss Gardion auf dem internen Speicher des Geräts installiert werden.\nSie können Gardion dennoch nutzen, allerdings kann die App leichter entfernt werden. Bei Fragen hierzu wenden Sie sich bitte an den Support.</string>
     <string name="device_admin_warning_deactivation">Sicher?\n\nWenn die Geräteverwaltung deaktiviert wird, wird das Gerät von Gardion gesperrt und muss mit der Eltern-PIN wieder entsperrt werden.</string>
     <string name="popup_notification_title">Gerät gesperrt durch Gardion</string>
     <string name="popup_notification_text">Bitte Eltern-PIN zum Entsperren eingeben.</string>
     <string name="popup_notification_subtext">Gerät gesperrt</string>
-
 </resources>
