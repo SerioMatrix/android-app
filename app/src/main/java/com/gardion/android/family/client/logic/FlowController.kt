@@ -16,6 +16,7 @@ import com.gardion.android.family.client.gardionui.*
 import com.gardion.android.family.client.security.GardionConnectionService
 import com.gardion.android.family.client.security.GardionDeviceAdminReceiver
 import com.gardion.android.family.client.utils.GardionUtils
+import java.security.KeyStore
 
 class FlowController : AppCompatActivity() {
 
@@ -162,6 +163,7 @@ class FlowController : AppCompatActivity() {
     }
 
     private fun handleDeviceAdminCreation() {
+        isCertificateInstalled("hellO")
         if(flowData.isUserCertificateUsed()!!) {
             startCertificateInstallation()
         } else {
@@ -179,5 +181,16 @@ class FlowController : AppCompatActivity() {
         intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, GardionDeviceAdminReceiver.getComponentName(this))
         intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "Please enable Gardion as Device Admin")
         startActivityForResult(intent, REQUEST_CODE_ENABLE_ADMIN)
+    }
+
+    private fun isCertificateInstalled(userCertificateAlias: String) {
+        val ks = KeyStore.getInstance("AndroidCAStore")
+
+        //check null?
+        val aliases = ks.aliases()
+        while(aliases.hasMoreElements()) {
+            val alias = aliases.nextElement()
+            Log.d(TAG, "Alias: $alias")
+        }
     }
 }
